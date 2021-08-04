@@ -1,74 +1,87 @@
 import 'package:flutter/material.dart';
+import 'package:neostore/base/baseclass.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_appbar.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_elevated_button.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_textformfield.dart';
 import 'package:neostore/utils/style.dart';
 
-class MyAccount extends StatelessWidget {
-  const MyAccount({Key? key}) : super(key: key);
+class MyAccount extends BaseClass {
+  @override
+  BaseClassState getState() {
+    return MyAccountState();
+  }
+}
+
+class MyAccountState extends BaseClassState {
+  @override
+  getAppBar() {
+    return _appBar();
+  }
 
   @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      minimum: const EdgeInsets.only(top: 35),
-      child: Scaffold(
-          appBar: NeoStoreAppBar(
-            backgroundColour: ColorStyles.purple,
-            leading: Icon(
-              Icons.arrow_back_ios,
-              color: ColorStyles.white,
-              size: 20,
-            ),
-            text: ConstantStrings.myAccount,
-            style: TextStyles.titleHeadline!.copyWith(
-              color: ColorStyles.white,
-            ),
-          ),
-          body: Container(
-            ///widget background image
-            decoration: _backgroundImage(),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                          top: 20,
-                          bottom: 20,
-                        ),
-                        child: CircleAvatar(
-                          backgroundColor: ColorStyles.blue,
-                          radius: 100,
-                        ),
-                      ),
-                    ),
-
-                    ///widget first name
-                    _firstName(),
-
-                    ///widget last name
-                    _lastName(),
-
-                    ///widget email
-                    _email(),
-
-                    ///widget phone number
-                    _phoneNumber(),
-
-                    ///widget date of birth
-                    _dateOfBirth(),
-
-                    ///widget edit profile button
-                    _editProfileButton(context),
-                  ],
+  Widget getBody() {
+    return Container(
+      ///widget background image
+      decoration: _backgroundImage(),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Center(
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    top: 20,
+                    bottom: 20,
+                  ),
+                  child: CircleAvatar(
+                    backgroundColor: ColorStyles.blue,
+                    radius: 100,
+                  ),
                 ),
               ),
-            ),
-          )),
+
+              ///widget first name
+              _firstName(),
+
+              ///widget last name
+              _lastName(),
+
+              ///widget email
+              _email(),
+
+              ///widget phone number
+              _phoneNumber(),
+
+              ///widget date of birth
+              _dateOfBirth(),
+
+              ///widget edit profile button
+              _editProfileButton(context),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
+
+  ///widget app bar
+  NeoStoreAppBar _appBar() {
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.purple,
+      leading: Icon(
+        Icons.arrow_back_ios,
+        color: ColorStyles.white,
+        size: 20,
+      ),
+      text: ConstantStrings.myAccount,
+      style: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+      ),
     );
   }
 
@@ -91,7 +104,7 @@ class MyAccount extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: NeoStoreTextFormField(
         hintText: '01-11-1998',
-        hintstyle: TextStyles.titleHeadline!.copyWith(
+        hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         prefixIcon: Icon(
@@ -108,7 +121,7 @@ class MyAccount extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: 'Phone Number',
-        hintstyle: TextStyles.titleHeadline!.copyWith(
+        hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         prefixIcon: Icon(
@@ -125,7 +138,7 @@ class MyAccount extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.email,
-        hintstyle: TextStyles.titleHeadline!.copyWith(
+        hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         prefixIcon: Icon(
@@ -142,7 +155,7 @@ class MyAccount extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: 'Shinde',
-        hintstyle: TextStyles.titleHeadline!.copyWith(
+        hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
@@ -154,7 +167,7 @@ class MyAccount extends StatelessWidget {
   Widget _firstName() {
     return NeoStoreTextFormField(
       hintText: 'Sagar',
-      hintstyle: TextStyles.titleHeadline!.copyWith(
+      hintStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),
       prefixIcon: Image.asset('assets/images/username_icon.png'),

@@ -8,7 +8,8 @@ class NeoStoreTextFormField extends StatelessWidget {
       this.prefixIcon,
       this.suffixIcon,
       this.controller,
-      this.hintstyle});
+      this.hintStyle,
+      this.textStyle, this.errorStyle});
 
   final String? hintText;
   final validation;
@@ -16,15 +17,31 @@ class NeoStoreTextFormField extends StatelessWidget {
   final prefixIcon;
   final suffixIcon;
   final controller;
-  final hintstyle;
+  final hintStyle;
+  final textStyle;
+  final errorStyle;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: textStyle,
       controller: controller,
       validator: validation,
       obscureText: obscureText,
       decoration: new InputDecoration(
+        errorStyle: errorStyle,
+        errorBorder: new OutlineInputBorder(
+          borderSide: new BorderSide(
+            color: Colors.white,
+            width: 1,
+          ),
+        ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderSide: new BorderSide(
+            color: Colors.white,
+            width: 1,
+          ),
+        ),
         enabledBorder: new OutlineInputBorder(
           borderSide: new BorderSide(
             color: Colors.white,
@@ -37,13 +54,8 @@ class NeoStoreTextFormField extends StatelessWidget {
             width: 1,
           ),
         ),
-        // hintStyle: TextStyles.titleHeadline!.copyWith(
-        //   color: ColorStyles.white,
-        //   fontFamily: 'WorksSans',
-        // ),
-        hintStyle: hintstyle,
+        hintStyle: hintStyle,
         hintText: hintText,
-
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
       ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NeoStoreAppBar extends StatelessWidget implements PreferredSizeWidget {
+class NeoStoreAppBar extends AppBar implements PreferredSizeWidget {
   NeoStoreAppBar({
     this.backgroundColour,
     this.text,

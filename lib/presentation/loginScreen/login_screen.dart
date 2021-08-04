@@ -1,57 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:neostore/base/baseclass.dart';
+import 'package:neostore/presentation/homeScreen/home_screen.dart';
 import 'package:neostore/utils/constant_strings.dart';
+import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_elevated_button.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_textformfield.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends BaseClass {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+  BaseClassState getState() {
+    return _LoginScreenState();
+  }
+}
 
-    return Scaffold(
-      body: Container(
-        height: double.infinity,
-        width: double.infinity,
-        decoration: _backgroundImage(),
-        child: Stack(
-          children: [
-            Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    ///widget neoStore title
-                    _title(),
+class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
+  TextEditingController _usernameController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-                    ///widget username
-                    _username(),
+  @override
+  Widget getBody() {
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      decoration: _backgroundImage(),
+      child: Stack(
+        children: [
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ///widget neoStore title
+                  _title(),
 
-                    ///widget password
-                    _password(),
+                  ///widget username
+                  _username(),
 
-                    /// widget login
-                    _loginButton(context),
+                  ///widget password
+                  _password(),
 
-                    /// widget forgotPassword
-                    _forgotPassword(),
-                  ],
-                ),
+                  /// widget login
+                  _loginButton(context),
+
+                  /// widget forgotPassword
+                  _forgotPassword(),
+                ],
               ),
             ),
+          ),
 
-            ///widget don't have account
-            _dontHaveAccount(),
-          ],
-        ),
+          ///widget don't have account
+          _dontHaveAccount(),
+        ],
       ),
     );
   }
+
   BoxDecoration _backgroundImage() {
     return BoxDecoration(
       image: DecorationImage(
@@ -98,10 +109,23 @@ class LoginScreen extends StatelessWidget {
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 30, bottom: 10),
       child: NeoStoreElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            // Navigator.push(
+            //   context,
+            //   MaterialPageRoute(
+            //     builder: (context) => HomeScreen(),
+            //   ),
+            // );
+          }
+        },
         text: ConstantStrings.login,
-        textStyle: TextStyles.titleHeadline!
-            .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
-        buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.red,
+        ),
+        buttonStyle: TextButton.styleFrom(
+          backgroundColor: ColorStyles.white,
+        ),
       ),
     );
   }
@@ -112,11 +136,19 @@ class LoginScreen extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.password,
-        hintstyle: TextStyles.titleHeadline!.copyWith(
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
+        hintStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
+        errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        validation: validatePassword,
+        controller: _passwordController,
       ),
     );
   }
@@ -126,10 +158,14 @@ class LoginScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: NeoStoreTextFormField(
+
         hintText: ConstantStrings.username,
-        hintstyle: TextStyles.titleHeadline!.copyWith(
+        hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
+        // validation: validateUsername,
+        controller: _usernameController,
+        validation: validateName,
         prefixIcon: Image.asset('assets/images/username_icon.png'),
       ),
     );
@@ -145,4 +181,9 @@ class LoginScreen extends StatelessWidget {
       ),
     );
   }
+
+
+
 }
+
+
