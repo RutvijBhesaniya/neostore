@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neostore/base/baseclass.dart';
+import 'package:neostore/base/baseClass.dart';
 import 'package:neostore/presentation/homeScreen/home_screen.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';

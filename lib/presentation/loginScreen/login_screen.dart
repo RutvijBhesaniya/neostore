@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:neostore/base/baseclass.dart';
-import 'package:neostore/presentation/homeScreen/home_screen.dart';
+import 'package:neostore/base/baseClass.dart';
+import 'package:neostore/presentation/loginScreen/login_screen_view_model.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_elevated_button.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_textformfield.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends BaseClass {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,9 +22,11 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   TextEditingController _usernameController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
+  LoginScreenProvider? _loginScreenProvider;
 
   @override
   Widget getBody() {
+    _loginScreenProvider = Provider.of<LoginScreenProvider>(context);
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -63,6 +66,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     );
   }
 
+  ///background image
   BoxDecoration _backgroundImage() {
     return BoxDecoration(
       image: DecorationImage(
@@ -111,13 +115,15 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       child: NeoStoreElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            // Navigator.push(
-            //   context,
-            //   MaterialPageRoute(
-            //     builder: (context) => HomeScreen(),
-            //   ),
-            // );
+            loginUser(
+                _usernameController.value.text, _passwordController.value.text);
           }
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => HomeScreen(),
+          //   ),
+          // );
         },
         text: ConstantStrings.login,
         textStyle: TextStyles.titleHeadline!.copyWith(
@@ -158,7 +164,6 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     return Padding(
       padding: const EdgeInsets.only(top: 40),
       child: NeoStoreTextFormField(
-
         hintText: ConstantStrings.username,
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
@@ -182,8 +187,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     );
   }
 
-
-
+  void loginUser(String username, String password) async {
+    _loginScreenProvider!.getLogin(username, password, context);
+  }
 }
-
-
