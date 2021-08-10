@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:neostore/base/baseClass.dart';
 import 'package:neostore/presentation/homeScreen/home_screen.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -36,7 +37,9 @@ class _ResetPasswordState extends BaseClassState
 
   @override
   AppBar? getAppBar() {
-    return AppBar(title: Text('ssss'),);
+    return AppBar(
+      title: Text('ssss'),
+    );
     //   NeoStoreAppBar(
     //   backgroundColour: ColorStyles.purple,
     //   leading: Icon(
@@ -132,6 +135,7 @@ class _ResetPasswordState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        maxLine: 1,
         controller: confirmPasswordController,
         validation: validateConfirmPassword,
       ),
@@ -155,6 +159,7 @@ class _ResetPasswordState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        maxLine: 1,
         controller: newPasswordController,
         validation: validatePassword,
       ),
@@ -178,6 +183,7 @@ class _ResetPasswordState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        maxLine: 1,
         controller: currentPasswordController,
         validation: validatePassword,
       ),
@@ -186,11 +192,12 @@ class _ResetPasswordState extends BaseClassState
 
   ///widget title
   Widget _title() {
-    return NeoStoreTitle(
-      // text: ConstantStrings.welCome,
-      text: ConstantStrings.neoStore,
-      style: TextStyles.largeHeadline!.copyWith(
-        color: ColorStyles.white,
+    return Container(
+      child: NeoStoreTitle(
+        text: ConstantStrings.neoStore,
+        style: TextStyles.largeHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
       ),
     );
   }

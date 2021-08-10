@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 ///font size and font family
 class TextStyles {
   static TextStyle? largeHeadline = TextStyle(
-      fontSize: 40);
-  static TextStyle? titleHeadline = TextStyle(fontSize: 20);
+      fontSize: 40,);
+  static TextStyle? titleHeadline = TextStyle(fontSize: 20,);
   static TextStyle? labelName = TextStyle(fontSize: 15);
   static TextStyle? subtitle = TextStyle(fontSize: 9);
 }

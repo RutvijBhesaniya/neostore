@@ -21,10 +21,12 @@ class RegisterScreen extends BaseClass {
   }
 }
 
+enum GenderTypes { Male, Female }
+
 class _RegisterScreenState extends BaseClassState
     with NeoStoreConstantValidation {
   late RegisterScreenProvider _registerScreenProvider;
-  late ChangeColorModel _changeColorModel;
+  late ChangeGender _changeColorModel;
 
   final _buttonOptions = [
     RadioListValue(0, "Male"),
@@ -37,7 +39,7 @@ class _RegisterScreenState extends BaseClassState
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-  TextEditingController _gendercontroller = new TextEditingController();
+  TextEditingController _genderController = new TextEditingController();
   TextEditingController _confirmPasswordController =
       new TextEditingController();
 
@@ -69,7 +71,7 @@ class _RegisterScreenState extends BaseClassState
   @override
   Widget getBody() {
     _registerScreenProvider = Provider.of<RegisterScreenProvider>(context);
-    _changeColorModel = Provider.of<ChangeColorModel>(context);
+    _changeColorModel = Provider.of<ChangeGender>(context);
     return Form(
       key: _formKey,
       child: Container(
@@ -132,23 +134,42 @@ class _RegisterScreenState extends BaseClassState
           ),
         ),
         Flexible(
-          child: ListView(
-            shrinkWrap: true,
-            padding: EdgeInsets.all(8.0),
-            children: _buttonOptions
-                .map(
-                  (timeValue) => RadioListTile(
-                    groupValue: _changeColorModel.currentValue.key,
-                    title: Text(timeValue.label),
-                    value: timeValue.key,
-                    onChanged: (dynamic val) {
-                      _changeColorModel.chageModel(_buttonOptions[val]);
-                    },
-                  ),
-                )
-                .toList(),
-          ),
+          child: RadioListTile<GenderTypes>(
+              value: GenderTypes.Male,
+              title: Text('Male'),
+              groupValue: _changeColorModel.currentValue,
+              onChanged: (value) {
+                _changeColorModel.changeModel(value!);
+              }),
         ),
+        Flexible(
+          child: RadioListTile<GenderTypes>(
+            value: GenderTypes.Female,
+            title: Text('Female'),
+            groupValue: _changeColorModel.currentValue,
+            onChanged: (value) {
+              _changeColorModel.changeModel(value!);
+            },
+          ),
+        )
+        // Flexible(
+        //   child: ListView(
+        //     shrinkWrap: true,
+        //     padding: EdgeInsets.all(8.0),
+        //     children: _buttonOptions
+        //         .map(
+        //           (timeValue) => RadioListTile(
+        //             groupValue: _changeColorModel.currentValue.key,
+        //             title: Text(timeValue.label),
+        //             value: timeValue.key,
+        //             onChanged: (dynamic val) {
+        //               _changeColorModel.chageModel(_buttonOptions[val]);
+        //             },
+        //           ),
+        //         )
+        //         .toList(),
+        //   ),
+        // ),
       ],
     );
   }
@@ -196,7 +217,7 @@ class _RegisterScreenState extends BaseClassState
           print("validationvalue=>${_formKey.currentState!.validate()}");
           if (_formKey.currentState!.validate()) {
             print("abc1");
-            registerUser( context);
+            registerUser(context);
           } else {
             print("abc");
           }
@@ -251,6 +272,7 @@ class _RegisterScreenState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        maxLine: 1,
         controller: _confirmPasswordController,
         validation: validateConfirmPassword,
         // validation: validatePassword,
@@ -275,6 +297,7 @@ class _RegisterScreenState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        maxLine: 1,
         validation: validatePassword,
         controller: _passwordController,
       ),
@@ -371,7 +394,7 @@ class _RegisterScreenState extends BaseClassState
     );
   }
 
-  void registerUser( BuildContext context) {
+  void registerUser(BuildContext context) {
     RegisterRequest registerRequest = RegisterRequest();
     registerRequest.firstName = _firstNameController.text;
     registerRequest.password = _passwordController.text;
@@ -379,7 +402,8 @@ class _RegisterScreenState extends BaseClassState
     registerRequest.lastName = _lastNameController.text;
     registerRequest.phone = _phoneController.text;
     registerRequest.email = _emailController.text;
-    registerRequest.gender = "M";
+    registerRequest.gender =
+        _changeColorModel.currentValue == GenderTypes.Male ? 'Male' : 'Female';
 
     _registerScreenProvider.getRegisterUser(registerRequest, context);
   }

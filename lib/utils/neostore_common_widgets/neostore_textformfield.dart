@@ -1,15 +1,20 @@
+
 import 'package:flutter/material.dart';
 
 class NeoStoreTextFormField extends StatelessWidget {
-  NeoStoreTextFormField(
-      {this.hintText,
-      this.validation,
-      this.obscureText = false,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.controller,
-      this.hintStyle,
-      this.textStyle, this.errorStyle});
+  NeoStoreTextFormField({
+    this.hintText,
+    this.validation,
+    this.obscureText = false,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.controller,
+    this.hintStyle,
+    this.textStyle,
+    this.errorStyle,
+    this.maxLine,
+    this.fillColor
+  });
 
   final String? hintText;
   final validation;
@@ -20,6 +25,8 @@ class NeoStoreTextFormField extends StatelessWidget {
   final hintStyle;
   final textStyle;
   final errorStyle;
+  final maxLine;
+  final fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +35,10 @@ class NeoStoreTextFormField extends StatelessWidget {
       controller: controller,
       validator: validation,
       obscureText: obscureText,
+      maxLines: maxLine,
       decoration: new InputDecoration(
+        filled: true,
+        fillColor: fillColor,
         errorStyle: errorStyle,
         errorBorder: new OutlineInputBorder(
           borderSide: new BorderSide(

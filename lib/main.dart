@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/data/widget/radiobutton.dart';
 import 'package:neostore/presentation/LoginScreen/login_screen.dart';
+import 'package:neostore/presentation/addAddressScreen/addAddress_screen.dart';
 import 'package:neostore/presentation/loginScreen/login_screen_view_model.dart';
 import 'package:neostore/presentation/registerScreen/register_screen.dart';
 import 'package:neostore/presentation/registerScreen/register_screen_view_model.dart';
@@ -20,8 +21,8 @@ void main() {
         ChangeNotifierProvider<RegisterScreenProvider>(
           create: (context) => RegisterScreenProvider(),
         ),
-        ChangeNotifierProvider<ChangeColorModel>(
-          create: (context) => ChangeColorModel(),
+        ChangeNotifierProvider<ChangeGender>(
+          create: (context) => ChangeGender(),
         )
       ],
       child: NeoStore(),

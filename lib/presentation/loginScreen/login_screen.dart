@@ -163,6 +163,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
+        maxLine: 1,
         validation: validatePassword,
         controller: _passwordController,
       ),

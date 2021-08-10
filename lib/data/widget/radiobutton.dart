@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:neostore/presentation/registerScreen/register_screen.dart';
 import 'package:provider/provider.dart';
 
 class RadioListValue {
@@ -8,13 +9,13 @@ class RadioListValue {
   RadioListValue(this.key, this.label);
 }
 
-class ChangeColorModel with ChangeNotifier {
-  RadioListValue _value = new RadioListValue(0, "Male");
+class ChangeGender with ChangeNotifier {
+  GenderTypes? _value;
 
-  RadioListValue get currentValue => _value;
+  GenderTypes? get currentValue => _value;
 
-  void chageModel(RadioListValue m) {
-    _value = m;
+  void changeModel(GenderTypes genderTypes) {
+    _value = genderTypes;
     notifyListeners();
   }
 }

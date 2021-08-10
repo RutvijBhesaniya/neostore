@@ -67,8 +67,6 @@ class MyAccountState extends BaseClassState {
     );
   }
 
-
-
   ///widget app bar
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(

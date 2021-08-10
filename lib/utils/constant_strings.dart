@@ -18,6 +18,13 @@ class ConstantStrings {
   static const register ='REGISTER';
   static const lastName ='Last Name';
   static const firstName ='First Name';
+  static const address ='ADDRESS';
+  static const landmark ='LANDMARK';
+  static const city ='CITY';
+  static const state ='STATE';
+  static const country ='COUNTRY';
+  static const zipcode ='ZIP CODE';
+  static const addAddress ='Add Address';
 
 
 
