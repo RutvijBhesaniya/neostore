@@ -9,9 +9,9 @@ class RegisterUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([registerRequest]) {
+  Future callApi([registerRequest,context]) {
     return _registerRepository
-        .getRegisterRepository(registerRequest)
+        .getRegisterRepository(registerRequest,context)
         .then((value) => print("register=>$value"));
   }
 }

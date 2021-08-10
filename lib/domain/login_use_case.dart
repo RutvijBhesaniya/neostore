@@ -9,8 +9,8 @@ class LoginUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([username, password]) {
-    return _loginRepository.getLoginRepository(username, password).then(
+  Future callApi([loginRequest,context]) {
+    return _loginRepository.getLoginRepository(loginRequest,context).then(
           (value) => print("case=>$value"),
         );
   }

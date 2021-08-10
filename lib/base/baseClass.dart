@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:neostore/utils/neostore_common_widgets/neostore_appbar.dart';
 
 abstract class BaseClass extends StatefulWidget {
   const BaseClass({Key? key}) : super(key: key);

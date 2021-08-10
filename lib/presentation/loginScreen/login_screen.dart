@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/baseClass.dart';
+import 'package:neostore/data/model/LoginRequest.dart';
 import 'package:neostore/presentation/loginScreen/login_screen_view_model.dart';
+import 'package:neostore/presentation/registerScreen/register_screen.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_elevated_button.dart';
@@ -19,10 +21,10 @@ class LoginScreen extends BaseClass {
 }
 
 class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
-  TextEditingController _usernameController = new TextEditingController();
+  TextEditingController _emailcontroller = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  LoginScreenProvider? _loginScreenProvider;
+  late LoginScreenProvider _loginScreenProvider;
 
   @override
   Widget getBody() {
@@ -82,11 +84,20 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       bottom: 0,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: NeoStoreTitle(
-          // text: ConstantStrings.welCome,
-          text: ConstantStrings.dontHaveAnAccount,
-          style: TextStyles.titleHeadline!.copyWith(
-            color: ColorStyles.white,
+        child: GestureDetector(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => RegisterScreen(),
+                ));
+          },
+          child: NeoStoreTitle(
+            // text: ConstantStrings.welCome,
+            text: ConstantStrings.dontHaveAnAccount,
+            style: TextStyles.titleHeadline!.copyWith(
+              color: ColorStyles.white,
+            ),
           ),
         ),
       ),
@@ -115,8 +126,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       child: NeoStoreElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            loginUser(
-                _usernameController.value.text, _passwordController.value.text);
+            loginUser(context);
           }
           // Navigator.push(
           //   context,
@@ -169,7 +179,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
           color: ColorStyles.white,
         ),
         // validation: validateUsername,
-        controller: _usernameController,
+        controller: _emailcontroller,
         validation: validateName,
         prefixIcon: Image.asset('assets/images/username_icon.png'),
       ),
@@ -187,7 +197,10 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     );
   }
 
-  void loginUser(String username, String password) async {
-    _loginScreenProvider!.getLogin(username, password, context);
+  void loginUser( BuildContext context) async {
+    LoginRequest loginRequest =LoginRequest();
+    loginRequest.email =_emailcontroller.text;
+    loginRequest.password = _passwordController.text;
+    _loginScreenProvider.getLogin(loginRequest, context);
   }
 }

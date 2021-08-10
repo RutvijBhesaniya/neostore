@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:neostore/data/model/LoginRequest.dart';
 import 'package:neostore/data/webService/apiImpl/loginApi/loginApi.dart';
 import 'package:neostore/data/webService/repository/loginRepository/login_repository.dart';
 
@@ -9,7 +11,7 @@ class LoginRepositoryImpl implements LoginRepository {
   }
 
   @override
-  Future getLoginRepository(String username, String password) {
-    return _loginApi.getLoginApi(username, password);
+  Future getLoginRepository(LoginRequest loginRequest,BuildContext context) {
+    return _loginApi.getLoginApi(loginRequest,context);
   }
 }

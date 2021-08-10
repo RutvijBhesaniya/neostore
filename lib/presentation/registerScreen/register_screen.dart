@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/baseClass.dart';
+import 'package:neostore/data/model/RegisterRequest.dart';
+import 'package:neostore/data/widget/radiobutton.dart';
+import 'package:neostore/presentation/registerScreen/register_screen_view_model.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_appbar.dart';
@@ -7,6 +10,7 @@ import 'package:neostore/utils/neostore_common_widgets/neostore_elevated_button.
 import 'package:neostore/utils/neostore_common_widgets/neostore_textformfield.dart';
 import 'package:neostore/utils/neostore_common_widgets/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends BaseClass {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -19,21 +23,29 @@ class RegisterScreen extends BaseClass {
 
 class _RegisterScreenState extends BaseClassState
     with NeoStoreConstantValidation {
+  late RegisterScreenProvider _registerScreenProvider;
+  late ChangeColorModel _changeColorModel;
+
+  final _buttonOptions = [
+    RadioListValue(0, "Male"),
+    RadioListValue(1, "Female"),
+  ];
   final _formKey = GlobalKey<FormState>();
 
-  TextEditingController firstNameController = new TextEditingController();
-  TextEditingController lastNameController = new TextEditingController();
-  TextEditingController emailController = new TextEditingController();
-  TextEditingController phoneController = new TextEditingController();
-  TextEditingController passwordController = new TextEditingController();
-  TextEditingController confirmPasswordController = new TextEditingController();
+  TextEditingController _firstNameController = new TextEditingController();
+  TextEditingController _lastNameController = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _phoneController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _gendercontroller = new TextEditingController();
+  TextEditingController _confirmPasswordController =
+      new TextEditingController();
 
   ///string password = confirm password
   String? validateConfirmPassword(String? value) {
     if (value!.isEmpty) {
       return "Please enter re-password";
-    }
-    if (passwordController != confirmPasswordController) {
+    } else if (_passwordController.value != _confirmPasswordController.value) {
       return "Password do not match";
     }
   }
@@ -56,6 +68,8 @@ class _RegisterScreenState extends BaseClassState
 
   @override
   Widget getBody() {
+    _registerScreenProvider = Provider.of<RegisterScreenProvider>(context);
+    _changeColorModel = Provider.of<ChangeColorModel>(context);
     return Form(
       key: _formKey,
       child: Container(
@@ -85,6 +99,8 @@ class _RegisterScreenState extends BaseClassState
                 ///widget confirm password
                 _confirmPassword(),
 
+                _gender(),
+
                 ///widget phone number
                 _phoneNumber(),
 
@@ -98,6 +114,42 @@ class _RegisterScreenState extends BaseClassState
           ),
         ),
       ),
+    );
+  }
+
+  Widget _gender() {
+    return Row(
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(
+            top: 10,
+          ),
+          child: NeoStoreTitle(
+            text: 'Gender',
+            style: TextStyles.titleHeadline!.copyWith(
+              color: ColorStyles.white,
+            ),
+          ),
+        ),
+        Flexible(
+          child: ListView(
+            shrinkWrap: true,
+            padding: EdgeInsets.all(8.0),
+            children: _buttonOptions
+                .map(
+                  (timeValue) => RadioListTile(
+                    groupValue: _changeColorModel.currentValue.key,
+                    title: Text(timeValue.label),
+                    value: timeValue.key,
+                    onChanged: (dynamic val) {
+                      _changeColorModel.chageModel(_buttonOptions[val]);
+                    },
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 
@@ -137,24 +189,24 @@ class _RegisterScreenState extends BaseClassState
   ///widget register button
   Widget _registerButton(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(top: 20, bottom: 10),
-        child: NeoStoreElevatedButton(
-          onPressed: (){
-            // if (_formKey.currentState!.validate()) {
-            //   Navigator.push(
-            //     context,
-            //     MaterialPageRoute(
-            //       builder: (context) => HomeScreen(),
-            //     ),
-            //   );
-            // }
-          },
-          text: ConstantStrings.register,
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
-          buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
-        ));
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.only(top: 20, bottom: 10),
+      child: NeoStoreElevatedButton(
+        onPressed: () {
+          print("validationvalue=>${_formKey.currentState!.validate()}");
+          if (_formKey.currentState!.validate()) {
+            print("abc1");
+            registerUser( context);
+          } else {
+            print("abc");
+          }
+        },
+        text: ConstantStrings.register,
+        textStyle: TextStyles.titleHeadline!
+            .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
+        buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
+      ),
+    );
   }
 
   ///widget phone number
@@ -177,7 +229,7 @@ class _RegisterScreenState extends BaseClassState
           color: ColorStyles.white,
         ),
         validation: validatePhoneNumber,
-        controller: phoneController,
+        controller: _phoneController,
       ),
     );
   }
@@ -199,7 +251,7 @@ class _RegisterScreenState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
-        controller: confirmPasswordController,
+        controller: _confirmPasswordController,
         validation: validateConfirmPassword,
         // validation: validatePassword,
       ),
@@ -224,7 +276,7 @@ class _RegisterScreenState extends BaseClassState
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         validation: validatePassword,
-        controller: passwordController,
+        controller: _passwordController,
       ),
     );
   }
@@ -249,7 +301,7 @@ class _RegisterScreenState extends BaseClassState
           color: ColorStyles.white,
         ),
         validation: validateEmail,
-        controller: emailController,
+        controller: _emailController,
       ),
     );
   }
@@ -271,7 +323,7 @@ class _RegisterScreenState extends BaseClassState
         ),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
         validation: validateName,
-        controller: lastNameController,
+        controller: _lastNameController,
       ),
     );
   }
@@ -291,7 +343,7 @@ class _RegisterScreenState extends BaseClassState
       ),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
       validation: validateName,
-      controller: firstNameController,
+      controller: _firstNameController,
     );
   }
 
@@ -319,7 +371,18 @@ class _RegisterScreenState extends BaseClassState
     );
   }
 
-  void registerUser(){
+  void registerUser( BuildContext context) {
+    RegisterRequest registerRequest = RegisterRequest();
+    registerRequest.firstName = _firstNameController.text;
+    registerRequest.password = _passwordController.text;
+    registerRequest.confirmPassword = _confirmPasswordController.text;
+    registerRequest.lastName = _lastNameController.text;
+    registerRequest.phone = _phoneController.text;
+    registerRequest.email = _emailController.text;
+    registerRequest.gender = "M";
 
+    _registerScreenProvider.getRegisterUser(registerRequest, context);
   }
+
+  void saveMessage(RegisterRequest registerRequest) async {}
 }
