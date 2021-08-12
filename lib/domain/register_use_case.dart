@@ -1,5 +1,5 @@
-import 'package:neostore/base/BaseUseCase.dart';
-import 'package:neostore/data/webService/repository/registerRepository/register_repository.dart';
+import 'package:neostore/base/Base_use_case.dart';
+import 'package:neostore/data/web_service/repository/registerRepository/register_repository.dart';
 
 class RegisterUseCase extends BaseUseCase<dynamic> {
   late RegisterRepository _registerRepository;
