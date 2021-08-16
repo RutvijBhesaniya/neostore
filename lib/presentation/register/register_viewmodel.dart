@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/register_request.dart';
+import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/web_service/api_impl/register_api/RegisterApi_impl.dart';
-import 'package:neostore/data/web_service/repository/registerRepository/register_repository_impl.dart';
+import 'package:neostore/data/web_service/repository/register_repository/register_repository_impl.dart';
 import 'package:neostore/domain/register_use_case.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/register_request.dart';
+import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/widget/radio_button.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -148,24 +148,7 @@ class _RegisterScreenState extends BaseClassState
             },
           ),
         )
-        // Flexible(
-        //   child: ListView(
-        //     shrinkWrap: true,
-        //     padding: EdgeInsets.all(8.0),
-        //     children: _buttonOptions
-        //         .map(
-        //           (timeValue) => RadioListTile(
-        //             groupValue: _changeColorModel.currentValue.key,
-        //             title: Text(timeValue.label),
-        //             value: timeValue.key,
-        //             onChanged: (dynamic val) {
-        //               _changeColorModel.chageModel(_buttonOptions[val]);
-        //             },
-        //           ),
-        //         )
-        //         .toList(),
-        //   ),
-        // ),
+
       ],
     );
   }

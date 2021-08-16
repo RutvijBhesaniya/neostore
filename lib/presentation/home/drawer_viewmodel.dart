@@ -5,7 +5,7 @@ class DrawerProvider with ChangeNotifier {
 
   bool get getCurrentDrawer => collapsed;
 
-   void setCurrentDrawer(bool drawer) {
+  void setCurrentDrawer(bool drawer) {
     collapsed = drawer;
     notifyListeners();
   }

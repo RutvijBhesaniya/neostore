@@ -5,8 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/base/network_model/messages.dart';
+
 enum MethodType { POST, GET, PUT, DELETE }
+
 const Duration timeoutDuration = const Duration(seconds: 60);
+
 class APIHandler {
   // static Map<String, String> defaultHeaders = {
   //   "Content-Type": "application/json",
@@ -18,22 +21,24 @@ class APIHandler {
   static Future<dynamic> post({
     dynamic requestBody,
     @required BuildContext? context,
-    String ?url,
+    String? url,
     Map<String, String> additionalHeaders = const {},
   }) async {
-    return await _hitApi(
+    var response = await _hitApi(
       context: context,
       url: url,
       methodType: MethodType.POST,
       requestBody: requestBody,
       additionalHeaders: additionalHeaders,
     );
+    print("gotResponseatApiHandler=>${response}");
+    return response;
   }
 
   // GET method
   static Future<dynamic> get({
-    @required String ?url,
-    @required BuildContext ?context,
+    @required String? url,
+    @required BuildContext? context,
     dynamic requestBody,
     Map<String, String> additionalHeaders = const {},
   }) async {
@@ -48,8 +53,8 @@ class APIHandler {
 
   // GET method
   static Future<dynamic> delete({
-    @required String ?url,
-    @required BuildContext ?context,
+    @required String? url,
+    @required BuildContext? context,
     Map<String, String> additionalHeaders = const {},
   }) async {
     return await _hitApi(
@@ -63,8 +68,8 @@ class APIHandler {
   // PUT method
   static Future<dynamic> put({
     @required dynamic requestBody,
-    @required BuildContext ?context,
-    @required String ?url,
+    @required BuildContext? context,
+    @required String? url,
     Map<String, String> additionalHeaders = const {},
   }) async {
     return await _hitApi(
@@ -78,9 +83,9 @@ class APIHandler {
 
   // Generic HTTP method
   static Future<dynamic> _hitApi({
-    @required BuildContext ?context,
+    @required BuildContext? context,
     @required MethodType? methodType,
-    @required String ?url,
+    @required String? url,
     dynamic requestBody,
     Map<String, String> additionalHeaders = const {},
   }) async {
@@ -93,27 +98,26 @@ class APIHandler {
 
       switch (methodType!) {
         case MethodType.POST:
+
           response = await dio
               .post(
                 url!,
                 options: Options(
                   headers: headers,
                 ),
-            data: requestBody,
+                data: requestBody,
               )
               .timeout(timeoutDuration);
+          print("apihit=>${response}");
 
           break;
         case MethodType.GET:
           response = await dio
-              .get(
-                url!,
-                options: Options(
-                  headers: headers,
-                ),
-               queryParameters: requestBody
-
-              )
+              .get(url!,
+                  options: Options(
+                    headers: headers,
+                  ),
+                  queryParameters: requestBody)
               .timeout(timeoutDuration);
           break;
         case MethodType.PUT:
@@ -141,38 +145,39 @@ class APIHandler {
 
       print("url: $url");
       print("api handler requestbody: $requestBody");
-      print("api handler responsebody: ${ json.encode(response.data)}");
+      print("api handler responsebody: ${json.encode(response.data)}");
       print("api handler response code: ${response?.statusCode}");
 
-
       completer.complete(response.data);
-
     } on DioError catch (e) {
       print("dio cath ${e.message}");
       print("error ${e.response?.statusCode}");
       print("messag ${e.response?.data}");
       print("messag ${e.response}");
 
-       if (e.response?.statusCode == 403) {
+      if (e.response?.statusCode == 403) {
         APIError apiError = new APIError(
           error: parseError(e.response?.data),
           status: 403,
-          onAlertPop: () {}, message: null,
+          onAlertPop: () {},
+          message: null,
         );
         completer.complete(apiError);
+      } else {
+        APIError apiError = new APIError(
+            error: parseError(e.response?.data ?? ""),
+            message: e.response?.data ?? "",
+            status: e.response?.statusCode ?? 0,
+            onAlertPop: () {});
+        completer.complete(apiError);
       }
-       else {
-         APIError apiError = new APIError(
-             error: parseError(e.response?.data??""),
-             message: e.response?.data??"",
-             status: e.response?.statusCode??0, onAlertPop: () {  });
-         completer.complete(apiError);
-       }
-    }
-    catch (e) {
+    } catch (e) {
       print("errror ${e.toString()}");
       APIError apiError = new APIError(
-          error: Messages.genericError, status: 500, onAlertPop: () {  }, message: null);
+          error: Messages.genericError,
+          status: 500,
+          onAlertPop: () {},
+          message: null);
       completer.complete(apiError);
     }
     return completer.future;
@@ -181,8 +186,7 @@ class APIHandler {
   static String parseError(dynamic response) {
     try {
       return response["error"];
-    }
-    catch (e) {
+    } catch (e) {
       return Messages.genericError;
     }
   }
@@ -190,8 +194,7 @@ class APIHandler {
   static String parseErrorMessage(dynamic response) {
     try {
       return response["message"];
-    }
-    catch (e) {
+    } catch (e) {
       return Messages.genericError;
     }
   }

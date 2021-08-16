@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/login_request.dart';
+import 'package:neostore/data/model/request/login_request.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/register/register_view.dart';
 import 'package:neostore/utils/constant_strings.dart';

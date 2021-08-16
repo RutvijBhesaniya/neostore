@@ -1,5 +1,5 @@
 import 'package:neostore/base/Base_use_case.dart';
-import 'package:neostore/data/web_service/repository/loginRepository/login_repository.dart';
+import 'package:neostore/data/web_service/repository/login_repository/login_repository.dart';
 
 class LoginUseCase extends BaseUseCase<dynamic> {
   late LoginRepository _loginRepository;
@@ -10,8 +10,6 @@ class LoginUseCase extends BaseUseCase<dynamic> {
 
   @override
   Future callApi([loginRequest, context]) {
-    return _loginRepository.getLoginRepository(loginRequest, context).then(
-          (value) => print("case=>$value"),
-        );
+    return _loginRepository.getLoginRepository(loginRequest, context);
   }
 }

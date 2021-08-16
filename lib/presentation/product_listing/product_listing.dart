@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
 
@@ -14,7 +15,9 @@ class ProductListing extends BaseClass {
 class _ProductListing extends BaseClassState {
   @override
   getAppBar() {
-    return null;
+    return NeoStoreAppBar(
+      text: 'Tables',
+    );
   }
 
   @override
