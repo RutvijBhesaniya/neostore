@@ -98,7 +98,6 @@ class APIHandler {
 
       switch (methodType!) {
         case MethodType.POST:
-
           response = await dio
               .post(
                 url!,

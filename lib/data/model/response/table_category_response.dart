@@ -1,12 +1,12 @@
 // To parse this JSON data, do
 //
-//     final TableCategoryResponse = TableCategoryResponseFromJson(jsonString);
+//     final tableCategory = tableCategoryFromJson(jsonString);
 
 import 'dart:convert';
 
-TableCategoryResponse TableCategoryResponseFromJson(String str) => TableCategoryResponse.fromJson(json.decode(str));
+TableCategoryResponse tableCategoryFromJson(String str) => TableCategoryResponse.fromJson(json.decode(str));
 
-String TableCategoryResponseToJson(TableCategoryResponse data) => json.encode(data.toJson());
+String tableCategoryToJson(TableCategoryResponse data) => json.encode(data.toJson());
 
 class TableCategoryResponse {
   TableCategoryResponse({

@@ -1,6 +1,11 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/login_request.dart';
+import 'package:neostore/data/model/response/login_response.dart';
+import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/register/register_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -198,10 +203,25 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     );
   }
 
-  void loginUser( BuildContext context) async {
-    LoginRequest loginRequest =LoginRequest();
-    loginRequest.email =_emailcontroller.text;
+  void loginUser(BuildContext context) async {
+    LoginRequest loginRequest = LoginRequest();
+    loginRequest.email = _emailcontroller.text;
     loginRequest.password = _passwordController.text;
-    _loginScreenProvider.getLogin(loginRequest, context);
+    var response =
+        await _loginScreenProvider.getLogin(loginRequest, context);
+
+      LoginResponse loginResponse = LoginResponse.fromJson(
+        json.decode(response),
+      );
+    if (loginResponse.status == 200) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => HomeScreen(),
+        ),
+      );
+    }
+    else{
+      'Plesae register';
+    }
   }
 }

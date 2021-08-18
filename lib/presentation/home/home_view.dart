@@ -5,7 +5,7 @@ import 'package:neostore/data/widget/carousel_slider.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/data/widget/neostore_title_with_icons.dart';
 import 'package:neostore/presentation/home/drawer_viewmodel.dart';
-import 'package:neostore/presentation/product_listing/product_listing.dart';
+import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -280,7 +280,7 @@ class _HomeScreen extends BaseClassState {
                             onTap: () {
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => ProductListing(),
+                                  builder: (context) => TableCategoryView(),
                                 ),
                               );
                             },

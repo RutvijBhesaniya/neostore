@@ -5,6 +5,8 @@ import 'package:neostore/presentation/home/home_viewmodel.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
+import 'package:neostore/presentation/table_category/table_category_view.dart';
+import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:provider/provider.dart';
 
@@ -25,7 +27,11 @@ void main() {
         ),
         ChangeNotifierProvider<DrawerProvider>(
           create: (context) => DrawerProvider(),
-        )
+        ),
+        ChangeNotifierProvider<TableCategoryProvider>(
+          create: (context) => TableCategoryProvider(),
+        ),
+
       ],
       child: NeoStore(),
     ),

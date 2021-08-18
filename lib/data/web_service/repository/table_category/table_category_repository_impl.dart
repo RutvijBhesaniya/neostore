@@ -4,14 +4,14 @@ import 'package:neostore/data/web_service/api_impl/table_category_api/table_cate
 import 'package:neostore/data/web_service/repository/table_category/table_category_repository.dart';
 
 class TableCategoryRepositoryImpl extends TableCategoryRepository {
-  late TableCategoryApi _tableCategoryApi;
+ late TableCategoryApi _tableCategoryApi;
 
-  TableCategoryRepositoryImpl(this._tableCategoryApi);
+  TableCategoryRepositoryImpl(TableCategoryApi _tableCategoryApi) {
+    this._tableCategoryApi = _tableCategoryApi;
+  }
 
   @override
-  Future getTableCategoryRepository(
-      TableCategoryResponse tableCategoryResponse, BuildContext context) {
-    return _tableCategoryApi.getTableCategoryApi(tableCategoryResponse, context);
-
+  Future getTableCategoryRepository(int productCategoryId) {
+    return _tableCategoryApi.getTableCategoryApi(productCategoryId);
   }
 }

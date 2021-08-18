@@ -4,14 +4,13 @@ import 'package:neostore/data/web_service/repository/table_category/table_catego
 class TableCategoryUseCase extends BaseUseCase<dynamic> {
   late TableCategoryRepository _tableCategoryRepository;
 
-  TableCategoryUseCase(this._tableCategoryRepository);
+  TableCategoryUseCase(TableCategoryRepository tableCategoryRepository) {
+    this._tableCategoryRepository = tableCategoryRepository;
+  }
 
   @override
-  Future callApi([tableCategoryResponse, context]) {
-    return _tableCategoryRepository
-        .getTableCategoryRepository(tableCategoryResponse, context)
-        .then(
-          (value) => print("tableCategory=>$value"),
-        );
+  Future callApi([productCategoryId]) {
+    print("got product category id: " + productCategoryId.toString());
+    return _tableCategoryRepository.getTableCategoryRepository(productCategoryId);
   }
 }
