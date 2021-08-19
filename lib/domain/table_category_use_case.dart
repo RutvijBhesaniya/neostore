@@ -1,5 +1,5 @@
 import 'package:neostore/base/Base_use_case.dart';
-import 'package:neostore/data/web_service/repository/table_category/table_category_repository.dart';
+import 'package:neostore/data/web_service/repository/table_category_repository/table_category_repository.dart';
 
 class TableCategoryUseCase extends BaseUseCase<dynamic> {
   late TableCategoryRepository _tableCategoryRepository;

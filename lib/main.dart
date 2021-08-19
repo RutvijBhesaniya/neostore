@@ -4,6 +4,8 @@ import 'package:neostore/presentation/home/drawer_viewmodel.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
+import 'package:neostore/presentation/product_detailed/table_detail_view.dart';
+import 'package:neostore/presentation/product_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
@@ -31,6 +33,9 @@ void main() {
         ChangeNotifierProvider<TableCategoryProvider>(
           create: (context) => TableCategoryProvider(),
         ),
+        ChangeNotifierProvider<TableDetailProvider>(
+          create: (context) => TableDetailProvider(),
+        ),
 
       ],
       child: NeoStore(),
@@ -47,7 +52,7 @@ class NeoStore extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginScreen(),
+      home: TableCategoryView(),
     );
   }
 }

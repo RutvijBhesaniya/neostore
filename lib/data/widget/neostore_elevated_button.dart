@@ -22,6 +22,7 @@ class NeoStoreElevatedButton extends StatelessWidget {
         ),
       ),
       style: buttonStyle,
+
     );
   }
 }
