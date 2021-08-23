@@ -11,12 +11,14 @@ class TableDetailApiImpl extends TableDetailApi {
     Completer<dynamic> completer = new Completer<dynamic>();
     // FormData formData = new FormData.fromMap(tableCategoryResponse.toJson());
 
+    print("sssss=>${"${APIs.tableDetail}?product_id=$productId"}");
     var response = await APIHandler.get(
-      url: "${APIs.tableDetail}",
-      requestBody: {"product_id ": productId},
+      url: "${APIs.tableDetail}?product_id=$productId",
+      // requestBody: {"product_id ": productId},
       // context: context,
     );
-    print('gotResponse=>${response.runtimeType}');
+
+    print('gotResponseee=>${response.runtimeType}');
     if (response is APIError) {
       completer.complete(response);
       return completer.future;

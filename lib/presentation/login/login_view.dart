@@ -214,6 +214,8 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
         json.decode(response),
       );
     if (loginResponse.status == 200) {
+
+      //
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomeScreen(),

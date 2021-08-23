@@ -25,6 +25,11 @@ class ConstantStrings {
   static const country ='COUNTRY';
   static const zipcode ='ZIP CODE';
   static const addAddress ='Add Address';
+  static const rate ='RATE';
+  static const buyNow ='BUY NOW';
+  static const description ='Description';
+  static const rateNow ='RATE NOW';
+
 
   ///drawer menu
   static const myCart ='My Cart';

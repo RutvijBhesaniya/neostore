@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/register_request.dart';
+import 'package:neostore/data/model/response/register_response.dart';
 import 'package:neostore/data/widget/radio_button.dart';
+import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
@@ -35,6 +37,7 @@ class _RegisterScreenState extends BaseClassState
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
+
   // TextEditingController _genderController = new TextEditingController();
   TextEditingController _confirmPasswordController =
       new TextEditingController();
@@ -148,7 +151,6 @@ class _RegisterScreenState extends BaseClassState
             },
           ),
         )
-
       ],
     );
   }
@@ -373,7 +375,7 @@ class _RegisterScreenState extends BaseClassState
     );
   }
 
-  void registerUser(BuildContext context) {
+  void registerUser(BuildContext context) async{
     RegisterRequest registerRequest = RegisterRequest();
     registerRequest.firstName = _firstNameController.text;
     registerRequest.password = _passwordController.text;
@@ -384,8 +386,20 @@ class _RegisterScreenState extends BaseClassState
     registerRequest.gender =
         _changeColorModel.currentValue == GenderTypes.Male ? 'Male' : 'Female';
 
-    _registerScreenProvider.getRegisterUser(registerRequest, context);
-  }
+    // _registerScreenProvider.getRegisterUser(registerRequest, context);
 
-  void saveMessage(RegisterRequest registerRequest) async {}
+    var response =
+        await _registerScreenProvider.getRegisterUser(registerRequest, context);
+
+    RegisterResponse registerResponse = RegisterResponse.fromJson(response);
+
+    if(registerResponse.status == 200){
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => LoginScreen()),
+      );
+    }else{
+      'Please Register';
+    }
+  }
 }

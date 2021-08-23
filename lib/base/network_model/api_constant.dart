@@ -21,6 +21,7 @@ class APIs {
 
   ///details category api
   static const String tableDetail = "$baseUrl/products/getDetail";
+  static const String ratingBar ="$baseUrl/products/setRating";
 
   static late BuildContext context;
 }

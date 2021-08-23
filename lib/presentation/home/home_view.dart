@@ -21,22 +21,24 @@ class _HomeScreen extends BaseClassState {
   late DrawerProvider _drawerProvider;
   Duration duration = const Duration(microseconds: 300);
 
-  late Size? size = ScreenUtil().uiSize;
+  late Size size = MediaQuery.of(context).size;
   // Size size = MediaQuery.
-  late double? screenHeight = size!.height;
-  late double? screenWidth = size!.width;
+  late double? screenHeight = size.height;
+  late double? screenWidth = size.width;
 
   @override
   Widget getBody() {
     _drawerProvider = Provider.of<DrawerProvider>(context);
 
-    return Container(
-      color: ColorStyles.dark_grey,
-      child: Stack(
-        children: [
-          menu(context),
-          dashboard(context),
-        ],
+    return Scaffold(
+      body: Container(
+        color: ColorStyles.dark_grey,
+        child: Stack(
+          children: [
+            menu(context),
+            dashboard(context),
+          ],
+        ),
       ),
     );
   }
