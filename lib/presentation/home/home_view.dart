@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/widget/carousel_slider.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/data/widget/neostore_title_with_icons.dart';
 import 'package:neostore/presentation/home/drawer_viewmodel.dart';
+import 'package:neostore/presentation/my_account/my_account.dart';
+import 'package:neostore/presentation/store_locator/store_locator_view.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
@@ -22,6 +23,7 @@ class _HomeScreen extends BaseClassState {
   Duration duration = const Duration(microseconds: 300);
 
   late Size size = MediaQuery.of(context).size;
+
   // Size size = MediaQuery.
   late double? screenHeight = size.height;
   late double? screenWidth = size.width;
@@ -151,11 +153,19 @@ class _HomeScreen extends BaseClassState {
                         color: ColorStyles.black,
                       ),
                     ),
-                    NeoStoreTitleWithIcons(
-                      image: ('assets/images/username_icon.png'),
-                      text: ConstantStrings.myAccount,
-                      style: TextStyles.titleHeadline!.copyWith(
-                        color: ColorStyles.white,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => MyAccount()),
+                        );
+                      },
+                      child: NeoStoreTitleWithIcons(
+                        image: ('assets/images/username_icon.png'),
+                        text: ConstantStrings.myAccount,
+                        style: TextStyles.titleHeadline!.copyWith(
+                          color: ColorStyles.white,
+                        ),
                       ),
                     ),
                     Padding(
@@ -164,11 +174,21 @@ class _HomeScreen extends BaseClassState {
                         color: ColorStyles.black,
                       ),
                     ),
-                    NeoStoreTitleWithIcons(
-                      image: ('assets/images/store_locator_icon.png'),
-                      text: ConstantStrings.storeLocator,
-                      style: TextStyles.titleHeadline!.copyWith(
-                        color: ColorStyles.white,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => StoreLocator(),
+                          ),
+                        );
+                      },
+                      child: NeoStoreTitleWithIcons(
+                        image: ('assets/images/store_locator_icon.png'),
+                        text: ConstantStrings.storeLocator,
+                        style: TextStyles.titleHeadline!.copyWith(
+                          color: ColorStyles.white,
+                        ),
                       ),
                     ),
                     Padding(

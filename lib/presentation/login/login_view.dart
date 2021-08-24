@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/login_request.dart';
@@ -13,6 +11,7 @@ import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
+import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -30,12 +29,19 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late LoginScreenProvider _loginScreenProvider;
+  //
+  // @override
+  // void initState() {
+  //   MemoryManagement.saveUserInfo();
+  //   print("shared${MemoryManagement.saveUserInfo()}");
+  //   super.initState();
+  // }
 
   @override
   Widget getBody() {
     _loginScreenProvider = Provider.of<LoginScreenProvider>(context);
     return Container(
-      height: double.infinity,
+      height: MediaQuery.of(context).size.height,
       width: double.infinity,
       decoration: _backgroundImage(),
       child: Stack(
@@ -113,11 +119,14 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   Widget _forgotPassword() {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: NeoStoreTitle(
-        // text: ConstantStrings.welCome,
-        text: ConstantStrings.forgotPassword,
-        style: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
+      child: GestureDetector(
+        onTap: (){},
+        child: NeoStoreTitle(
+          // text: ConstantStrings.welCome,
+          text: ConstantStrings.forgotPassword,
+          style: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+          ),
         ),
       ),
     );
@@ -207,22 +216,22 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     LoginRequest loginRequest = LoginRequest();
     loginRequest.email = _emailcontroller.text;
     loginRequest.password = _passwordController.text;
-    var response =
-        await _loginScreenProvider.getLogin(loginRequest, context);
+    var response = await _loginScreenProvider.getLogin(loginRequest, context);
 
-      LoginResponse loginResponse = LoginResponse.fromJson(
-        json.decode(response),
-      );
+    LoginResponse loginResponse = LoginResponse.fromJson(
+      json.decode(response),
+    );
     if (loginResponse.status == 200) {
+      MemoryManagement.setEmail(email: _emailcontroller.text);
+      MemoryManagement.setAccessToken(
+          accessToken: loginResponse.data!.accessToken);
 
-      //
       Navigator.of(context).push(
         MaterialPageRoute(
           builder: (context) => HomeScreen(),
         ),
       );
-    }
-    else{
+    } else {
       'Plesae register';
     }
   }

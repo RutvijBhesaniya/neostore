@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
-import 'package:neostore/presentation/reset_password/reset_password_view.dart';
-import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
+import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
-import 'package:provider/provider.dart';
 
-class MyAccount extends BaseClass {
+class EditProfileView extends BaseClass {
   @override
   BaseClassState getState() {
-    return MyAccountState();
+    return EditProfileViewState();
   }
 }
 
-class MyAccountState extends BaseClassState {
-  late MyAccountProvider _myAccountProvider =
-      Provider.of<MyAccountProvider>(context);
-
+class EditProfileViewState extends BaseClassState {
   @override
   getAppBar() {
     return _appBar();
+  }
+
+  ///appbar widget
+  NeoStoreAppBar _appBar() {
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.purple,
+      leading: Icon(
+        Icons.arrow_back_ios,
+        color: ColorStyles.white,
+        size: 20,
+      ),
+      text: ConstantStrings.editProfile,
+      style: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+      ),
+    );
   }
 
   @override
@@ -51,7 +61,7 @@ class MyAccountState extends BaseClassState {
                 ),
 
                 ///widget first name
-                _firstName(_myAccountProvider.myAccountResponse),
+                _firstName(),
 
                 ///widget last name
                 _lastName(),
@@ -72,36 +82,6 @@ class MyAccountState extends BaseClassState {
           ),
         ),
       ),
-      bottomNavigationBar: NeoStoreElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResetPassword(),
-            ),
-          );
-        },
-        text: 'RESET PASSWORD',
-        textStyle: TextStyles.titleHeadline!.copyWith(
-            fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
-        buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
-      ),
-    );
-  }
-
-  ///widget app bar
-  NeoStoreAppBar _appBar() {
-    return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
-      ),
-      text: ConstantStrings.myAccount,
-      style: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
-      ),
     );
   }
 
@@ -111,7 +91,7 @@ class MyAccountState extends BaseClassState {
         width: MediaQuery.of(context).size.width,
         margin: EdgeInsets.only(top: 20, bottom: 30),
         child: NeoStoreElevatedButton(
-          text: ConstantStrings.editProfile,
+          text: ConstantStrings.submit,
           textStyle: TextStyles.titleHeadline!
               .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
           buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
@@ -184,9 +164,9 @@ class MyAccountState extends BaseClassState {
   }
 
   ///widget first name
-  Widget _firstName(myAccountResponse) {
+  Widget _firstName() {
     return NeoStoreTextFormField(
-      hintText: myAccountResponse,
+      hintText: 'Sagar',
       hintStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),

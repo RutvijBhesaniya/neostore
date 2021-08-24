@@ -61,8 +61,8 @@ class _ResetPasswordState extends BaseClassState
   @override
   Widget getBody() {
     return Container(
-      width: double.infinity,
-      height: double.infinity,
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
       decoration: _backgroundImage(),
       child: SingleChildScrollView(
         child: Container(
@@ -195,9 +195,8 @@ class _ResetPasswordState extends BaseClassState
     return Container(
       child: NeoStoreTitle(
         text: ConstantStrings.neoStore,
-        style: TextStyles.largeHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        style: TextStyles.largeHeadline!
+            .copyWith(color: ColorStyles.white, fontFamily: 'Gotham'),
       ),
     );
   }

@@ -29,6 +29,7 @@ class ConstantStrings {
   static const buyNow ='BUY NOW';
   static const description ='Description';
   static const rateNow ='RATE NOW';
+  static const submit ='SUBMIT';
 
 
   ///drawer menu

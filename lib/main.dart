@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/data/widget/radio_button.dart';
+import 'package:neostore/presentation/edit_profile/edit_profile_view.dart';
 import 'package:neostore/presentation/home/drawer_viewmodel.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
+import 'package:neostore/presentation/my_account/my_account.dart';
 import 'package:neostore/presentation/product_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
+import 'package:neostore/presentation/reset_password/reset_password_view.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  await MemoryManagement.init();
   WidgetsFlutterBinding.ensureInitialized();
+  await MemoryManagement.init();
+
   var isUserLoggedIn = MemoryManagement.getIsUserLoggedIn() ?? false;
 
   runApp(
@@ -41,7 +45,7 @@ void main() async {
           create: (context) => RatingProvider(),
         ),
       ],
-      child: NeoStore(isUserLoggedIn),
+      child: NeoStore(isUserLoggedIn: isUserLoggedIn),
     ),
   );
 }
@@ -49,10 +53,12 @@ void main() async {
 class NeoStore extends StatefulWidget {
   final bool? isUserLoggedIn;
 
+  NeoStore({this.isUserLoggedIn});
+
+
   @override
   _NeoStoreState createState() => _NeoStoreState(isUserLoggedIn);
 
-  NeoStore(this.isUserLoggedIn);
 }
 
 class _NeoStoreState extends State<NeoStore> {
@@ -67,8 +73,10 @@ class _NeoStoreState extends State<NeoStore> {
       title: ConstantStrings.neoStore,
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        fontFamily: 'Gotham'
       ),
-      home: (isUserLoggedIn! ? HomeScreen() : LoginScreen()),
+      home: ResetPassword(),
+      // home: (isUserLoggedIn!) ? LoginScreen() : MyAccount(),
     );
   }
 }

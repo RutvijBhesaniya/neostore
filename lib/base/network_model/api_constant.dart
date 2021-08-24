@@ -11,10 +11,10 @@ class APIs {
   static const String register = "$baseUrl/users/register";
 
   static const String login = "$baseUrl/users/login";
-  static const String forgot = "$baseUrl/forgot";
+  static const String forgot = "$baseUrl/users/forgot";
   static const String change = "$baseUrl/change";
   static const String update = "$baseUrl/update";
-  static const String getUserData = "$baseUrl/getUserData";
+  static const String fetchAccountDetail = "$baseUrl/users/getUserData";
 
   ///category api
   static const String tableCategory = "$baseUrl/products/getList";

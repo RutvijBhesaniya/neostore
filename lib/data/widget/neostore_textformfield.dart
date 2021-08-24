@@ -13,8 +13,9 @@ class NeoStoreTextFormField extends StatelessWidget {
     this.textStyle,
     this.errorStyle,
     this.maxLine,
-    this.fillColor
+    this.fillColor,
   });
+
 
   final String? hintText;
   final validation;
