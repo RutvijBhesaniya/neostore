@@ -1,4 +1,3 @@
-import 'package:neostore/data/web_service/api_impl/table_category_api/table_category_api.dart';
 import 'package:neostore/data/web_service/api_impl/table_detail_api/table_detail_api.dart';
 import 'package:neostore/data/web_service/repository/table_detail_repository/table_detail_repository.dart';
 

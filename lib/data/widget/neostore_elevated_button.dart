@@ -15,7 +15,7 @@ class NeoStoreElevatedButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20),
+        padding: const EdgeInsets.symmetric(vertical: 10),
         child: Text(
           text!,
           style: textStyle,

@@ -45,7 +45,7 @@ class RatingProvider extends ChangeNotifier {
   void getRating(int productid) async {
     _isLoading = true;
     var response = await _ratingUseCase.callApi(productid);
-    print("abcdef=>${response}");
+    print("abcdef=>$response");
 
     _ratingResponse = RatingResponse.fromJson(jsonDecode(response));
     _isLoading = false;

@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/model/response/edit_profile_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
+import 'package:provider/provider.dart';
 
 class EditProfileView extends BaseClass {
   @override
@@ -14,6 +17,9 @@ class EditProfileView extends BaseClass {
 }
 
 class EditProfileViewState extends BaseClassState {
+  late EditProfileProvider _editProfileProvider =
+      Provider.of<EditProfileProvider>(context);
+
   @override
   getAppBar() {
     return _appBar();
@@ -37,52 +43,53 @@ class EditProfileViewState extends BaseClassState {
 
   @override
   Widget getBody() {
-    return Scaffold(
-      body: Container(
-        ///widget background image
-        decoration: _backgroundImage(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 20,
-                    ),
-                    child: CircleAvatar(
-                      backgroundColor: ColorStyles.blue,
-                      radius: 100,
+    return
+      Scaffold(
+        body: Container(
+          ///widget background image
+          decoration: _backgroundImage(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        top: 20,
+                        bottom: 20,
+                      ),
+                      child: CircleAvatar(
+                        backgroundColor: ColorStyles.blue,
+                        radius: 100,
+                      ),
                     ),
                   ),
-                ),
 
-                ///widget first name
-                _firstName(),
+                  ///widget first name
+                  _firstName(),
 
-                ///widget last name
-                _lastName(),
+                  ///widget last name
+                  _lastName(),
 
-                ///widget email
-                _email(),
+                  ///widget email
+                  _email(),
 
-                ///widget phone number
-                _phoneNumber(),
+                  ///widget phone number
+                  _phoneNumber(),
 
-                ///widget date of birth
-                _dateOfBirth(),
+                  ///widget date of birth
+                  _dateOfBirth(),
 
-                ///widget edit profile button
-                _editProfileButton(context),
-              ],
+                  ///widget edit profile button
+                  _editProfileButton(context),
+                ],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
   }
 
   ///widget edit profile button
@@ -103,7 +110,7 @@ class EditProfileViewState extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: NeoStoreTextFormField(
-        hintText: '01-11-1998',
+        hintText: 'DOB',
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -154,7 +161,7 @@ class EditProfileViewState extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
-        hintText: 'Shinde',
+        hintText: 'Last Name',
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -166,7 +173,7 @@ class EditProfileViewState extends BaseClassState {
   ///widget first name
   Widget _firstName() {
     return NeoStoreTextFormField(
-      hintText: 'Sagar',
+      hintText: 'First Name',
       hintStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),

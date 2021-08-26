@@ -35,7 +35,7 @@ class Data {
       this.totalOrders});
 
   Data.fromJson(dynamic json) {
-    userData = json['user_data'] != null ? User_data.fromJson(json['userData']) : null;
+    userData = json['user_data'] != null ? User_data.fromJson(json['user_data']) : null;
     if (json['product_categories'] != null) {
       productCategories = [];
       json['product_categories'].forEach((v) {
@@ -102,11 +102,11 @@ class User_data {
   String? lastName;
   String? email;
   String? username;
-  dynamic? profilePic;
-  dynamic? countryId;
+  dynamic profilePic;
+  dynamic countryId;
   String? gender;
   String? phoneNo;
-  dynamic? dob;
+  dynamic dob;
   bool? isActive;
   String? created;
   String? modified;

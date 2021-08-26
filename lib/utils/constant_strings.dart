@@ -30,6 +30,7 @@ class ConstantStrings {
   static const description ='Description';
   static const rateNow ='RATE NOW';
   static const submit ='SUBMIT';
+  static const saveAddress ='SAVE ADDRESS';
 
 
   ///drawer menu

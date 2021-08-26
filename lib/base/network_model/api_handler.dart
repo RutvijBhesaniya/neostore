@@ -107,14 +107,14 @@ class APIHandler {
                 data: requestBody,
               )
               .timeout(timeoutDuration);
-          print("apihit=>${response}");
+          print("apihit=>$response");
 
           break;
         case MethodType.GET:
           response = await dio
               .get(url!,
                   options: Options(
-                    headers: headers,
+                    headers: additionalHeaders,
                   ),
                   queryParameters: requestBody)
               .timeout(timeoutDuration);

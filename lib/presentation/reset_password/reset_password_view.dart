@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/presentation/home/home_view.dart';
+import 'package:neostore/presentation/login/login_view.dart';
+import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
+import 'package:provider/provider.dart';
 
 class ResetPassword extends BaseClass {
   const ResetPassword({Key? key}) : super(key: key);
@@ -21,6 +23,8 @@ class ResetPassword extends BaseClass {
 class _ResetPasswordState extends BaseClassState
     with NeoStoreConstantValidation {
   final _formKey = GlobalKey<FormState>();
+  late ResetPasswordProvider _resetPasswordProvider =
+      Provider.of<ResetPasswordProvider>(context);
   TextEditingController newPasswordController = new TextEditingController();
   TextEditingController confirmPasswordController = new TextEditingController();
   TextEditingController currentPasswordController = new TextEditingController();
@@ -105,7 +109,7 @@ class _ResetPasswordState extends BaseClassState
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => HomeScreen(),
+                builder: (context) => LoginScreen(),
               ),
             );
           }
@@ -196,7 +200,7 @@ class _ResetPasswordState extends BaseClassState
       child: NeoStoreTitle(
         text: ConstantStrings.neoStore,
         style: TextStyles.largeHeadline!
-            .copyWith(color: ColorStyles.white, fontFamily: 'Gotham'),
+            .copyWith(color: ColorStyles.white),
       ),
     );
   }

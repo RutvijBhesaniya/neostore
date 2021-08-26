@@ -12,9 +12,14 @@ class APIs {
 
   static const String login = "$baseUrl/users/login";
   static const String forgot = "$baseUrl/users/forgot";
-  static const String change = "$baseUrl/change";
-  static const String update = "$baseUrl/update";
+  static const String reset = "$baseUrl/users/change";
+  static const String updateProfile = "$baseUrl/users/update";
   static const String fetchAccountDetail = "$baseUrl/users/getUserData";
+  static const String addToCart = "$baseUrl/addToCart";
+  static const String editCart ="$baseUrl/editCart";
+  static const String deleteCart ="$baseUrl/deleteCart";
+
+
 
   ///category api
   static const String tableCategory = "$baseUrl/products/getList";

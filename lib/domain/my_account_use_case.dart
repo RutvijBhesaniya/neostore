@@ -9,7 +9,7 @@ class MyAccountUseCase extends BaseUseCase{
   }
 
   @override
-  Future callApi([myAccountResponse,context]) {
-    return _myAccountRepository.getMyAccountRepository(myAccountResponse, context);
+  Future callApi() {
+    return _myAccountRepository.getMyAccountRepository();
   }
 }

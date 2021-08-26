@@ -24,7 +24,7 @@ class AddAddressState extends BaseClassState {
   @override
   Widget getBody() {
     return Container(
-      color: ColorStyles.dark_grey,
+      color: ColorStyles.light_grey,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: SingleChildScrollView(
@@ -38,7 +38,6 @@ class AddAddressState extends BaseClassState {
                   text: ConstantStrings.address,
                   style: TextStyles.titleHeadline!.copyWith(
                     color: ColorStyles.black,
-
                   ),
                 ),
               ),
@@ -192,9 +191,12 @@ class AddAddressState extends BaseClassState {
               ),
               Container(
                 width: MediaQuery.of(context).size.width,
-                margin: EdgeInsets.only(top: 20, bottom: 30),
+                margin: EdgeInsets.only(
+                  top: 20,
+                  bottom: 30,
+                ),
                 child: NeoStoreElevatedButton(
-                  text: ConstantStrings.editProfile,
+                  text: ConstantStrings.saveAddress,
                   textStyle: TextStyles.titleHeadline!.copyWith(
                     fontWeight: FontWeight.bold,
                     color: ColorStyles.white,
@@ -211,7 +213,7 @@ class AddAddressState extends BaseClassState {
   }
 
   ///widget app bar
-   _appBar() {
+  _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.purple,
       leading: Icon(

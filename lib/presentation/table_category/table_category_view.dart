@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/table_category_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
@@ -48,13 +47,13 @@ class _TableCategoryView extends BaseClassState {
       physics: ScrollPhysics(),
       itemCount: tableCategoryResponse!.data!.length,
       itemBuilder: (context, index) {
-        return listItem(tableCategoryResponse, index);
+        return listItemDetail(tableCategoryResponse, index);
       },
     );
   }
 
   ///list item
-  Widget listItem(TableCategoryResponse? tableCategoryResponse, index) {
+  Widget listItemDetail(TableCategoryResponse? tableCategoryResponse, index) {
     return GestureDetector(
       onTap: () {
         Navigator.push(

@@ -2,12 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/request/rating_request.dart';
 import 'package:neostore/data/model/response/rating_response.dart';
 import 'package:neostore/data/model/response/table_detail_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
+import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
+import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/product_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
@@ -77,7 +78,7 @@ class _TableProductDetailedState extends BaseClassState {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ///but now button widget
-              _buyNowButton(),
+              _buyNowButton(_tableDetailProvider.tableDetailResponse),
               SizedBox(
                 width: 10,
               ),
@@ -172,11 +173,104 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///but now button widget
-  Widget _buyNowButton() {
+  Widget _buyNowButton(TableDetailResponse? tableDetailResponse) {
     return Flexible(
       child: Container(
         width: MediaQuery.of(context).size.width / 2,
         child: NeoStoreElevatedButton(
+          onPressed: () {
+            {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    content: Container(
+                      height: MediaQuery.of(context).size.height / 1.5,
+                      child: Column(
+                        children: [
+                          NeoStoreTitle(
+                            text: tableDetailResponse!.data!.name,
+                            style: TextStyles.titlelabel!.copyWith(
+                              color: ColorStyles.black,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 18),
+                            child: Container(
+                              height: MediaQuery.of(context).size.height / 2.9,
+                              width: 350,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: NetworkImage(
+                                    tableDetailResponse
+                                        .data!.productImages!.first.image
+                                        .toString(),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+
+                          ///enter qty title
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Center(
+                                child: NeoStoreTitle(
+                                  text: 'Enter Qty',
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: Center(
+                              child: NeoStoreTextFormField(
+                                hintText: 'qty',
+                              ),
+                            ),
+                          ),
+
+                          ///submit button
+                          Flexible(
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: MediaQuery.of(context).size.height / 2,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 5),
+                                child: NeoStoreElevatedButton(
+                                  text: ConstantStrings.submit,
+                                  textStyle: TextStyles.titlelabel!.copyWith(
+                                    color: ColorStyles.white,
+                                  ),
+                                  buttonStyle: TextButton.styleFrom(
+                                    backgroundColor: ColorStyles.red,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MyCartView(
+                                            _tableDetailProvider
+                                                .tableDetailResponse,
+                                            1),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              );
+            }
+          },
           buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.red),
           text: ConstantStrings.buyNow,
           textStyle: TextStyles.titlelabel!.copyWith(
@@ -383,14 +477,14 @@ class _TableProductDetailedState extends BaseClassState {
     Future.delayed(Duration(milliseconds: 300), () {
       _tableDetailProvider.getTableDetail(productId);
       _ratingProvider.getRating(productId);
-      print("fetchtabledetail =>${productId}");
+      print("fetchtabledetail =>$productId");
     });
   }
 
   @override
   void initState() {
     super.initState();
-    print("got pproduct id=> ${tableProductDetailed}");
+    print("got pproduct id=> $tableProductDetailed");
 
     fetchTableDetail(tableProductDetailed);
   }

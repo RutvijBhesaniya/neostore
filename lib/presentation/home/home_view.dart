@@ -34,6 +34,7 @@ class _HomeScreen extends BaseClassState {
 
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
         color: ColorStyles.dark_grey,
         child: Stack(
           children: [

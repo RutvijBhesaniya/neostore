@@ -9,8 +9,8 @@ class ForgotUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([forgotPasswordResponse, context]) {
+  Future callApi([email]) {
     return _forgotPasswordRepository.getForgotPasswordRepository(
-        forgotPasswordResponse, context);
+        email);
   }
 }

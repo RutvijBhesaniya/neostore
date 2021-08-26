@@ -37,11 +37,11 @@ class Data {
   String? lastName;
   String? email;
   String? username;
-  dynamic? profilePic;
-  dynamic? countryId;
+  dynamic profilePic;
+  dynamic countryId;
   String? gender;
   String? phoneNo;
-  dynamic? dob;
+  dynamic dob;
   bool? isActive;
   String? created;
   String? modified;

@@ -1,7 +1,4 @@
 import 'dart:async';
-
-import 'package:dio/dio.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:neostore/base/network_model/api_constant.dart';
 import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/base/network_model/api_handler.dart';

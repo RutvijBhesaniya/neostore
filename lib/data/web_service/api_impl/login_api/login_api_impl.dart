@@ -19,7 +19,7 @@ class LoginApiImpl implements LoginApi {
       requestBody: formData,
       context: context,
     );
-    print('gotResponseinLoginApiImpl=>${response}');
+    print('gotResponseinLoginApiImpl=>$response');
     if (response is APIError) {
       completer.complete(response);
       return completer.future;

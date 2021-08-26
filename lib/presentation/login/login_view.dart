@@ -29,7 +29,9 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late LoginScreenProvider _loginScreenProvider;
-  //
+  late ForgotProvider _forgotProvider = Provider.of<ForgotProvider>(context,listen: false);
+
+
   // @override
   // void initState() {
   //   MemoryManagement.saveUserInfo();
@@ -120,7 +122,9 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: GestureDetector(
-        onTap: (){},
+        onTap: () {
+          _forgotProvider.getForgotPassword(_emailcontroller.text);
+        },
         child: NeoStoreTitle(
           // text: ConstantStrings.welCome,
           text: ConstantStrings.forgotPassword,
@@ -225,6 +229,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       MemoryManagement.setEmail(email: _emailcontroller.text);
       MemoryManagement.setAccessToken(
           accessToken: loginResponse.data!.accessToken);
+      MemoryManagement.setIsUserLoggedIn(isuserloggedin: true);
 
       Navigator.of(context).push(
         MaterialPageRoute(
@@ -235,4 +240,6 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       'Plesae register';
     }
   }
+
+
 }
