@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/register_request.dart';
@@ -375,7 +377,7 @@ class _RegisterScreenState extends BaseClassState
     );
   }
 
-  void registerUser(BuildContext context) async{
+  void registerUser(BuildContext context) async {
     RegisterRequest registerRequest = RegisterRequest();
     registerRequest.firstName = _firstNameController.text;
     registerRequest.password = _passwordController.text;
@@ -391,15 +393,20 @@ class _RegisterScreenState extends BaseClassState
     var response =
         await _registerScreenProvider.getRegisterUser(registerRequest, context);
 
-    RegisterResponse registerResponse = RegisterResponse.fromJson(response);
+    RegisterResponse registerResponse = RegisterResponse.fromJson(
+      json.decode(response),
+    );
 
-    if(registerResponse.status == 200){
+    if (registerResponse.status == 200) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(
+          builder: (context) => LoginScreen(),
+        ),
       );
-    }else{
+    } else {
       'Please Register';
+      print(('PleaseRegister'));
     }
   }
 }

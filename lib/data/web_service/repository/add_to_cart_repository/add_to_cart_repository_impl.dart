@@ -9,7 +9,9 @@ class AddToCartRepositoryImpl implements AddToCartRepository {
   }
 
   @override
-  Future getAddToCartRepository(String productId, String quantity) {
+  Future getAddToCartRepository(int productId, int quantity) {
+    print("got product category id: " + productId.toString());
+
     return _addToCartApi.getAddToCartApi(productId, quantity);
   }
 }

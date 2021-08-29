@@ -9,8 +9,8 @@ class ResetPasswordUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([oldPassword, password, confirmPassword]) {
+  Future callApi([ oldPassword, password, confirmPassword]) {
     return _resetPasswordRepository.getResetPasswordRepository(
-        oldPassword, password, confirmPassword);
+         oldPassword, password, confirmPassword);
   }
 }

@@ -1,11 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/model/add_address_model.dart';
+import 'package:neostore/presentation/address_list/address_list_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
+import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 
 class AddAddress extends BaseClass {
@@ -16,9 +21,25 @@ class AddAddress extends BaseClass {
 }
 
 class AddAddressState extends BaseClassState {
+  TextEditingController _addAddressController = new TextEditingController();
+
   @override
   getAppBar() {
-    return _appBar();
+    return AppBar(
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        icon: Icon(Icons.arrow_back),
+      ),
+      title: Text('Add Address'),
+    );
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
   }
 
   @override
@@ -48,6 +69,7 @@ class AddAddressState extends BaseClassState {
                   hintStyle: TextStyles.titleHeadline!.copyWith(
                     color: ColorStyles.black,
                   ),
+                  controller: _addAddressController,
                   maxLine: 4,
                   fillColor: ColorStyles.white,
                 ),
@@ -196,6 +218,45 @@ class AddAddressState extends BaseClassState {
                   bottom: 30,
                 ),
                 child: NeoStoreElevatedButton(
+                  onPressed: () {
+                    if (MemoryManagement.getAddress() != null) {
+                      print(
+                          "address=>${MemoryManagement.getAddress().toString()}");
+                      AddAddressModel addAddressModel =
+                          AddAddressModel.fromJson(
+                        jsonDecode(MemoryManagement.getAddress()!),
+                      );
+                      List<Addresslist> addAddressList = [];
+
+                      addAddressList.addAll(addAddressModel.addresslist!);
+
+                      Addresslist addressmodel = Addresslist();
+                      addressmodel.address = _addAddressController.text;
+                      addAddressList.add(addressmodel);
+
+                      AddAddressModel addaddressmodel =
+                          AddAddressModel(addresslist: addAddressList);
+                      var addressvalue = json.encode(addaddressmodel);
+                      MemoryManagement.setAddress(address: addressvalue);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AddressList(),
+                        ),
+                      );
+                    } else {
+                      print("notaddress");
+                      List<Addresslist> addresslist = <Addresslist>[];
+                      Addresslist addressmodel = Addresslist();
+                      addressmodel.address = _addAddressController.text;
+                      addresslist.add(addressmodel);
+                      AddAddressModel addaddressmodel =
+                          AddAddressModel(addresslist: addresslist);
+                      var addressvalue = json.encode(addaddressmodel);
+                      MemoryManagement.setAddress(address: addressvalue);
+                    }
+                  },
                   text: ConstantStrings.saveAddress,
                   textStyle: TextStyles.titleHeadline!.copyWith(
                     fontWeight: FontWeight.bold,

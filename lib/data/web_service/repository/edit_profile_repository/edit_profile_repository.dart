@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:neostore/data/model/request/edit_profile_request.dart';
+
 abstract class EditProfileRepository {
   Future<dynamic> getEditProfileRepository(
-      String email, String dob, String phoneNumber, String profilePic);
+      EditProfileRequest editProfileRequest, BuildContext context);
 }

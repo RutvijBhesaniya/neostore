@@ -1,3 +1,3 @@
 abstract class DeleteCartRepository {
-  Future<dynamic> getDeleteCartRepository(String productId);
+  Future<dynamic> getDeleteCartRepository(int productId);
 }

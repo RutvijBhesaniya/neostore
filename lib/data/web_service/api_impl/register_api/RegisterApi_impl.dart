@@ -15,7 +15,10 @@ class RegisterApiImpl implements RegisterApi {
     print("request=>,${registerRequest.toJson()}");
     FormData formData = new FormData.fromMap(registerRequest.toJson());
     var response = await APIHandler.post(
-        url: "${APIs.register}", requestBody: formData, context: context);
+      url: "${APIs.register}",
+      requestBody: formData,
+      context: context,
+    );
     if (response is APIError) {
       completer.complete(response);
       return completer.future;

@@ -1,3 +1,3 @@
 abstract class AddToCartApi {
-  Future<dynamic> getAddToCartApi(String productId, String quantity);
+  Future<dynamic> getAddToCartApi(int productId, int quantity);
 }

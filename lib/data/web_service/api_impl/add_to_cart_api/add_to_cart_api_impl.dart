@@ -8,18 +8,26 @@ import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
 class AddToCartApiImpl extends AddToCartApi {
   @override
-  Future getAddToCartApi(String productId, String quantity) async {
+  Future getAddToCartApi(int productId, int quantity) async {
     Map<String, dynamic> map = Map<String, dynamic>();
+    // Map<String, dynamic> mapToken = Map<String, dynamic>();
+    Map<String, String> mapToken = Map<String, String>();
     map.putIfAbsent("product_id", () => productId);
     map.putIfAbsent("quantity", () => quantity);
-    map.putIfAbsent("access_token", () => MemoryManagement.getAccessToken());
+    mapToken.putIfAbsent("access_token", () => MemoryManagement.getAccessToken()!);
     Completer<dynamic> completer = new Completer<dynamic>();
     FormData formData = new FormData.fromMap(map);
+    print("getmap=>${map}");
+    print("getform=>${formData}");
 
     var response = await APIHandler.post(
       url: "${APIs.addToCart}",
       requestBody: formData,
+      additionalHeaders: mapToken
     );
+
+    print('gotCartResponseeeee=>${response.runtimeType}');
+
     if (response is APIError) {
       completer.complete(response);
       return completer.future;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/data/widget/radio_button.dart';
+import 'package:neostore/presentation/address_list/address_list_view_model.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/presentation/home/drawer_viewmodel.dart';
 import 'package:neostore/presentation/home/home_view.dart';
@@ -7,8 +8,12 @@ import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
+import 'package:neostore/presentation/my_order/my_order_viewmodel.dart';
+import 'package:neostore/presentation/order_detail/order_detail_view.dart';
+import 'package:neostore/presentation/order_detail/order_detail_viewmodel.dart';
 import 'package:neostore/presentation/product_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
+import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
@@ -57,8 +62,24 @@ void main() async {
         ChangeNotifierProvider<EditProfileProvider>(
           create: (context) => EditProfileProvider(),
         ),
-
-
+        ChangeNotifierProvider<ResetPasswordProvider>(
+          create: (context) => ResetPasswordProvider(),
+        ),
+        ChangeNotifierProvider<ListCartProvider>(
+          create: (context) => ListCartProvider(),
+        ),
+        ChangeNotifierProvider<MyOrderProvider>(
+          create: (context) => MyOrderProvider(),
+        ),
+        ChangeNotifierProvider<OrderDetailProvider>(
+          create: (context) => OrderDetailProvider(),
+        ),
+        ChangeNotifierProvider<ChangeAddress>(
+          create: (context) => ChangeAddress(),
+        ),
+        ChangeNotifierProvider<AddressListProvider>(
+          create: (context) => AddressListProvider(),
+        ),
       ],
       child: NeoStore(isUserLoggedIn: isUserLoggedIn),
     ),
@@ -70,10 +91,8 @@ class NeoStore extends StatefulWidget {
 
   NeoStore({this.isUserLoggedIn});
 
-
   @override
   _NeoStoreState createState() => _NeoStoreState(isUserLoggedIn);
-
 }
 
 class _NeoStoreState extends State<NeoStore> {
@@ -89,8 +108,8 @@ class _NeoStoreState extends State<NeoStore> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: MyOrderView(),
-      home: (isUserLoggedIn ==false ) ? LoginScreen() : HomeScreen(),
+      // home: OrderDetailView(),
+      home: (isUserLoggedIn == false) ? LoginScreen() : HomeScreen(),
     );
   }
 }

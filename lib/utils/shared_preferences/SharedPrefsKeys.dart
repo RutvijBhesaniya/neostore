@@ -10,6 +10,9 @@ class SharedPrefsKeys {
   static const String PHONE_NUMBER = "phone_number";
   static const String GENDER = "gender";
   static const String PROFILEPIC= "profilepic";
+  static const String DOB= "dob";
   static const String ACCESS_TOKEN ="accesstoken";
+  static const String ADDRESS ="address";
+  static const String LOGOUT ="logout";
 
 }

@@ -10,8 +10,8 @@ class ResetPasswordRepositoryImpl implements ResetPasswordRepository {
 
   @override
   Future getResetPasswordRepository(
-      String oldPassword, String password, String confirmPassword) {
+      String oldPassword,String password,String confirmPassword) {
     return _resetPasswordApi.getResetPasswordApi(
-        oldPassword, password, confirmPassword);
+        oldPassword,password,confirmPassword);
   }
 }

@@ -6,7 +6,7 @@ import 'package:neostore/utils/shared_preferences/SharedPrefsKeys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MemoryManagement {
-   static late SharedPreferences prefs;
+  static late SharedPreferences prefs;
 
   static Future<bool> init() async {
     prefs = await SharedPreferences.getInstance();
@@ -37,15 +37,21 @@ class MemoryManagement {
     prefs.setString(SharedPrefsKeys.FIRST_NAME, firstName!);
   }
 
-   static String? getAccessToken() {
-     return prefs.getString(SharedPrefsKeys.ACCESS_TOKEN);
-   }
+  static String? getAddress() {
+    return prefs.getString(SharedPrefsKeys.ADDRESS);
+  }
 
-   static String? setAccessToken({@required String? accessToken}) {
-     prefs.setString(SharedPrefsKeys.ACCESS_TOKEN, accessToken!);
-   }
+  static String? setAddress({@required String? address}) {
+    prefs.setString(SharedPrefsKeys.ADDRESS, address!);
+  }
 
+  static String? getAccessToken() {
+    return prefs.getString(SharedPrefsKeys.ACCESS_TOKEN);
+  }
 
+  static String? setAccessToken({@required String? accessToken}) {
+    prefs.setString(SharedPrefsKeys.ACCESS_TOKEN, accessToken!);
+  }
 
   static String? getLastName() {
     return prefs.getString(SharedPrefsKeys.LAST_NAME);
@@ -69,6 +75,14 @@ class MemoryManagement {
 
   static String? getPhoneNumber() {
     return prefs.getString(SharedPrefsKeys.PHONE_NUMBER);
+  }
+
+  static String? setDob({@required String? dob}) {
+    prefs.setString(SharedPrefsKeys.DOB, dob!);
+  }
+
+  static String? getDob() {
+    return prefs.getString(SharedPrefsKeys.DOB);
   }
 
   static String? setGender({@required String? gender}) {
@@ -95,54 +109,13 @@ class MemoryManagement {
     return prefs.getString(SharedPrefsKeys.PROFILEPIC);
   }
 
+  static String? setLogout({@required String? logout}) {
+    prefs.setString(SharedPrefsKeys.LOGOUT, logout!);
+    setIsUserLoggedIn(isuserloggedin: false);
+  }
+
   //clear all values from shared preferences
   static void clearMemory() {
     prefs.clear();
-  }
-
-  static Future<void> saveUserInfo() async {
-    final LoginResponse loginResponse = LoginResponse.fromJson({
-      "data": [
-        {
-          "id": 8,
-          "role_id": 2,
-          "first_name": "Kannan",
-          "last_name": "Maravar",
-          "email": "Kannan.Maravar@wwindia.com",
-          "username": "KannanMaravar",
-          "profile_pic": null,
-          "country_id": null,
-          "gender": "M",
-          "phone_no": 77150200100,
-          "dob": null,
-          "is_active": true,
-          "created": "2015-08-21T04:35:46+0000",
-          "modified": "2015-08-21T04:35:46+0000",
-          "access_token": "55d6aaa2cf556"
-        }
-      ],
-    });
-
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool result =
-        await prefs.setString('loginResponse', jsonEncode(loginResponse));
-    print(result);
-  }
-
-  static Future<LoginResponse?> getUserInfo() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    Map<String, dynamic>? userMap;
-    final String? userStr = prefs.getString('loginResponse');
-    if (userStr != null) {
-      userMap = jsonDecode(userStr) as Map<String, dynamic>;
-    }
-
-    if (userMap != null) {
-      final LoginResponse loginResponse = LoginResponse.fromJson(userMap);
-      print(loginResponse);
-      return loginResponse;
-    }
-
-    return null;
   }
 }

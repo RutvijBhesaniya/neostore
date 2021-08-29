@@ -8,6 +8,7 @@ import 'package:neostore/presentation/my_account/my_account.dart';
 import 'package:neostore/presentation/store_locator/store_locator_view.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
+import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -211,11 +212,18 @@ class _HomeScreen extends BaseClassState {
                         color: ColorStyles.black,
                       ),
                     ),
-                    NeoStoreTitleWithIcons(
-                      image: ('assets/images/logout_icon.png'),
-                      text: ConstantStrings.logout,
-                      style: TextStyles.titleHeadline!.copyWith(
-                        color: ColorStyles.white,
+                    GestureDetector(
+                      onTap: (){
+                        // MemoryManagement.clearMemory();
+
+
+                      },
+                      child: NeoStoreTitleWithIcons(
+                        image: ('assets/images/logout_icon.png'),
+                        text: ConstantStrings.logout,
+                        style: TextStyles.titleHeadline!.copyWith(
+                          color: ColorStyles.white,
+                        ),
                       ),
                     ),
                     Padding(

@@ -15,18 +15,24 @@ class APIs {
   static const String reset = "$baseUrl/users/change";
   static const String updateProfile = "$baseUrl/users/update";
   static const String fetchAccountDetail = "$baseUrl/users/getUserData";
+
+  ///cart url
   static const String addToCart = "$baseUrl/addToCart";
-  static const String editCart ="$baseUrl/editCart";
-  static const String deleteCart ="$baseUrl/deleteCart";
+  static const String editCart = "$baseUrl/editCart";
+  static const String deleteCart = "$baseUrl/deleteCart";
+  static const String listCart = "$baseUrl/cart";
 
+  ///order url
+  static const String orderAddress = "$baseUrl/order";
+  static const String orderList = "$baseUrl/orderList";
+  static const String orderDetail ="$baseUrl/orderDetail";
 
-
-  ///category api
+  ///category url
   static const String tableCategory = "$baseUrl/products/getList";
 
-  ///details category api
+  ///details category url
   static const String tableDetail = "$baseUrl/products/getDetail";
-  static const String ratingBar ="$baseUrl/products/setRating";
+  static const String ratingBar = "$baseUrl/products/setRating";
 
   static late BuildContext context;
 }

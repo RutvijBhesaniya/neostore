@@ -9,15 +9,18 @@ import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
 class DeleteCartApiImpl extends DeleteCartApi {
   @override
-  Future getDeleteCartApi(String productId) async {
+  Future getDeleteCartApi(int productId) async {
     Map<String, dynamic> map = Map<String, dynamic>();
+    Map<String, String> mapToken = Map<String, String>();
     map.putIfAbsent("product_id", () => productId);
-    map.putIfAbsent("access_token", () => MemoryManagement.getAccessToken());
+    mapToken.putIfAbsent("access_token", () => MemoryManagement.getAccessToken()!);
     Completer<dynamic> completer = new Completer<dynamic>();
     FormData formData = new FormData.fromMap(map);
 
-    var response =
-        await APIHandler.post(url: "${APIs.deleteCart}", requestBody: formData);
+    var response = await APIHandler.post(
+        url: "${APIs.deleteCart}",
+        additionalHeaders: mapToken,
+        requestBody: formData);
     if (response is APIError) {
       completer.complete(response);
       return completer.future;

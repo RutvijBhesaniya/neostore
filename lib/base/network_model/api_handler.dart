@@ -102,7 +102,7 @@ class APIHandler {
               .post(
                 url!,
                 options: Options(
-                  headers: headers,
+                  headers: additionalHeaders,
                 ),
                 data: requestBody,
               )

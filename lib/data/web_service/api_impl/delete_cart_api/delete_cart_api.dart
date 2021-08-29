@@ -1,3 +1,3 @@
 abstract class DeleteCartApi {
-  Future<dynamic> getDeleteCartApi(String productId);
+  Future<dynamic> getDeleteCartApi(int productId);
 }

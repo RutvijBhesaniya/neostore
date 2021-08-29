@@ -1,6 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/model/response/order_list_response.dart';
+import 'package:neostore/data/model/response/reset_password_response.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -24,17 +27,19 @@ class _ResetPasswordState extends BaseClassState
     with NeoStoreConstantValidation {
   final _formKey = GlobalKey<FormState>();
   late ResetPasswordProvider _resetPasswordProvider =
-      Provider.of<ResetPasswordProvider>(context);
-  TextEditingController newPasswordController = new TextEditingController();
-  TextEditingController confirmPasswordController = new TextEditingController();
-  TextEditingController currentPasswordController = new TextEditingController();
+      Provider.of<ResetPasswordProvider>(context, listen: false);
+  TextEditingController _newPasswordController = new TextEditingController();
+  TextEditingController _confirmPasswordController =
+      new TextEditingController();
+  TextEditingController _currentPasswordController =
+      new TextEditingController();
 
   ///string password = confirm password
   String? validateConfirmPassword(String? value) {
     if (value!.isEmpty) {
       return "Please enter re-password";
     }
-    if (newPasswordController != confirmPasswordController) {
+    if (_newPasswordController != _confirmPasswordController) {
       return "Password do not match";
     }
   }
@@ -104,8 +109,18 @@ class _ResetPasswordState extends BaseClassState
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 20, bottom: 30),
       child: NeoStoreElevatedButton(
-        onPressed: () {
-          if (_formKey.currentState!.validate()) {
+        onPressed: () async {
+          var response = await _resetPasswordProvider.getResetPassword(
+              _currentPasswordController.text,
+              _newPasswordController.text,
+              _confirmPasswordController.text);
+
+          ResetPasswordResponse _resetPasswordResponse =
+              ResetPasswordResponse.fromJson(jsonDecode(response));
+
+
+          print("resetpasswordresponse=>${response}");
+          if (_resetPasswordResponse.status == 200) {
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -140,8 +155,8 @@ class _ResetPasswordState extends BaseClassState
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
-        controller: confirmPasswordController,
-        validation: validateConfirmPassword,
+        controller: _confirmPasswordController,
+        // validation: validateConfirmPassword,
       ),
     );
   }
@@ -164,8 +179,8 @@ class _ResetPasswordState extends BaseClassState
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
-        controller: newPasswordController,
-        validation: validatePassword,
+        controller: _newPasswordController,
+        // validation: validatePassword,
       ),
     );
   }
@@ -188,8 +203,8 @@ class _ResetPasswordState extends BaseClassState
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
-        controller: currentPasswordController,
-        validation: validatePassword,
+        controller: _currentPasswordController,
+        // validation: validatePassword,
       ),
     );
   }
@@ -199,8 +214,7 @@ class _ResetPasswordState extends BaseClassState
     return Container(
       child: NeoStoreTitle(
         text: ConstantStrings.neoStore,
-        style: TextStyles.largeHeadline!
-            .copyWith(color: ColorStyles.white),
+        style: TextStyles.largeHeadline!.copyWith(color: ColorStyles.white),
       ),
     );
   }

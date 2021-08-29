@@ -1,11 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/model/request/edit_profile_request.dart';
 import 'package:neostore/data/model/response/edit_profile_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
+import 'package:neostore/presentation/my_account/my_account.dart';
 import 'package:neostore/utils/constant_strings.dart';
+import 'package:neostore/utils/neoStore_constant_validation.dart';
+import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -16,9 +22,19 @@ class EditProfileView extends BaseClass {
   }
 }
 
-class EditProfileViewState extends BaseClassState {
+class EditProfileViewState extends BaseClassState
+    with NeoStoreConstantValidation {
   late EditProfileProvider _editProfileProvider =
-      Provider.of<EditProfileProvider>(context);
+      Provider.of<EditProfileProvider>(context,listen: false);
+
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _firstController = new TextEditingController();
+  TextEditingController _lastController = new TextEditingController();
+  TextEditingController _phoneNumberController = new TextEditingController();
+
+  // TextEditingController _dobController = new TextEditingController();
+
+  final _formKey = GlobalKey<FormState>();
 
   @override
   getAppBar() {
@@ -43,9 +59,10 @@ class EditProfileViewState extends BaseClassState {
 
   @override
   Widget getBody() {
-    return
-      Scaffold(
-        body: Container(
+    return Scaffold(
+      body: Form(
+        key: _formKey,
+        child: Container(
           ///widget background image
           decoration: _backgroundImage(),
           child: Padding(
@@ -89,20 +106,27 @@ class EditProfileViewState extends BaseClassState {
             ),
           ),
         ),
-      );
+      ),
+    );
   }
 
   ///widget edit profile button
   Widget _editProfileButton(BuildContext context) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        margin: EdgeInsets.only(top: 20, bottom: 30),
-        child: NeoStoreElevatedButton(
-          text: ConstantStrings.submit,
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
-          buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
-        ));
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.only(top: 20, bottom: 30),
+      child: NeoStoreElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            editProfileUser(context);
+          }
+        },
+        text: ConstantStrings.submit,
+        textStyle: TextStyles.titleHeadline!
+            .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
+        buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
+      ),
+    );
   }
 
   ///widget date of birth
@@ -111,6 +135,7 @@ class EditProfileViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: NeoStoreTextFormField(
         hintText: 'DOB',
+        validation: validateName,
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -128,6 +153,8 @@ class EditProfileViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: 'Phone Number',
+        validation: validatePhoneNumber,
+        controller: _phoneNumberController,
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -145,6 +172,8 @@ class EditProfileViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.email,
+        validation: validateEmail,
+        controller: _emailController,
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -162,6 +191,8 @@ class EditProfileViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: 'Last Name',
+        validation: validateName,
+        controller: _lastController,
         hintStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -174,6 +205,8 @@ class EditProfileViewState extends BaseClassState {
   Widget _firstName() {
     return NeoStoreTextFormField(
       hintText: 'First Name',
+      validation: validateName,
+      controller: _firstController,
       hintStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),
@@ -189,5 +222,36 @@ class EditProfileViewState extends BaseClassState {
         fit: BoxFit.fill,
       ),
     );
+  }
+
+  void editProfileUser(BuildContext context) async {
+    EditProfileRequest editProfileRequest = EditProfileRequest();
+    editProfileRequest.email = _emailController.text;
+    editProfileRequest.firstName = _firstController.text;
+    editProfileRequest.lastName = _lastController.text;
+    editProfileRequest.phoneNo = _phoneNumberController.text;
+
+    var response =
+        await _editProfileProvider.getEditProfile(editProfileRequest, context);
+    print('zzzzzz=?$response');
+
+    EditProfileResponse editProfileResponse = EditProfileResponse.fromJson(
+      json.decode(response),
+    );
+
+    if (editProfileResponse.status == 200) {
+      MemoryManagement.getEmail();
+      MemoryManagement.getFirstName();
+      MemoryManagement.getLastName();
+      MemoryManagement.getEmail();
+      MemoryManagement.getPhoneNumber();
+      MemoryManagement.getDob();
+
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MyAccount(),
+        ),
+      );
+    }
   }
 }

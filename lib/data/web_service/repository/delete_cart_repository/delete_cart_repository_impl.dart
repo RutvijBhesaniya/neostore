@@ -9,7 +9,7 @@ class DeleteCartRepositoryImpl implements DeleteCartRepository {
   }
 
   @override
-  Future getDeleteCartRepository(String productId) {
+  Future getDeleteCartRepository(int productId) {
     return _deleteCartApi.getDeleteCartApi(productId);
   }
 }

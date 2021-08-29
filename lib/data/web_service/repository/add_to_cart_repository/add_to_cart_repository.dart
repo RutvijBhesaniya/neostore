@@ -1,3 +1,3 @@
 abstract class AddToCartRepository {
-  Future<dynamic> getAddToCartRepository(String productId, String quantity);
+  Future<dynamic> getAddToCartRepository(int productId, int quantity);
 }

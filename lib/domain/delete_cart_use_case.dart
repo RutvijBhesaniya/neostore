@@ -5,7 +5,7 @@ class DeleteCartUseCase extends BaseUseCase {
   late DeleteCartRepository _deleteCartRepository;
 
   DeleteCartUseCase(DeleteCartRepository deleteCartRepository) {
-    this._deleteCartRepository = _deleteCartRepository;
+    this._deleteCartRepository = deleteCartRepository;
   }
 
   @override

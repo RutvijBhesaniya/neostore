@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/model/response/add_to_cart_response.dart';
 import 'package:neostore/data/model/response/rating_response.dart';
 import 'package:neostore/data/model/response/table_detail_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
@@ -31,6 +34,10 @@ class _TableProductDetailedState extends BaseClassState {
       Provider.of<TableDetailProvider>(context);
   late RatingProvider _ratingProvider =
       Provider.of<RatingProvider>(context, listen: false);
+  late AddToCartProvider _addToCartProvider =
+      Provider.of<AddToCartProvider>(context, listen: false);
+
+  TextEditingController _quantityController = new TextEditingController();
 
   _TableProductDetailedState(this.tableProductDetailed);
 
@@ -229,6 +236,7 @@ class _TableProductDetailedState extends BaseClassState {
                             child: Center(
                               child: NeoStoreTextFormField(
                                 hintText: 'qty',
+                                controller: _quantityController,
                               ),
                             ),
                           ),
@@ -248,16 +256,26 @@ class _TableProductDetailedState extends BaseClassState {
                                   buttonStyle: TextButton.styleFrom(
                                     backgroundColor: ColorStyles.red,
                                   ),
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MyCartView(
-                                            _tableDetailProvider
-                                                .tableDetailResponse,
-                                            1),
-                                      ),
+                                  onPressed: () async {
+                                    var response =
+                                        await _addToCartProvider.getAddToCart(
+                                      _tableDetailProvider
+                                          .tableDetailResponse.data!.id!,
+                                      int.parse(_quantityController.text),
                                     );
+                                    AddToCartResponse _addToCartResponse =
+                                        AddToCartResponse.fromJson(
+                                            jsonDecode(response),);
+                                    if (_addToCartResponse.status == 200) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => MyCartView(),
+                                        ),
+                                      );
+                                    } else {
+                                      'please';
+                                    }
                                   },
                                 ),
                               ),

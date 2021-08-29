@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/model/response/register_response.dart';
@@ -12,7 +14,7 @@ class RegisterScreenProvider extends ChangeNotifier {
 
   get registerResponse => _registerResponse;
 
-  bool _isLoading = false;
+  bool _isLoading = true;
 
   get isLoading => _isLoading;
 
@@ -20,11 +22,10 @@ class RegisterScreenProvider extends ChangeNotifier {
       RegisterRequest registerRequest, BuildContext context) async {
     _isLoading = true;
     var response = await _registerUseCase.callApi(registerRequest, context);
+
     print("response=>$response");
 
-
-
     _isLoading = false;
-    notifyListeners();
+    return response;
   }
 }

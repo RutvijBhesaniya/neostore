@@ -31,6 +31,8 @@ class ConstantStrings {
   static const rateNow ='RATE NOW';
   static const submit ='SUBMIT';
   static const saveAddress ='SAVE ADDRESS';
+  static const logout ='Logout';
+
 
 
   ///drawer menu
@@ -41,7 +43,7 @@ class ConstantStrings {
   static const cupboards ='Cupboards';
   static const storeLocator ='StoreLocator';
   static const myOrders ='My Orders';
-  static const logout ='Logout';
+  static const placeOrder ='PLACE ORDER';
 
 
 

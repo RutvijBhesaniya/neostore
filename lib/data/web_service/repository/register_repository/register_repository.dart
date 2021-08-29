@@ -3,7 +3,5 @@ import 'package:neostore/data/model/request/register_request.dart';
 
 abstract class RegisterRepository {
   Future<dynamic> getRegisterRepository(
-    RegisterRequest registerRequest,
-    BuildContext context,
-  );
+      RegisterRequest registerRequest, BuildContext context);
 }

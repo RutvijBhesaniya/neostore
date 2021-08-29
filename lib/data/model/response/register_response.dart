@@ -11,7 +11,10 @@ class RegisterResponse {
       this.userMsg});
 
   RegisterResponse.fromJson(dynamic json) {
-    status = json['status'];
+    status = json
+
+
+    ['status'];
     data = json['data'] != null ? Data.fromJson(json['data']) : null;
     message = json['message'];
     userMsg = json['user_msg'];
