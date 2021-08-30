@@ -211,6 +211,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       text: ConstantStrings.neoStore,
       style: TextStyles.largeHeadline!.copyWith(
         fontWeight: FontWeight.bold,
+
         color: ColorStyles.white,
       ),
     );

@@ -9,7 +9,7 @@ class OrderDetailUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([productId]) {
-    return _orderDetailRepository.getOrderDetailRepository(productId);
+  Future callApi([orderId]) {
+    return _orderDetailRepository.getOrderDetailRepository(orderId);
   }
 }

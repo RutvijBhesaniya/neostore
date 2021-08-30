@@ -14,11 +14,11 @@ class OrderListApiImpl extends OrderListApi {
     mapToken.putIfAbsent(
         "access_token", () => MemoryManagement.getAccessToken()!);
     Completer<dynamic> completer = new Completer<dynamic>();
-    FormData formData = new FormData.fromMap(mapToken);
+    // FormData formData = new FormData.fromMap(mapToken);
 
     var response = await APIHandler.get(
         url: "${APIs.orderList}",
-        requestBody: formData,
+        // requestBody: formData,
         additionalHeaders: mapToken);
     print('gotOrderListresponse=>$response');
     if (response is APIError) {

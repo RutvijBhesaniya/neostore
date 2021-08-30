@@ -9,17 +9,17 @@ import 'package:neostore/utils/shared_preferences/memory_management.dart';
 class OrderDetailApiImpl extends OrderDetailApi {
   @override
   Future getOrderDetailApi(int orderId) async {
-    Map<String, dynamic> map = Map<String, dynamic>();
+
     Map<String, String> mapToken = Map<String, String>();
     mapToken.putIfAbsent(
         "access_token", () => MemoryManagement.getAccessToken()!);
-    map.putIfAbsent("address", () => orderId);
     Completer<dynamic> completer = new Completer<dynamic>();
-    FormData formData = new FormData.fromMap(map);
 
-    var response = await APIHandler.post(
+    var response = await APIHandler.get(
         url: "${APIs.orderDetail}",
-        requestBody: formData,
+        requestBody: {
+          "order_id" : orderId
+        },
         additionalHeaders: mapToken);
     print('gotOrderAddressresponse=>$response');
     if (response is APIError) {

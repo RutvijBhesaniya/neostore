@@ -8,6 +8,13 @@ import 'package:neostore/data/web_service/repository/edit_profile_repository/edi
 import 'package:neostore/domain/edit_profile_use_case.dart';
 
 class EditProfileProvider extends ChangeNotifier {
+
+  var image;
+
+  Future setImage(var file)async{
+    this.image =file;
+    this.notifyListeners();
+  }
   EditProfileResponse? _editProfileResponse;
 
   EditProfileResponse? get editProfileResponse => _editProfileResponse;

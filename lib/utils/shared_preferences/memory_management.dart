@@ -111,11 +111,11 @@ class MemoryManagement {
 
   static String? setLogout({@required String? logout}) {
     prefs.setString(SharedPrefsKeys.LOGOUT, logout!);
-    setIsUserLoggedIn(isuserloggedin: false);
+   clearMemory();
   }
 
   //clear all values from shared preferences
-  static void clearMemory() {
+  static String? clearMemory() {
     prefs.clear();
   }
 }

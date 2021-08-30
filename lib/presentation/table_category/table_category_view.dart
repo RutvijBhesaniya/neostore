@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/table_category_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
@@ -170,7 +171,11 @@ class _TableCategoryView extends BaseClassState {
   Widget _titleName(TableCategoryResponse tableCategoryResponse, index) {
     return NeoStoreTitle(
       text: tableCategoryResponse.data![index].name,
-      style: TextStyles.labelName!.copyWith(color: ColorStyles.liver_grey),
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.labelName!.copyWith(
+          color: ColorStyles.liver_grey,
+        ),
+      ),
     );
   }
 

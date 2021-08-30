@@ -5,6 +5,7 @@ import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
 import 'package:neostore/presentation/my_order/my_order_viewmodel.dart';
+import 'package:neostore/presentation/order_detail/order_detail_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +22,14 @@ class MyOrderViewState extends BaseClassState {
 
   @override
   getAppBar() {
-    return _appBar();
+    return AppBar(
+      leading: GestureDetector(
+        onTap: () => Navigator.pop(context),
+        child: Icon(
+          Icons.arrow_back,
+        ),
+      ),
+    );
   }
 
   @override
@@ -54,47 +62,43 @@ class MyOrderViewState extends BaseClassState {
   Widget _buildListItem(OrderListResponse? orderListResponse, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          NeoStoreTitle(
-            text:
-                ('Order ID: ${orderListResponse!.data![index].id.toString()}'),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              NeoStoreTitle(
-                text: 'Rs ${orderListResponse.data![index].cost}',
-              ),
-            ],
-          ),
-          Text('Ordered Date: + ${orderListResponse.data![index].created}'),
-          Divider(
-            color: ColorStyles.liver_grey,
-          )
-        ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => OrderDetailView(
+                  _myOrderProvider.orderListResponse!.data![index].id),
+            ),
+          );
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            NeoStoreTitle(
+              text:
+                  ('Order ID: ${orderListResponse!.data![index].id.toString()}'),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width / 4,
+                  child: NeoStoreTitle(
+                    text: 'Rs ${orderListResponse.data![index].cost}',
+                  ),
+                ),
+              ],
+            ),
+            Text('Ordered Date:  ${orderListResponse.data![index].created}'),
+            Divider(
+              color: ColorStyles.liver_grey,
+            )
+          ],
+        ),
       ),
     );
-    // Row(
-    // // crossAxisAlignment: CrossAxisAlignment.center,
-    // //   mainAxisAlignment: MainAxisAlignment.start,
-    //   children: [
-    //     Column(
-    //       // crossAxisAlignment: CrossAxisAlignment.end,
-    //       mainAxisAlignment: MainAxisAlignment.end,
-    //       children: [
-    //         NeoStoreTitle(
-    //           text: 'dssd'
-    //         ),
-    //         NeoStoreTitle(
-    //           text: 'dssd'
-    //         )
-    //       ],
-    //     ),
-    //     NeoStoreTitle(text: 'sdsds',)
-    //   ],
-    // ));
   }
 
   ///appbar widget
@@ -116,8 +120,6 @@ class MyOrderViewState extends BaseClassState {
   void fetchOrderListData() {
     Future.delayed(Duration(milliseconds: 300), () {
       _myOrderProvider.getOrderList();
-
-
     });
   }
 }

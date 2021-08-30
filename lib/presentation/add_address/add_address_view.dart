@@ -239,12 +239,6 @@ class AddAddressState extends BaseClassState {
                       var addressvalue = json.encode(addaddressmodel);
                       MemoryManagement.setAddress(address: addressvalue);
 
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddressList(),
-                        ),
-                      );
                     } else {
                       print("notaddress");
                       List<Addresslist> addresslist = <Addresslist>[];
@@ -256,6 +250,12 @@ class AddAddressState extends BaseClassState {
                       var addressvalue = json.encode(addaddressmodel);
                       MemoryManagement.setAddress(address: addressvalue);
                     }
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddressList(),
+                      ),
+                    );
                   },
                   text: ConstantStrings.saveAddress,
                   textStyle: TextStyles.titleHeadline!.copyWith(

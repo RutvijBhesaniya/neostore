@@ -1,12 +1,15 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/edit_profile_request.dart';
 import 'package:neostore/data/model/response/edit_profile_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
+import 'package:neostore/data/widget/neostore_title_with_icons.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/presentation/my_account/my_account.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -25,14 +28,15 @@ class EditProfileView extends BaseClass {
 class EditProfileViewState extends BaseClassState
     with NeoStoreConstantValidation {
   late EditProfileProvider _editProfileProvider =
-      Provider.of<EditProfileProvider>(context,listen: false);
+      Provider.of<EditProfileProvider>(context, listen: false);
 
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _firstController = new TextEditingController();
   TextEditingController _lastController = new TextEditingController();
   TextEditingController _phoneNumberController = new TextEditingController();
-
-  // TextEditingController _dobController = new TextEditingController();
+  TextEditingController _dobController = new TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  PickedFile? _imageFile;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -73,15 +77,11 @@ class EditProfileViewState extends BaseClassState
                 children: [
                   Center(
                     child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                      ),
-                      child: CircleAvatar(
-                        backgroundColor: ColorStyles.blue,
-                        radius: 100,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(
+                          top: 20,
+                          bottom: 20,
+                        ),
+                        child: _imagePicker()),
                   ),
 
                   ///widget first name
@@ -212,6 +212,77 @@ class EditProfileViewState extends BaseClassState
       ),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
     );
+  }
+
+  Widget _imagePicker() {
+    return Stack(
+      children: [
+        CircleAvatar(
+            radius: 80,
+            backgroundImage: _imageFile == null
+                ? AssetImage("assets/images/profile_pic.jpg")
+                : FileImage(File(_imageFile!.path)) as ImageProvider),
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                  context: context, builder: ((builder) => bottomSheet()));
+            },
+            child: Icon(Icons.camera_alt_outlined),
+          ),
+        )
+      ],
+    );
+  }
+
+  Widget bottomSheet() {
+    return Container(
+      height: 100,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Choose Profile photo',
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              FlatButton.icon(
+                onPressed: (){
+                  takePhoto(ImageSource.camera);
+                },
+                icon: Icon(Icons.camera_alt_outlined),
+                label: Text('Camera'),
+              ),
+              FlatButton.icon(
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                icon: Icon(Icons.camera_alt_outlined),
+                label: Text('Gallary'),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile = await _picker.getImage(source: source);
+    setState(() {
+      _imageFile = pickedFile;
+    });
   }
 
   ///widget background image

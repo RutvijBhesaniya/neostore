@@ -25,6 +25,8 @@ class AddressList extends BaseClass {
 enum Type { ischecked, isnotchecked }
 
 class AddressListState extends BaseClassState {
+
+  final snackBar = SnackBar(content: Text('Please Enter Address'));
   List<Addresslist> addAddressList = [];
   late ChangeAddress _changeAddress;
   late AddressListProvider _addressListProvider =
@@ -136,10 +138,30 @@ class AddressListState extends BaseClassState {
         height: MediaQuery.of(context).size.height / 8,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: NeoStoreTitle(
-            text: addresslist.address!,
-            style: TextStyles.labelName,
-            maxLine: 4,
+          child: Stack(
+            children: [
+              NeoStoreTitle(
+                text: addresslist.address!,
+                style: TextStyles.labelName,
+                maxLine: 4,
+              ),
+              Positioned(
+                top: 0,
+                right: 0,
+                child: GestureDetector(
+                  onTap: (){
+                    // MemoryManagement.clearMemory();
+                  },
+                  child: Container(
+                    height: 17,
+                    width: 17,
+                    child: Image(
+                      image: AssetImage('assets/images/wrong_image.png'),
+                    ),
+                  ),
+                ),
+              )
+            ],
           ),
         ),
       ),
@@ -166,6 +188,7 @@ class AddressListState extends BaseClassState {
   }
 
   void getaddAddress() {
+    print("MEMORYADDRESS=>${MemoryManagement.getAddress()}");
     if (MemoryManagement.getAddress() != null) {
       print("address=>${MemoryManagement.getAddress().toString()}");
       AddAddressModel addAddressModel = AddAddressModel.fromJson(
@@ -173,6 +196,9 @@ class AddressListState extends BaseClassState {
       );
 
       addAddressList.addAll(addAddressModel.addresslist!);
+    }else{
+
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }

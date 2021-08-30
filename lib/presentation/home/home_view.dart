@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/widget/carousel_slider.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/data/widget/neostore_title_with_icons.dart';
 import 'package:neostore/presentation/home/drawer_viewmodel.dart';
 import 'package:neostore/presentation/my_account/my_account.dart';
+import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
 import 'package:neostore/presentation/store_locator/store_locator_view.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -20,10 +22,15 @@ class HomeScreen extends BaseClass {
 }
 
 class _HomeScreen extends BaseClassState {
+  late ListCartProvider _listCartProvider =
+  Provider.of<ListCartProvider>(context);
   late DrawerProvider _drawerProvider;
+
   Duration duration = const Duration(microseconds: 300);
 
-  late Size size = MediaQuery.of(context).size;
+  late Size size = MediaQuery
+      .of(context)
+      .size;
 
   // Size size = MediaQuery.
   late double? screenHeight = size.height;
@@ -33,13 +40,20 @@ class _HomeScreen extends BaseClassState {
   Widget getBody() {
     _drawerProvider = Provider.of<DrawerProvider>(context);
 
-    return Scaffold(
+    return _listCartProvider.isLoading
+        ? Center(
+      child: CircularProgressIndicator(),
+    )
+        : Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: MediaQuery
+            .of(context)
+            .size
+            .height,
         color: ColorStyles.dark_grey,
         child: Stack(
           children: [
-            menu(context),
+            menu(context, _listCartProvider.listCartResponse),
             dashboard(context),
           ],
         ),
@@ -47,7 +61,7 @@ class _HomeScreen extends BaseClassState {
     );
   }
 
-  Widget menu(context) {
+  Widget menu(context, ListCartResponse? listCartResponse) {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: SafeArea(
@@ -56,7 +70,10 @@ class _HomeScreen extends BaseClassState {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width / 1.5,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width / 1.5,
                 // width: ScreenUtil().screenWidth / 1.5,
                 child: Column(
                   children: [
@@ -65,7 +82,7 @@ class _HomeScreen extends BaseClassState {
                       radius: 60,
                     ),
                     NeoStoreTitle(
-                      text: 'Rutvij Bhesaniya',
+                      text: 'dds',
                       style: TextStyles.titleHeadline!.copyWith(
                         color: ColorStyles.white,
                       ),
@@ -90,12 +107,32 @@ class _HomeScreen extends BaseClassState {
                         color: ColorStyles.black,
                       ),
                     ),
-                    NeoStoreTitleWithIcons(
-                      image: ('assets/images/shopping_cart.png'),
-                      text: ConstantStrings.myCart,
-                      style: TextStyles.titleHeadline!.copyWith(
-                        color: ColorStyles.white,
-                      ),
+                    Row(
+                      children: [
+                        NeoStoreTitleWithIcons(
+                          image: ('assets/images/shopping_cart.png'),
+                          text: ConstantStrings.myCart,
+                          style: TextStyles.titleHeadline!.copyWith(
+                            color: ColorStyles.white,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 25,
+                        ),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: ColorStyles.light_red, width: 10),
+                              shape: BoxShape.circle,
+                              // borderRadius: BorderRadius.all(Radius.circular(50)),
+                              color: ColorStyles.light_red),
+                          child: NeoStoreTitle(
+                            text: listCartResponse!.count.toString(),
+                            style: TextStyles.titleHeadline!
+                                .copyWith(color: ColorStyles.white),
+                          ),
+                        )
+                      ],
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
@@ -213,10 +250,12 @@ class _HomeScreen extends BaseClassState {
                       ),
                     ),
                     GestureDetector(
-                      onTap: (){
-                        // MemoryManagement.clearMemory();
-
-
+                      onTap: () {
+                        print('logout${MemoryManagement.clearMemory()}');
+                        MemoryManagement.clearMemory();
+                        Navigator.pushAndRemoveUntil(
+                            context, MaterialPageRoute(builder: (context) =>
+                            HomeScreen()), (route) => false);
                       },
                       child: NeoStoreTitleWithIcons(
                         image: ('assets/images/logout_icon.png'),
@@ -295,8 +334,14 @@ class _HomeScreen extends BaseClassState {
                 ),
               ),
               Container(
-                height: MediaQuery.of(context).size.height / 3,
-                width: MediaQuery.of(context).size.width,
+                height: MediaQuery
+                    .of(context)
+                    .size
+                    .height / 3,
+                width: MediaQuery
+                    .of(context)
+                    .size
+                    .width,
                 child: CarouselSliderScreen(),
               ),
               Padding(
@@ -324,7 +369,10 @@ class _HomeScreen extends BaseClassState {
                                   ),
                                 ),
                               ),
-                              height: MediaQuery.of(context).size.height / 4,
+                              height: MediaQuery
+                                  .of(context)
+                                  .size
+                                  .height / 4,
                             ),
                           ),
                           SizedBox(
@@ -339,7 +387,10 @@ class _HomeScreen extends BaseClassState {
                                 ),
                               ),
                             ),
-                            height: MediaQuery.of(context).size.height / 4,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height / 4,
                           )
                         ],
                       ),
@@ -360,7 +411,10 @@ class _HomeScreen extends BaseClassState {
                                 ),
                               ),
                             ),
-                            height: MediaQuery.of(context).size.height / 4,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height / 4,
                           ),
                           SizedBox(
                             height: 10,
@@ -374,7 +428,10 @@ class _HomeScreen extends BaseClassState {
                                 ),
                               ),
                             ),
-                            height: MediaQuery.of(context).size.height / 4,
+                            height: MediaQuery
+                                .of(context)
+                                .size
+                                .height / 4,
                           )
                         ],
                       ),
@@ -387,5 +444,20 @@ class _HomeScreen extends BaseClassState {
         ),
       ),
     );
+  }
+
+  void fetchMyCartData() {
+    Future.delayed(
+      Duration(milliseconds: 300),
+          () {
+        _listCartProvider.getListCart();
+      },
+    );
+  }
+
+  @override
+  void initState() {
+    fetchMyCartData();
+    super.initState();
   }
 }
