@@ -18,6 +18,13 @@ class RegisterScreenProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
+  bool checkValue = false;
+
+  void changeCheckValue(bool value){
+    checkValue = value;
+    notifyListeners();
+  }
+
   Future<dynamic> getRegisterUser(
       RegisterRequest registerRequest, BuildContext context) async {
     _isLoading = true;
@@ -29,3 +36,5 @@ class RegisterScreenProvider extends ChangeNotifier {
     return response;
   }
 }
+
+

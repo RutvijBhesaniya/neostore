@@ -9,8 +9,8 @@ class EditProfileUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([editProfileRequest,context]) {
+  Future callApi([email, dob, phoneNo, profilePic, firstName, lastName]) {
     return _editProfileRepository.getEditProfileRepository(
-         editProfileRequest,  context);
+        email, dob, phoneNo, profilePic, firstName, lastName);
   }
 }

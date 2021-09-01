@@ -21,6 +21,7 @@ class MyAccountApiImpl implements MyAccountApi {
       // requestBody: MemoryManagement.getAccessToken(),
       // context: context,
     );
+    print("urlmyaacount=>${APIs.fetchAccountDetail}");
     print('gotResponseinLoginApiImpl=>$response');
     if (response is APIError) {
       completer.complete(response);

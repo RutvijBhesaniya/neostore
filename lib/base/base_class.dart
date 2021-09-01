@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-abstract class BaseClass extends StatefulWidget {
+abstract class BaseClass extends StatefulWidget{
   const BaseClass({Key? key}) : super(key: key);
 
   @override
@@ -9,15 +9,17 @@ abstract class BaseClass extends StatefulWidget {
 }
 
 abstract class BaseClassState extends State<BaseClass> {
+
+  Size get preferredSize => const Size.fromHeight(50);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: getAppBar(),
+      appBar: PreferredSize(child: getAppBar() ?? SizedBox.shrink(),preferredSize: preferredSize),
       body: getBody(),
     );
   }
 
-  AppBar? getAppBar(){
+  Widget? getAppBar(){
     return null;
   }
 

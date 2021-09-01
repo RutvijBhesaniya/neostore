@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/order_detail_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
@@ -68,10 +69,22 @@ class _OrderDetailViewState extends BaseClassState {
                   children: [
                     NeoStoreTitle(
                       text: 'Total',
+                        style: GoogleFonts.workSans(
+                          textStyle: TextStyles.titleHeadline!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: ColorStyles.red,
+                          ),
+                        )
                     ),
                     NeoStoreTitle(
                       text: _orderDetailProvider.orderDetailResponse!.data!.cost
                           .toString(),
+                        style: GoogleFonts.workSans(
+                          textStyle: TextStyles.titleHeadline!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: ColorStyles.red,
+                          ),
+                        )
                     )
                   ],
                 ),
@@ -105,14 +118,32 @@ class _OrderDetailViewState extends BaseClassState {
                   NeoStoreTitle(
                     text:
                         orderDetailResponse.data!.orderDetails![index].prodName,
+                      style: GoogleFonts.workSans(
+                        textStyle: TextStyles.titleHeadline!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ColorStyles.red,
+                        ),
+                      )
                   ),
                   NeoStoreTitle(
                     text: orderDetailResponse
                         .data!.orderDetails![index].prodCatName,
+                      style: GoogleFonts.workSans(
+                        textStyle: TextStyles.titleHeadline!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ColorStyles.red,
+                        ),
+                      )
                   ),
                   NeoStoreTitle(
                     text:
                         'OTY : ${orderDetailResponse.data!.orderDetails![index].quantity} ',
+                      style: GoogleFonts.workSans(
+                        textStyle: TextStyles.titleHeadline!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ColorStyles.red,
+                        ),
+                      )
                   )
                 ],
               ),
@@ -122,6 +153,12 @@ class _OrderDetailViewState extends BaseClassState {
                     child: NeoStoreTitle(
                       text:
                           'RS ${orderDetailResponse.data!.orderDetails![index].total}',
+                        style: GoogleFonts.workSans(
+                          textStyle: TextStyles.titleHeadline!.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: ColorStyles.red,
+                          ),
+                        )
                     )),
               ),
             ],
@@ -144,9 +181,9 @@ class _OrderDetailViewState extends BaseClassState {
         size: 20,
       ),
       text: ConstantStrings.editProfile,
-      style: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
-      ),
+      style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,fontWeight: FontWeight.w400
+      )),
     );
   }
 

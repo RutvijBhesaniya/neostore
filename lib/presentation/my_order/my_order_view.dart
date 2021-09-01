@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/order_list_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
@@ -78,6 +79,12 @@ class MyOrderViewState extends BaseClassState {
             NeoStoreTitle(
               text:
                   ('Order ID: ${orderListResponse!.data![index].id.toString()}'),
+                style: GoogleFonts.workSans(
+                  textStyle: TextStyles.titleHeadline!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: ColorStyles.red,
+                  ),
+                )
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -86,12 +93,25 @@ class MyOrderViewState extends BaseClassState {
                 Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: NeoStoreTitle(
-                    text: 'Rs ${orderListResponse.data![index].cost}',
-                  ),
+                      text: 'Rs ${orderListResponse.data![index].cost}',
+                      style: GoogleFonts.workSans(
+                        textStyle: TextStyles.titleHeadline!.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: ColorStyles.red,
+                        ),
+                      )),
                 ),
               ],
             ),
-            Text('Ordered Date:  ${orderListResponse.data![index].created}'),
+            NeoStoreTitle(
+              text: 'Ordered Date:  ${orderListResponse.data![index].created}',
+                style: GoogleFonts.workSans(
+                  textStyle: TextStyles.titleHeadline!.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: ColorStyles.red,
+                  ),
+                )
+            ),
             Divider(
               color: ColorStyles.liver_grey,
             )
@@ -111,8 +131,11 @@ class MyOrderViewState extends BaseClassState {
         size: 20,
       ),
       text: ConstantStrings.editProfile,
-      style: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          fontWeight: FontWeight.w600,
+          color: ColorStyles.red,
+        ),
       ),
     );
   }

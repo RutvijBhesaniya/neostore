@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/widget/neostore_title_border_with_icons.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_view.dart';
@@ -126,10 +127,11 @@ class MyAccountState extends BaseClassState {
           );
         },
         text: ConstantStrings.editProfile,
-        textStyle: TextStyles.titleHeadline!.copyWith(
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
           fontWeight: FontWeight.bold,
           color: ColorStyles.red,
-        ),
+        )),
         buttonStyle: TextButton.styleFrom(
           backgroundColor: ColorStyles.white,
         ),
@@ -144,9 +146,9 @@ class MyAccountState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.date_range,
         text: '01-11-2012',
-        style: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
@@ -158,9 +160,9 @@ class MyAccountState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.phone_android,
         text: _myAccountProvider.myAccountResponse!.data!.userData!.phoneNo,
-        style: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
@@ -172,8 +174,9 @@ class MyAccountState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.attach_email,
         text: _myAccountProvider.myAccountResponse!.data!.userData!.email,
-        style: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
+        style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
         ),
       ),
     );
@@ -186,9 +189,9 @@ class MyAccountState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
         text: _myAccountProvider.myAccountResponse!.data!.userData!.lastName,
-        style: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
@@ -202,9 +205,9 @@ class MyAccountState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
         text: _myAccountProvider.myAccountResponse!.data!.userData!.firstName,
-        style: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }

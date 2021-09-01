@@ -1,6 +1,8 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/model/response/register_response.dart';
@@ -39,8 +41,6 @@ class _RegisterScreenState extends BaseClassState
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _phoneController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
-
-  // TextEditingController _genderController = new TextEditingController();
   TextEditingController _confirmPasswordController =
       new TextEditingController();
 
@@ -55,12 +55,21 @@ class _RegisterScreenState extends BaseClassState
 
   @override
   NeoStoreAppBar getAppBar() {
+    return _appBar();
+  }
+
+  NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
+      backgroundColour: ColorStyles.red,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
       ),
       text: ConstantStrings.register,
       style: TextStyles.titleHeadline!.copyWith(
@@ -73,6 +82,10 @@ class _RegisterScreenState extends BaseClassState
   Widget getBody() {
     _registerScreenProvider = Provider.of<RegisterScreenProvider>(context);
     _changeColorModel = Provider.of<ChangeGender>(context);
+    return _registerForm();
+  }
+
+  Form _registerForm() {
     return Form(
       key: _formKey,
       child: Container(
@@ -129,24 +142,38 @@ class _RegisterScreenState extends BaseClassState
           ),
           child: NeoStoreTitle(
             text: 'Gender',
-            style: TextStyles.titleHeadline!.copyWith(
-              color: ColorStyles.white,
-            ),
+            style: GoogleFonts.workSans(
+                textStyle: TextStyles.titleHeadline!.copyWith(
+                    color: ColorStyles.white, fontWeight: FontWeight.w400)),
           ),
         ),
         Flexible(
           child: RadioListTile<GenderTypes>(
               value: GenderTypes.Male,
-              title: Text('Male'),
+              title: Text(
+                'Male',
+                style: GoogleFonts.workSans(
+                  textStyle: TextStyles.titleHeadline!.copyWith(
+                      color: ColorStyles.white, fontWeight: FontWeight.w400),
+                ),
+              ),
               groupValue: _changeColorModel.currentValue,
               onChanged: (value) {
                 _changeColorModel.changeModel(value!);
               }),
         ),
         Flexible(
+          fit: FlexFit.tight,
           child: RadioListTile<GenderTypes>(
             value: GenderTypes.Female,
-            title: Text('Female'),
+            title: Text(
+              'Female',
+              style: GoogleFonts.workSans(
+                textStyle: TextStyles.labelName!.copyWith(
+                    color: ColorStyles.white, fontWeight: FontWeight.w400),
+              ),
+              maxLines: 1,
+            ),
             groupValue: _changeColorModel.currentValue,
             onChanged: (value) {
               _changeColorModel.changeModel(value!);
@@ -163,17 +190,23 @@ class _RegisterScreenState extends BaseClassState
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          width: 20,
-          height: 20,
-          color: ColorStyles.white,
-        ),
+            width: 20,
+            height: 20,
+            // color: ColorStyles.white,
+            child: Checkbox(
+              value: _registerScreenProvider.checkValue,
+              onChanged: (val) {
+                _registerScreenProvider.changeCheckValue(val!);
+              },
+            )),
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: RichText(
             text: TextSpan(
               text: ConstantStrings.iAgreeThe,
-              style:
-                  TextStyles.titleHeadline!.copyWith(color: ColorStyles.white),
+              style: GoogleFonts.workSans(
+                  textStyle: TextStyles.titleHeadline!.copyWith(
+                      color: ColorStyles.white, fontWeight: FontWeight.w400)),
               children: const <TextSpan>[
                 TextSpan(
                   text: ConstantStrings.termsCondition,
@@ -197,17 +230,25 @@ class _RegisterScreenState extends BaseClassState
       margin: EdgeInsets.only(top: 20, bottom: 10),
       child: NeoStoreElevatedButton(
         onPressed: () {
-          print("validationvalue=>${_formKey.currentState!.validate()}");
           if (_formKey.currentState!.validate()) {
-            print("abc1");
-            registerUser(context);
-          } else {
-            print("abc");
-          }
+            if (_registerScreenProvider.checkValue) {
+              registerUser(context);
+            } else {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Please accept Terms and Conditions'),
+                ),
+              );
+            }
+          } else {}
         },
         text: ConstantStrings.register,
-        textStyle: TextStyles.titleHeadline!
-            .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
+        textStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.buttonText.copyWith(
+            fontWeight: FontWeight.bold,
+            color: ColorStyles.red,
+          ),
+        ),
         buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
       ),
     );
@@ -219,15 +260,15 @@ class _RegisterScreenState extends BaseClassState
       padding: const EdgeInsets.only(top: 10, bottom: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.phoneNumber,
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Icon(
           Icons.phone_android,
           color: ColorStyles.white,
@@ -244,15 +285,15 @@ class _RegisterScreenState extends BaseClassState
       padding: const EdgeInsets.only(top: 10),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.confirmPassword,
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -269,15 +310,15 @@ class _RegisterScreenState extends BaseClassState
       padding: const EdgeInsets.only(top: 10),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.password,
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -293,15 +334,15 @@ class _RegisterScreenState extends BaseClassState
       padding: const EdgeInsets.only(top: 10),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.email,
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Icon(
           Icons.email,
           color: ColorStyles.white,
@@ -318,15 +359,15 @@ class _RegisterScreenState extends BaseClassState
       padding: const EdgeInsets.only(top: 10),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.lastName,
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
         validation: validateName,
         controller: _lastNameController,
@@ -338,15 +379,15 @@ class _RegisterScreenState extends BaseClassState
   Widget _firstName() {
     return NeoStoreTextFormField(
       hintText: ConstantStrings.firstName,
-      textStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
-      ),
+      textStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
       errorStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),
-      hintStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
-      ),
+      hintStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
       validation: validateName,
       controller: _firstNameController,
@@ -360,10 +401,11 @@ class _RegisterScreenState extends BaseClassState
         padding: const EdgeInsets.only(top: 30, bottom: 20),
         child: NeoStoreTitle(
           text: ConstantStrings.neoStore,
-          style: TextStyles.largeHeadline!.copyWith(
+          style: GoogleFonts.workSans(
+              textStyle: TextStyles.largeHeadline!.copyWith(
             fontWeight: FontWeight.bold,
             color: ColorStyles.white,
-          ),
+          )),
         ),
       ),
     );

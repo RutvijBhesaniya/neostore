@@ -37,12 +37,6 @@ class AddAddressState extends BaseClassState {
   }
 
   @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  @override
   Widget getBody() {
     return Container(
       color: ColorStyles.light_grey,
@@ -238,7 +232,6 @@ class AddAddressState extends BaseClassState {
                           AddAddressModel(addresslist: addAddressList);
                       var addressvalue = json.encode(addaddressmodel);
                       MemoryManagement.setAddress(address: addressvalue);
-
                     } else {
                       print("notaddress");
                       List<Addresslist> addresslist = <Addresslist>[];

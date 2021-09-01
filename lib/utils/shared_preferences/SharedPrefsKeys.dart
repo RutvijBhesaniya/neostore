@@ -14,5 +14,6 @@ class SharedPrefsKeys {
   static const String ACCESS_TOKEN ="accesstoken";
   static const String ADDRESS ="address";
   static const String LOGOUT ="logout";
+  static const String REMOVE ="remove";
 
 }

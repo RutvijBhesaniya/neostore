@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/order_list_response.dart';
 import 'package:neostore/data/model/response/reset_password_response.dart';
+import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -45,27 +47,31 @@ class _ResetPasswordState extends BaseClassState
   }
 
   @override
-  AppBar? getAppBar() {
-    return AppBar(
-      title: Text('ssss'),
-    );
-    //   NeoStoreAppBar(
-    //   backgroundColour: ColorStyles.purple,
-    //   leading: Icon(
-    //     Icons.arrow_back_ios,
-    //     color: ColorStyles.white,
-    //     size: 20,
-    //   ),
-    //   text: ConstantStrings.resetPassword,
-    //   style: TextStyles.titleHeadline!.copyWith(
-    //     color: ColorStyles.white,
-    //   ),
-    //   suffixIcon: Icon(
-    //     Icons.add,
-    //     color: ColorStyles.purple,
-    //   ),
-    // );
+  NeoStoreAppBar getAppBar() {
+    return _appBar();
+
   }
+
+  NeoStoreAppBar _appBar() {
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.red,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
+      ),
+      text: ConstantStrings.resetPassword,
+      style: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+      ),
+    );
+  }
+
 
   @override
   Widget getBody() {
@@ -129,9 +135,13 @@ class _ResetPasswordState extends BaseClassState
             );
           }
         },
-        text: ConstantStrings.resetPassword,
-        textStyle: TextStyles.titleHeadline!
-            .copyWith(fontWeight: FontWeight.bold, color: ColorStyles.red),
+        text: ConstantStrings.resetPassword.toUpperCase(),
+        textStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.buttonText.copyWith(
+            fontWeight: FontWeight.bold,
+            color: ColorStyles.red,
+          ),
+        ),
         buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
       ),
     );
@@ -145,13 +155,13 @@ class _ResetPasswordState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        ),),
         hintText: ConstantStrings.confirmPassword,
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -170,12 +180,12 @@ class _ResetPasswordState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
+        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -194,12 +204,12 @@ class _ResetPasswordState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-        ),
+        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
+        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -212,9 +222,16 @@ class _ResetPasswordState extends BaseClassState
   ///widget title
   Widget _title() {
     return Container(
-      child: NeoStoreTitle(
-        text: ConstantStrings.neoStore,
-        style: TextStyles.largeHeadline!.copyWith(color: ColorStyles.white),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30, bottom: 20),
+        child: NeoStoreTitle(
+          text: ConstantStrings.neoStore,
+          style: GoogleFonts.workSans(
+              textStyle: TextStyles.largeHeadline!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: ColorStyles.white,
+              )),
+        ),
       ),
     );
   }

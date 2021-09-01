@@ -6,8 +6,8 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/table_category_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
-import 'package:neostore/presentation/product_detailed/table_detail_view.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
+import 'package:neostore/presentation/table_detailed/table_detail_view.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -26,6 +26,7 @@ class _TableCategoryView extends BaseClassState {
   getAppBar() {
     return NeoStoreAppBar(
       text: 'Tables',
+      style: TextStyles.label!.copyWith(color: ColorStyles.deep_purple),
     );
   }
 

@@ -5,17 +5,17 @@ import 'package:neostore/presentation/address_list/address_list_view_model.dart'
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/presentation/home/drawer_viewmodel.dart';
 import 'package:neostore/presentation/home/home_view.dart';
+import 'package:neostore/presentation/home/home_viewmodel.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
 import 'package:neostore/presentation/my_order/my_order_viewmodel.dart';
-import 'package:neostore/presentation/order_detail/order_detail_view.dart';
 import 'package:neostore/presentation/order_detail/order_detail_viewmodel.dart';
-import 'package:neostore/presentation/product_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
+import 'package:neostore/presentation/table_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:provider/provider.dart';
@@ -81,6 +81,12 @@ void main() async {
         ChangeNotifierProvider<AddressListProvider>(
           create: (context) => AddressListProvider(),
         ),
+        ChangeNotifierProvider<CarouselSliderProvider>(
+          create: (context) => CarouselSliderProvider(),
+        ),
+        ChangeNotifierProvider<HomeProvider>(
+          create: (context) => HomeProvider(),
+        ),
       ],
       child: NeoStore(isUserLoggedIn: isUserLoggedIn),
     ),
@@ -107,6 +113,7 @@ class _NeoStoreState extends State<NeoStore> {
       debugShowCheckedModeBanner: false,
       title: ConstantStrings.neoStore,
       theme: ThemeData(
+
         primarySwatch: Colors.blue,
       ),
       // home: OrderDetailView(),

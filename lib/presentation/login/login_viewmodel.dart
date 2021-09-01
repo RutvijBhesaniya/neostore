@@ -1,4 +1,6 @@
+
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/request/login_request.dart';
 import 'package:neostore/data/model/response/forgot_password_response.dart';
@@ -16,7 +18,7 @@ class LoginScreenProvider extends ChangeNotifier {
   get loginResponse => _loginResponse;
 
   LoginUseCase _loginUseCase =
-      LoginUseCase(LoginRepositoryImpl(LoginApiImpl()));
+  LoginUseCase(LoginRepositoryImpl(LoginApiImpl()));
 
   bool _isLoading = true;
 

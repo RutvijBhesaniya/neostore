@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/request/edit_profile_request.dart';
@@ -8,13 +10,13 @@ import 'package:neostore/data/web_service/repository/edit_profile_repository/edi
 import 'package:neostore/domain/edit_profile_use_case.dart';
 
 class EditProfileProvider extends ChangeNotifier {
-
   var image;
 
-  Future setImage(var file)async{
-    this.image =file;
+  Future setImage(var file) async {
+    this.image = file;
     this.notifyListeners();
   }
+
   EditProfileResponse? _editProfileResponse;
 
   EditProfileResponse? get editProfileResponse => _editProfileResponse;
@@ -29,14 +31,17 @@ class EditProfileProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
-  Future<dynamic> getEditProfile(
-      EditProfileRequest editProfileRequest, BuildContext context) async {
+  Future<dynamic> getEditProfile(String email, String dob, String phoneNo,
+      Uint8List profilePic, String firstName, String lastName) async {
     _isLoading = true;
-    var response = await _editProfileUseCase.callApi(editProfileRequest,context);
-    _editProfileResponse = EditProfileResponse.fromJson(jsonDecode(response));
-     print(response);
+    var response = await _editProfileUseCase.callApi(
+        email, dob, phoneNo, profilePic, firstName, lastName);
+    _editProfileResponse = EditProfileResponse.fromJson(
+      jsonDecode(response),
+    );
+    print("asasasasassa=>${response}");
     _isLoading = false;
-    // return response;
-    notifyListeners();
+    return response;
+    // notifyListeners();
   }
 }

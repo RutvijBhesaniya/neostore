@@ -109,9 +109,9 @@ class MemoryManagement {
     return prefs.getString(SharedPrefsKeys.PROFILEPIC);
   }
 
-  static String? setLogout({@required String? logout}) {
-    prefs.setString(SharedPrefsKeys.LOGOUT, logout!);
-   clearMemory();
+  static void setRemove({@required String? remove}){
+    //prefs.setString(SharedPrefsKeys.REMOVE, remove!);
+    setIsUserLoggedIn(isuserloggedin: false);
   }
 
   //clear all values from shared preferences

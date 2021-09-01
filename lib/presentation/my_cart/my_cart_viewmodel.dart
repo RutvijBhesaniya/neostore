@@ -82,7 +82,8 @@ class ListCartProvider extends ChangeNotifier {
     var response = await _tableDetailUseCase.callApi(productId);
     _tableDetailResponse = TableDetailResponse.fromJson(jsonDecode(response));
     _isLoading = false;
-    notifyListeners();
+    return response;
+    // notifyListeners();
   }
 
   Future<dynamic> getAddToCart(int productId, int quantity) async {

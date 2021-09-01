@@ -12,7 +12,7 @@ import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/my_cart/my_cart_view.dart';
-import 'package:neostore/presentation/product_detailed/table_detail_viewmodel.dart';
+import 'package:neostore/presentation/table_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -42,11 +42,9 @@ class _TableProductDetailedState extends BaseClassState {
   _TableProductDetailedState(this.tableProductDetailed);
 
   @override
-  AppBar? getAppBar() {
+   getAppBar() {
     // TODO: implement getAppBar
-    return NeoStoreAppBar(
-      text: 'dd',
-    );
+    return _appBar();
   }
 
   @override
@@ -72,6 +70,28 @@ class _TableProductDetailedState extends BaseClassState {
             ),
     );
   }
+
+///appbar
+  NeoStoreAppBar _appBar() {
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.red,
+      leading: GestureDetector(
+        onTap: (){
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
+      ),
+      text: ConstantStrings.table,
+      style: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+      ),
+    );
+  }
+
 
   ///bottom screen widget
   Widget _bottomScreen() {
@@ -500,10 +520,14 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   @override
+  @override
   void initState() {
     super.initState();
     print("got pproduct id=> $tableProductDetailed");
 
     fetchTableDetail(tableProductDetailed);
   }
+
+
+
 }

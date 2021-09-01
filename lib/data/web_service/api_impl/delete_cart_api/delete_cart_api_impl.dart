@@ -21,6 +21,7 @@ class DeleteCartApiImpl extends DeleteCartApi {
         url: "${APIs.deleteCart}",
         additionalHeaders: mapToken,
         requestBody: formData);
+
     if (response is APIError) {
       completer.complete(response);
       return completer.future;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NeoStoreAppBar extends AppBar implements PreferredSizeWidget {
+class NeoStoreAppBar extends StatefulWidget {
   NeoStoreAppBar({
     this.backgroundColour,
     this.text,
@@ -10,10 +10,6 @@ class NeoStoreAppBar extends AppBar implements PreferredSizeWidget {
     this.style,
   });
 
-  @override
-  // TODO: implement preferredSize
-  Size get preferredSize => const Size.fromHeight(50);
-
   final backgroundColour;
   final String? text;
   final leading;
@@ -21,19 +17,22 @@ class NeoStoreAppBar extends AppBar implements PreferredSizeWidget {
   final onPressed;
   final style;
 
+  @override
+  _NeoStoreAppBarState createState() => _NeoStoreAppBarState();
+}
+
+class _NeoStoreAppBarState extends State<NeoStoreAppBar> {
+  @override
+  // TODO: implement preferredSize
+  Size get preferredSize => const Size.fromHeight(50);
+
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: preferredSize,
-        child: AppBar(
-          backgroundColor: backgroundColour,
-          title: Text(
-            text!,
-            style: style,
-          ),
-          centerTitle: true,
-          leading: leading,
-        ),
+    return AppBar(
+      backgroundColor: widget.backgroundColour,
+      leading: widget.leading,
+      title: Text(
+        widget.text!,
+        style: widget.style,
       ),
     );
   }

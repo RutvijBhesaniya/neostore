@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/request/login_request.dart';
 import 'package:neostore/data/model/response/login_response.dart';
@@ -106,11 +107,10 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
                 ));
           },
           child: NeoStoreTitle(
-            // text: ConstantStrings.welCome,
             text: ConstantStrings.dontHaveAnAccount,
-            style: TextStyles.titleHeadline!.copyWith(
-              color: ColorStyles.white,
-            ),
+            style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+              color: ColorStyles.white,fontWeight: FontWeight.w400
+            )),
           ),
         ),
       ),
@@ -128,9 +128,10 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
         child: NeoStoreTitle(
           // text: ConstantStrings.welCome,
           text: ConstantStrings.forgotPassword,
-          style: TextStyles.titleHeadline!.copyWith(
+          style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
             color: ColorStyles.white,
-          ),
+            fontWeight: FontWeight.w400
+          )),
         ),
       ),
     );
@@ -146,17 +147,13 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
           if (_formKey.currentState!.validate()) {
             loginUser(context);
           }
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => HomeScreen(),
-          //   ),
-          // );
+
         },
         text: ConstantStrings.login,
-        textStyle: TextStyles.titleHeadline!.copyWith(
+        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.red,
-        ),
+          fontWeight: FontWeight.w600
+        )),
         buttonStyle: TextButton.styleFrom(
           backgroundColor: ColorStyles.white,
         ),
@@ -170,12 +167,14 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.password,
-        textStyle: TextStyles.titleHeadline!.copyWith(
+        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
-        ),
-        hintStyle: TextStyles.titleHeadline!.copyWith(
+          fontWeight: FontWeight.w400
+        )),
+        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
-        ),
+          fontWeight: FontWeight.w400
+        )),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -194,10 +193,17 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       padding: const EdgeInsets.only(top: 40),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.username,
-        hintStyle: TextStyles.titleHeadline!.copyWith(
+        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
+        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,fontWeight: FontWeight.w400
+        )),
+        errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        // validation: validateUsername,
+
+
         controller: _emailcontroller,
         validation: validateName,
         prefixIcon: Image.asset('assets/images/username_icon.png'),
@@ -209,11 +215,11 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   Widget _title() {
     return NeoStoreTitle(
       text: ConstantStrings.neoStore,
-      style: TextStyles.largeHeadline!.copyWith(
+      style: GoogleFonts.workSans(textStyle: TextStyles.largeHeadline!.copyWith(
         fontWeight: FontWeight.bold,
 
         color: ColorStyles.white,
-      ),
+      ),),
     );
   }
 

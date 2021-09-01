@@ -1,6 +1,6 @@
 class ConstantStrings {
   static const neoStore = 'NeoSTORE';
-  static const dontHaveAnAccount ='DONT HAVE AN ACCOUNT';
+  static const dontHaveAnAccount ='DONT HAVE AN ACCOUNT?';
   static const forgotPassword ='Forgot Password?';
   static const login ='LOGIN';
   static const password ='Password';
@@ -12,15 +12,16 @@ class ConstantStrings {
   static const currentPassword ='Current Password';
   static const newPassword ='New Password';
   static const confirmPassword ='Confirm Password';
-  static const resetPassword ='RESET PASSWORD';
+  static const resetPassword ='Reset Password';
   static const iAgreeThe ='I Agree the ';
   static const termsCondition ='Terms & Condition';
-  static const register ='REGISTER';
+  static const register ='Register';
   static const lastName ='Last Name';
   static const firstName ='First Name';
   static const address ='ADDRESS';
   static const landmark ='LANDMARK';
   static const city ='CITY';
+  static const total ='TOTAL';
   static const state ='STATE';
   static const country ='COUNTRY';
   static const zipcode ='ZIP CODE';
@@ -32,6 +33,8 @@ class ConstantStrings {
   static const submit ='SUBMIT';
   static const saveAddress ='SAVE ADDRESS';
   static const logout ='Logout';
+  static const table ='Table';
+  static const order_now ='ORDER NOW';
 
 
 

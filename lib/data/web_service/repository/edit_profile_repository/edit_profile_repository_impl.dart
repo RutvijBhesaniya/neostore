@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/request/edit_profile_request.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api.dart';
@@ -11,9 +14,9 @@ class EditProfileRepositoryImpl implements EditProfileRepository {
   }
 
   @override
-  Future getEditProfileRepository(
-      EditProfileRequest editProfileRequest, BuildContext context) {
+  Future getEditProfileRepository(String email, String dob, String phoneNo,
+      Uint8List profilePic, String firstName, String lastName) {
     return _editProfilePic.getEditProfileApi(
-        editProfileRequest,context);
+        email, dob, phoneNo, profilePic, firstName, lastName);
   }
 }

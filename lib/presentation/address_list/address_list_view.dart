@@ -1,16 +1,15 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/add_address_model.dart';
 import 'package:neostore/data/model/response/order_address_response.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/add_address/add_address_view.dart';
 import 'package:neostore/presentation/address_list/address_list_view_model.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
+import 'package:neostore/utils/shared_preferences/SharedPrefsKeys.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,6 @@ class AddressList extends BaseClass {
 enum Type { ischecked, isnotchecked }
 
 class AddressListState extends BaseClassState {
-
   final snackBar = SnackBar(content: Text('Please Enter Address'));
   List<Addresslist> addAddressList = [];
   late ChangeAddress _changeAddress;
@@ -149,8 +147,14 @@ class AddressListState extends BaseClassState {
                 top: 0,
                 right: 0,
                 child: GestureDetector(
-                  onTap: (){
-                    // MemoryManagement.clearMemory();
+                  onTap: () async {
+                    MemoryManagement.prefs.remove(SharedPrefsKeys.ADDRESS);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddressList(),
+                      ),
+                    );
                   },
                   child: Container(
                     height: 17,
@@ -172,20 +176,20 @@ class AddressListState extends BaseClassState {
     );
   }
 
-  AppBar _appBar() {
-    return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
-      ),
-      text: ConstantStrings.addAddress,
-      style: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
-      ),
-    );
-  }
+  // AppBar _appBar() {
+  //   return NeoStoreAppBar(
+  //     backgroundColour: ColorStyles.purple,
+  //     leading: Icon(
+  //       Icons.arrow_back_ios,
+  //       color: ColorStyles.white,
+  //       size: 20,
+  //     ),
+  //     text: ConstantStrings.addAddress,
+  //     style: TextStyles.titleHeadline!.copyWith(
+  //       color: ColorStyles.white,
+  //     ),
+  //   );
+  // }
 
   void getaddAddress() {
     print("MEMORYADDRESS=>${MemoryManagement.getAddress()}");
@@ -196,9 +200,6 @@ class AddressListState extends BaseClassState {
       );
 
       addAddressList.addAll(addAddressModel.addresslist!);
-    }else{
-
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 }
