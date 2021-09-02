@@ -212,6 +212,8 @@ class AddAddressState extends BaseClassState {
                           AddAddressModel.fromJson(
                         jsonDecode(MemoryManagement.getAddress()!),
                       );
+
+
                       List<Addresslist> addAddressList = [];
 
                       addAddressList.addAll(addAddressModel.addresslist!);
