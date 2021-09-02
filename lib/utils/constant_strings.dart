@@ -44,7 +44,7 @@ class ConstantStrings {
   static const sofas ='Sofas';
   static const chairs ='Chairs';
   static const cupboards ='Cupboards';
-  static const storeLocator ='StoreLocator';
+  static const storeLocator ='Store Locator';
   static const myOrders ='My Orders';
   static const placeOrder ='PLACE ORDER';
 

@@ -3,21 +3,22 @@ import 'package:flutter/rendering.dart';
 
 class NeoStoreTitle extends StatelessWidget {
   NeoStoreTitle(
-      {this.text, this.color, this.style, this.maxLine, this.validation});
+      {required this.text, this.color, this.style, this.maxLine, this.validation, this.overflow});
 
-  final String? text;
+  final text;
   final maxLine;
   final color;
   final style;
   final validation;
+  final overflow;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Text(
-        text!,
+        text.toString(),
         maxLines: maxLine,
-        overflow: TextOverflow.ellipsis,
+        overflow: overflow,
         style: style,
       ),
     );

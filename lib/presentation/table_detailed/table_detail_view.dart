@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/add_to_cart_response.dart';
 import 'package:neostore/data/model/response/rating_response.dart';
@@ -42,8 +43,7 @@ class _TableProductDetailedState extends BaseClassState {
   _TableProductDetailedState(this.tableProductDetailed);
 
   @override
-   getAppBar() {
-    // TODO: implement getAppBar
+  getAppBar() {
     return _appBar();
   }
 
@@ -71,12 +71,12 @@ class _TableProductDetailedState extends BaseClassState {
     );
   }
 
-///appbar
+  ///widget app bar
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
-      leading: GestureDetector(
-        onTap: (){
+      leading: InkWell(
+        onTap: () {
           Navigator.pop(context);
         },
         child: Icon(
@@ -85,13 +85,12 @@ class _TableProductDetailedState extends BaseClassState {
           size: 20,
         ),
       ),
-      text: ConstantStrings.table,
-      style: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
-      ),
+      text: _tableDetailProvider.tableDetailResponse.data?.name,
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
-
 
   ///bottom screen widget
   Widget _bottomScreen() {
@@ -224,7 +223,7 @@ class _TableProductDetailedState extends BaseClassState {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 18),
                             child: Container(
-                              height: MediaQuery.of(context).size.height / 2.9,
+                              height: MediaQuery.of(context).size.height / 3.5,
                               width: 350,
                               decoration: BoxDecoration(
                                 image: DecorationImage(
@@ -265,7 +264,7 @@ class _TableProductDetailedState extends BaseClassState {
                           Flexible(
                             child: Container(
                               width: MediaQuery.of(context).size.width,
-                              height: MediaQuery.of(context).size.height / 2,
+                              // height: MediaQuery.of(context).size.height / 2,
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: NeoStoreElevatedButton(
@@ -285,7 +284,8 @@ class _TableProductDetailedState extends BaseClassState {
                                     );
                                     AddToCartResponse _addToCartResponse =
                                         AddToCartResponse.fromJson(
-                                            jsonDecode(response),);
+                                      jsonDecode(response),
+                                    );
                                     if (_addToCartResponse.status == 200) {
                                       Navigator.push(
                                         context,
@@ -527,7 +527,4 @@ class _TableProductDetailedState extends BaseClassState {
 
     fetchTableDetail(tableProductDetailed);
   }
-
-
-
 }

@@ -8,6 +8,7 @@ class NeoStoreAppBar extends StatefulWidget {
     this.suffixIcon,
     this.onPressed,
     this.style,
+    this.actions,
   });
 
   final backgroundColour;
@@ -16,6 +17,7 @@ class NeoStoreAppBar extends StatefulWidget {
   final suffixIcon;
   final onPressed;
   final style;
+  final actions;
 
   @override
   _NeoStoreAppBarState createState() => _NeoStoreAppBarState();
@@ -34,6 +36,7 @@ class _NeoStoreAppBarState extends State<NeoStoreAppBar> {
         widget.text!,
         style: widget.style,
       ),
+      actions: widget.actions,
     );
   }
 }

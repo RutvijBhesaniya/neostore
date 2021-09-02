@@ -37,8 +37,8 @@ class Data {
   String? lastName;
   String? email;
   String? username;
-  dynamic? profilePic;
-  dynamic? countryId;
+  dynamic profilePic;
+  dynamic countryId;
   String? gender;
   String? phoneNo;
   String? dob;

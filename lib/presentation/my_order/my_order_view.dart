@@ -81,8 +81,8 @@ class MyOrderViewState extends BaseClassState {
                   ('Order ID: ${orderListResponse!.data![index].id.toString()}'),
                 style: GoogleFonts.workSans(
                   textStyle: TextStyles.titleHeadline!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: ColorStyles.red,
+                    fontWeight: FontWeight.w400,
+                    color: ColorStyles.liver_grey,
                   ),
                 )
             ),
@@ -96,8 +96,8 @@ class MyOrderViewState extends BaseClassState {
                       text: 'Rs ${orderListResponse.data![index].cost}',
                       style: GoogleFonts.workSans(
                         textStyle: TextStyles.titleHeadline!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: ColorStyles.red,
+                          fontWeight: FontWeight.w400,
+                          color: ColorStyles.liver_grey,
                         ),
                       )),
                 ),
@@ -107,8 +107,8 @@ class MyOrderViewState extends BaseClassState {
               text: 'Ordered Date:  ${orderListResponse.data![index].created}',
                 style: GoogleFonts.workSans(
                   textStyle: TextStyles.titleHeadline!.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: ColorStyles.red,
+                    fontWeight: FontWeight.w400,
+                    color: ColorStyles.liver_grey,
                   ),
                 )
             ),

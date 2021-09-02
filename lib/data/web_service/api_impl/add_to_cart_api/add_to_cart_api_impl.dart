@@ -17,8 +17,8 @@ class AddToCartApiImpl extends AddToCartApi {
     mapToken.putIfAbsent("access_token", () => MemoryManagement.getAccessToken()!);
     Completer<dynamic> completer = new Completer<dynamic>();
     FormData formData = new FormData.fromMap(map);
-    print("getmap=>${map}");
-    print("getform=>${formData}");
+    // print("getmap=>${map}");
+    // print("getform=>${formData}");
 
     var response = await APIHandler.post(
       url: "${APIs.addToCart}",

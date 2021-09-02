@@ -1,14 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/network_model/api_constant.dart';
-import 'package:neostore/base/network_model/api_error.dart';
-import 'package:neostore/base/network_model/api_handler.dart';
-import 'package:neostore/data/model/request/edit_profile_request.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:http/http.dart' as http;
@@ -17,16 +12,12 @@ class EditProfileApiImpl extends EditProfileApi {
   @override
   Future getEditProfileApi(String email, String dob, String phoneNo,
       Uint8List profilePic, String firstName, String lastName) async {
-    print("profilepic=>${profilePic}");
     Map<String, String> map = Map<String, String>();
-    // Map<String, String> mapToken = Map<String, String>();
     map.putIfAbsent('email', () => email);
     map.putIfAbsent('dob', () => dob);
     map.putIfAbsent('phone_no', () => phoneNo);
-    // map.putIfAbsent('profile_pic', () => profilePic);
     map.putIfAbsent('first_name', () => firstName);
     map.putIfAbsent('last_name', () => lastName);
-    print('editmap=>${map}');
 
     // mapToken.putIfAbsent(
     //     'access_token', () => MemoryManagement.getAccessToken()!);
@@ -59,15 +50,15 @@ class EditProfileApiImpl extends EditProfileApi {
         'POST',
         Uri.parse(
             APIs.updateProfile));
-    print("editrequest=>${Uri.parse}");
-    print("requeturrrrrrrrrr=>${request}");
-    print('firstname=>${firstName}');
-    print('lastName=>${lastName}');
-    print('email=>${email}');
-    print('dob=>${dob}');
-    print('phoneNo=>${phoneNo}');
+    print("editrequest=>$Uri.parse");
+    print("requeturrrrrrrrrr=>$request");
+    print('firstname=>$firstName');
+    print('lastName=>$lastName');
+    print('email=>$email');
+    print('dob=>$dob');
+    print('phoneNo=>$phoneNo');
     request.fields.addAll(map);
-    print("editmappppppppp=>${map}");
+    print("editmappppppppp=>$map");
     // request.fields.addAll({
     //   'first_name': firstName,
     //   'last_name': lastName,
@@ -80,6 +71,20 @@ class EditProfileApiImpl extends EditProfileApi {
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
+
+
+
+    // void compressImage() async {
+    //   File imageFile = await ImagePicker.pickImage();
+    //   final tempDir = await getTemporaryDirectory();
+    //   final path = tempDir.path;
+    //   int rand = new Math.Random().nextInt(10000);
+    //
+    //   Im.Image image = Im.decodeImage(imageFile.readAsBytesSync());
+    //   Im.Image smallerImage = Im.copyResize(image, 500); // choose the size here, it will maintain aspect ratio
+    //
+    //   var compressedImage = new File(imageFile)..writeAsBytesSync(Im.encodeJpg(image, quality: 85));
+    // }
 
 
 

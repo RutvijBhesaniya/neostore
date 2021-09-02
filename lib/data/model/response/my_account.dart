@@ -23,8 +23,8 @@ class MyAccountResponse {
 }
 
 class Data {
-  User_data? userData;
-  List<Product_categories>? productCategories;
+  UserData? userData;
+  List<ProductCategories>? productCategories;
   int? totalCarts;
   int? totalOrders;
 
@@ -35,11 +35,11 @@ class Data {
       this.totalOrders});
 
   Data.fromJson(dynamic json) {
-    userData = json['user_data'] != null ? User_data.fromJson(json['user_data']) : null;
+    userData = json['user_data'] != null ? UserData.fromJson(json['user_data']) : null;
     if (json['product_categories'] != null) {
       productCategories = [];
       json['product_categories'].forEach((v) {
-        productCategories?.add(Product_categories.fromJson(v));
+        productCategories?.add(ProductCategories.fromJson(v));
       });
     }
     totalCarts = json['total_carts'];
@@ -61,21 +61,21 @@ class Data {
 
 }
 
-class Product_categories {
+class ProductCategories {
   int? id;
   String? name;
   String? iconImage;
   String? created;
   String? modified;
 
-  Product_categories({
+  ProductCategories({
       this.id, 
       this.name, 
       this.iconImage, 
       this.created, 
       this.modified});
 
-  Product_categories.fromJson(dynamic json) {
+  ProductCategories.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     iconImage = json['icon_image'];
@@ -95,7 +95,7 @@ class Product_categories {
 
 }
 
-class User_data {
+class UserData {
   int? id;
   int? roleId;
   String? firstName;
@@ -112,7 +112,7 @@ class User_data {
   String? modified;
   String? accessToken;
 
-  User_data({
+  UserData({
       this.id, 
       this.roleId, 
       this.firstName, 
@@ -129,7 +129,7 @@ class User_data {
       this.modified, 
       this.accessToken});
 
-  User_data.fromJson(dynamic json) {
+  UserData.fromJson(dynamic json) {
     id = json['id'];
     roleId = json['role_id'];
     firstName = json['first_name'];

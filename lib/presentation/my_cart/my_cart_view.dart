@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -6,13 +7,13 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/add_to_cart_response.dart';
 import 'package:neostore/data/model/response/delete_cart_response.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
-import 'package:neostore/data/model/response/table_detail_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/address_list/address_list_view.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
+import 'package:neostore/presentation/table_detailed/table_detail_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -25,8 +26,7 @@ class MyCartView extends BaseClass {
 }
 
 class MyCartViewState extends BaseClassState {
-  late ListCartProvider _listCartProvider =
-      Provider.of<ListCartProvider>(context);
+  late ListCartProvider _listCartProvider;
 
   TextEditingController _quantityController = new TextEditingController();
 
@@ -37,6 +37,7 @@ class MyCartViewState extends BaseClassState {
 
   @override
   Widget getBody() {
+    _listCartProvider = Provider.of<ListCartProvider>(context);
     return _listCartProvider.isLoading
         ? Center(
             child: CircularProgressIndicator(),
@@ -61,72 +62,113 @@ class MyCartViewState extends BaseClassState {
       child: Container(
         child: Column(
           children: [
-            ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: ScrollPhysics(),
-              itemCount: listCartResponse!.data!.length,
-              itemBuilder: (context, index) {
-                return _buildListItemDetail(
-                  index,
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  NeoStoreTitle(
-                      text: ConstantStrings.total,
-                      style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                            color: ColorStyles.black,
-                            fontWeight: FontWeight.w400),
-                      )),
-                  NeoStoreTitle(
-                      text:
-                          _listCartProvider.listCartResponse!.total.toString(),
-                      style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                            color: ColorStyles.black,
-                            fontWeight: FontWeight.w400),
-                      ))
-                ],
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: NeoStoreElevatedButton(
-                    text: ConstantStrings.order_now,
-                    textStyle: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                      fontWeight: FontWeight.w600,
-                      color: ColorStyles.white,
-                    )),
-                    buttonStyle:
-                        TextButton.styleFrom(backgroundColor: ColorStyles.red),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => AddressList(),
-                        ),
-                      );
-                    }),
-              ),
-            )
+            ///list view builder
+            _itemListViewBuilder(listCartResponse!),
+
+            ///total price widget
+            _totalPrice(),
+
+            /// order now button
+            _orderNowButton()
           ],
         ),
       ),
     );
   }
 
-  Widget _buildListItemDetail(
-    int index,
-  ) {
+  ///list view builder
+  ListView _itemListViewBuilder(ListCartResponse listCartResponse) {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      physics: ScrollPhysics(),
+      itemCount: listCartResponse.data!.length,
+      itemBuilder: (context, index) {
+        return _buildListItemDetail(index);
+      },
+    );
+  }
+
+  /// order now button
+  Padding _orderNowButton() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        child: NeoStoreElevatedButton(
+            text: ConstantStrings.order_now,
+            textStyle: GoogleFonts.workSans(
+              textStyle: TextStyles.titleHeadline!.copyWith(
+                fontWeight: FontWeight.w600,
+                color: ColorStyles.white,
+              ),
+            ),
+            buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.red),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddressList(),
+                ),
+              );
+            }),
+      ),
+    );
+  }
+
+  ///total price widget
+  Padding _totalPrice() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: [
+          ///total price label widget
+          _totalPriceLabel(),
+
+          ///rupees icon widget
+          _rupeesIcon(),
+
+          ///total rupees widget
+          _totalRupees()
+        ],
+      ),
+    );
+  }
+
+  ///total rupees widget
+  NeoStoreTitle _totalRupees() {
+    return NeoStoreTitle(
+      text: _listCartProvider.listCartResponse!.total.toString(),
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!
+            .copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
+      ),
+    );
+  }
+
+  ///rupees icon widget
+  Flexible _rupeesIcon() {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Icon(Icons.money_off),
+      ),
+    );
+  }
+
+  ///total price label widget
+  NeoStoreTitle _totalPriceLabel() {
+    return NeoStoreTitle(
+      text: ConstantStrings.total,
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!
+            .copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
+      ),
+    );
+  }
+
+  ///list view builder detail
+  Widget _buildListItemDetail(int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -135,6 +177,7 @@ class MyCartViewState extends BaseClassState {
             actionPane: SlidableDrawerActionPane(),
             actionExtentRatio: 0.25,
             secondaryActions: [
+              ///delete icon
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -144,8 +187,6 @@ class MyCartViewState extends BaseClassState {
                   shape: BoxShape.circle,
                   color: ColorStyles.red,
                 ),
-
-                // height: MediaQuery.of(context).size.height / 7,
                 child: GestureDetector(
                   onTap: () async {
                     var deleteResponse = await _listCartProvider.getDeleteCart(
@@ -176,185 +217,201 @@ class MyCartViewState extends BaseClassState {
                 _image(index),
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _productName(index),
-                      _productCategoryType(index),
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     showDialog(
-                      //       context: context,
-                      //       builder: (BuildContext context) {
-                      //         return AlertDialog(
-                      //           content: Container(
-                      //             height: MediaQuery.of(context).size.height /
-                      //                 1.5,
-                      //             child: Column(
-                      //               children: [
-                      //                 NeoStoreTitle(
-                      //                   text: _listCartProvider
-                      //                       .tableDetailResponse!.data!.name,
-                      //                   style:
-                      //                       TextStyles.titlelabel!.copyWith(
-                      //                     color: ColorStyles.black,
-                      //                   ),
-                      //                 ),
-                      //                 Padding(
-                      //                   padding: const EdgeInsets.symmetric(
-                      //                       vertical: 18),
-                      //                   child: Container(
-                      //                     height: MediaQuery.of(context)
-                      //                             .size
-                      //                             .height /
-                      //                         2.9,
-                      //                     width: 350,
-                      //                     decoration: BoxDecoration(
-                      //                       image: DecorationImage(
-                      //                         fit: BoxFit.fill,
-                      //                         image: NetworkImage(
-                      //                           _listCartProvider
-                      //                               .tableDetailResponse!
-                      //                               .data!
-                      //                               .productImages!
-                      //                               .first
-                      //                               .image
-                      //                               .toString(),
-                      //                         ),
-                      //                       ),
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //
-                      //                 ///enter qty title
-                      //                 Padding(
-                      //                   padding:
-                      //                       const EdgeInsets.only(bottom: 15),
-                      //                   child: Container(
-                      //                     width: MediaQuery.of(context)
-                      //                         .size
-                      //                         .width,
-                      //                     child: Center(
-                      //                       child: NeoStoreTitle(
-                      //                         text: 'Enter Qty',
-                      //                       ),
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //                 Container(
-                      //                   width: MediaQuery.of(context)
-                      //                           .size
-                      //                           .width /
-                      //                       3,
-                      //                   child: Center(
-                      //                     child: NeoStoreTextFormField(
-                      //                       hintText: 'qty',
-                      //                       controller: _quantityController,
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //
-                      //                 ///submit button
-                      //                 Flexible(
-                      //                   child: Container(
-                      //                     width: MediaQuery.of(context)
-                      //                         .size
-                      //                         .width,
-                      //                     height: MediaQuery.of(context)
-                      //                             .size
-                      //                             .height /
-                      //                         2,
-                      //                     child: Padding(
-                      //                       padding:
-                      //                           const EdgeInsets.only(top: 5),
-                      //                       child: NeoStoreElevatedButton(
-                      //                         text: ConstantStrings.submit,
-                      //                         textStyle: TextStyles
-                      //                             .titlelabel!
-                      //                             .copyWith(
-                      //                           color: ColorStyles.white,
-                      //                         ),
-                      //                         buttonStyle:
-                      //                             TextButton.styleFrom(
-                      //                           backgroundColor:
-                      //                               ColorStyles.red,
-                      //                         ),
-                      //                         onPressed: () async {
-                      //                           var response =
-                      //                               await _listCartProvider
-                      //                                   .getAddToCart(
-                      //                             _listCartProvider
-                      //                                 .tableDetailResponse!
-                      //                                 .data!
-                      //                                 .id!,
-                      //                             int.parse(
-                      //                                 _quantityController
-                      //                                     .text),
-                      //                           );
-                      //                           AddToCartResponse
-                      //                               _addToCartResponse =
-                      //                               AddToCartResponse
-                      //                                   .fromJson(
-                      //                             jsonDecode(response),
-                      //                           );
-                      //                           if (_addToCartResponse
-                      //                                   .status ==
-                      //                               200) {
-                      //                             Navigator.push(
-                      //                               context,
-                      //                               MaterialPageRoute(
-                      //                                 builder: (context) =>
-                      //                                     MyCartView(),
-                      //                               ),
-                      //                             );
-                      //                           } else {
-                      //                             'please';
-                      //                           }
-                      //                         },
-                      //                       ),
-                      //                     ),
-                      //                   ),
-                      //                 )
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         );
-                      //       },
-                      //     );
-                      //   },
-                      //   child: Container(
-                      //     color: ColorStyles.light_grey,
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
-                      //       child: Row(
-                      //         children: [
-                      //           NeoStoreTitle(
-                      //             text: _listCartProvider
-                      //                 .listCartResponse!.data![index].quantity
-                      //                 .toString(),
-                      //           ),
-                      //           Icon(Icons.arrow_drop_down)
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // )
-                    ],
+                  child: Container(
+                    width: MediaQuery.of(context).size.width / 2.3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ///product name widget
+                        _productName(index),
+
+                        ///product category widget
+                        _productCategoryType(index),
+
+                        ///alert pop box
+                        Container(
+                          width: MediaQuery.of(context).size.width / 6,
+                          child: GestureDetector(
+                            onTap: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    content: Container(
+                                      height:
+                                          MediaQuery.of(context).size.height /
+                                              1.7,
+                                      child: Column(
+                                        children: [
+                                          NeoStoreTitle(
+                                            text: _listCartProvider
+                                                .tableDetailResponse!
+                                                .data!
+                                                .name,
+                                            style:
+                                                TextStyles.titlelabel!.copyWith(
+                                              color: ColorStyles.black,
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 18),
+                                            child: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  2.9,
+                                              width: 350,
+                                              decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                  fit: BoxFit.fill,
+                                                  image: NetworkImage(
+                                                    _listCartProvider
+                                                        .tableDetailResponse!
+                                                        .data!
+                                                        .productImages!
+                                                        .first
+                                                        .image
+                                                        .toString(),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+
+                                          ///enter qty title
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 15),
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              child: Center(
+                                                child: NeoStoreTitle(
+                                                  text: 'Enter Qty',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          Container(
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                3,
+                                            child: Center(
+                                              child: NeoStoreTextFormField(
+                                                hintText: 'qty',
+                                                controller: _quantityController,
+                                              ),
+                                            ),
+                                          ),
+
+                                          ///submit button
+                                          Flexible(
+                                            child: Container(
+                                              width: MediaQuery.of(context)
+                                                  .size
+                                                  .width,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  2,
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 5),
+                                                child: NeoStoreElevatedButton(
+                                                  text: ConstantStrings.submit,
+                                                  textStyle: TextStyles
+                                                      .titlelabel!
+                                                      .copyWith(
+                                                    color: ColorStyles.white,
+                                                  ),
+                                                  buttonStyle:
+                                                      TextButton.styleFrom(
+                                                    backgroundColor:
+                                                        ColorStyles.red,
+                                                  ),
+                                                  onPressed: () async {
+                                                    var response =
+                                                        await _listCartProvider
+                                                            .getAddToCart(
+                                                      _listCartProvider
+                                                          .tableDetailResponse!
+                                                          .data!
+                                                          .id!,
+                                                      int.parse(
+                                                          _quantityController
+                                                              .text),
+                                                    );
+                                                    AddToCartResponse
+                                                        _addToCartResponse =
+                                                        AddToCartResponse
+                                                            .fromJson(
+                                                      jsonDecode(response),
+                                                    );
+                                                    if (_addToCartResponse
+                                                            .status ==
+                                                        200) {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              MyCartView(),
+                                                        ),
+                                                      );
+                                                    } else {
+                                                      'please';
+                                                    }
+                                                  },
+                                                ),
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                            child: Container(
+                              color: ColorStyles.light_grey,
+                              child: Padding(
+                                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    NeoStoreTitle(
+                                      text: _listCartProvider.listCartResponse!
+                                          .data![index].quantity
+                                          .toString(),
+                                    ),
+                                    Icon(Icons.arrow_drop_down)
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-                Flexible(
-                  child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: NeoStoreTitle(
-                      text: _listCartProvider
-                          .listCartResponse!.data![index].product!.subTotal
-                          .toString(),
-                      style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                            color: ColorStyles.liver_grey,
-                            fontWeight: FontWeight.w400),
-                      ),
-                    ),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Icon(Icons.money_off),
+                ),
+                NeoStoreTitle(
+                  text: _listCartProvider
+                      .listCartResponse!.data![index].product!.subTotal
+                      .toString(),
+                  style: GoogleFonts.workSans(
+                    textStyle: TextStyles.titleHeadline!.copyWith(
+                        color: ColorStyles.liver_grey,
+                        fontWeight: FontWeight.w400),
                   ),
                 )
               ],
@@ -368,6 +425,7 @@ class MyCartViewState extends BaseClassState {
     );
   }
 
+  ///product category widget
   NeoStoreTitle _productCategoryType(int index) {
     return NeoStoreTitle(
         text: _listCartProvider
@@ -378,9 +436,11 @@ class MyCartViewState extends BaseClassState {
         ));
   }
 
+  ///product name widget
   NeoStoreTitle _productName(int index) {
     return NeoStoreTitle(
       text: _listCartProvider.listCartResponse!.data![index].product!.name,
+      overflow: TextOverflow.ellipsis,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline!.copyWith(
             color: ColorStyles.liver_grey, fontWeight: FontWeight.w400),
@@ -388,7 +448,8 @@ class MyCartViewState extends BaseClassState {
     );
   }
 
-  Container _image(int index) {
+  ///image widget
+  Widget _image(int index) {
     return Container(
       width: MediaQuery.of(context).size.width / 3.5,
       height: MediaQuery.of(context).size.height / 7,
@@ -410,6 +471,12 @@ class MyCartViewState extends BaseClassState {
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
         onTap: () {
+          // Navigator.pushReplacement(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => TableProductDetailed(tableProductDetailed)
+          //   ),
+          // );
           Navigator.pop(context);
         },
         child: Icon(
@@ -426,18 +493,16 @@ class MyCartViewState extends BaseClassState {
   }
 
   void fetchMyCartData() {
-    Future.delayed(
-      Duration(milliseconds: 300),
-      () {
-        _listCartProvider.getListCart();
-        // _listCartProvider.getTableDetail(productId);
-      },
-    );
+    _listCartProvider.getListCart();
   }
 
   @override
   void initState() {
-    fetchMyCartData();
     super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback(
+      (_) {
+        fetchMyCartData();
+      },
+    );
   }
 }

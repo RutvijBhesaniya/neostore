@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/add_address_model.dart';
 import 'package:neostore/data/model/response/order_address_response.dart';
+import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/add_address/add_address_view.dart';
@@ -24,7 +26,16 @@ class AddressList extends BaseClass {
 enum Type { ischecked, isnotchecked }
 
 class AddressListState extends BaseClassState {
-  final snackBar = SnackBar(content: Text('Please Enter Address'));
+  final snackBar = SnackBar(
+    content: NeoStoreTitle(
+      text: 'Please Enter Address',
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!.copyWith(
+        fontWeight: FontWeight.w600,
+        color: ColorStyles.red,
+      )),
+    ),
+  );
   List<Addresslist> addAddressList = [];
   late ChangeAddress _changeAddress;
   late AddressListProvider _addressListProvider =
@@ -38,30 +49,7 @@ class AddressListState extends BaseClassState {
 
   @override
   getAppBar() {
-    return AppBar(
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: Icon(Icons.arrow_back),
-      ),
-      title: Text(
-        'Address List',
-      ),
-      actions: [
-        IconButton(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddAddress(),
-              ),
-            );
-          },
-          icon: Icon(Icons.add),
-        ),
-      ],
-    );
+    return _appBar();
   }
 
   @override
@@ -76,7 +64,12 @@ class AddressListState extends BaseClassState {
               children: [
                 NeoStoreTitle(
                   text: 'Shipping Address',
-                  style: TextStyles.titleHeadline,
+                  style: GoogleFonts.workSans(
+                    textStyle: TextStyles.titleHeadline!.copyWith(
+                      fontWeight: FontWeight.w400,
+                      color: ColorStyles.dark_grey,
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 10, bottom: 10),
@@ -111,9 +104,10 @@ class AddressListState extends BaseClassState {
                     text: ConstantStrings.placeOrder,
                     buttonStyle:
                         TextButton.styleFrom(backgroundColor: ColorStyles.red),
-                    textStyle: TextStyles.titlelabel!.copyWith(
-                      color: ColorStyles.white,
-                    ),
+                    textStyle: GoogleFonts.workSans(
+                        textStyle: TextStyles.titlelabel!.copyWith(
+                            color: ColorStyles.white,
+                            fontWeight: FontWeight.w600)),
                   ),
                 )
               ],
@@ -124,6 +118,8 @@ class AddressListState extends BaseClassState {
 
   Widget _radioButton(Addresslist addresslist, int index) {
     return RadioListTile<int>(
+      activeColor: ColorStyles.dark_grey,
+
       value: index,
       title: Container(
         decoration: BoxDecoration(
@@ -148,7 +144,11 @@ class AddressListState extends BaseClassState {
                 right: 0,
                 child: GestureDetector(
                   onTap: () async {
-                    MemoryManagement.prefs.remove(SharedPrefsKeys.ADDRESS);
+                    String? response = MemoryManagement.getAddress();
+                    AddAddressModel result = AddAddressModel.fromJson(json.decode(response!));
+                    result.addresslist!.removeAt(index);
+                    String addr = json.encode(result);
+                    MemoryManagement.setAddress(address: addr);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -176,20 +176,38 @@ class AddressListState extends BaseClassState {
     );
   }
 
-  // AppBar _appBar() {
-  //   return NeoStoreAppBar(
-  //     backgroundColour: ColorStyles.purple,
-  //     leading: Icon(
-  //       Icons.arrow_back_ios,
-  //       color: ColorStyles.white,
-  //       size: 20,
-  //     ),
-  //     text: ConstantStrings.addAddress,
-  //     style: TextStyles.titleHeadline!.copyWith(
-  //       color: ColorStyles.white,
-  //     ),
-  //   );
-  // }
+  Widget _appBar() {
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.red,
+      leading: InkWell(
+        onTap: (){
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
+      ),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddAddress(),
+              ),
+            );
+          },
+          icon: Icon(Icons.add),
+        )
+      ],
+      text: ConstantStrings.addAddress,
+      style: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+      ),
+    );
+  }
 
   void getaddAddress() {
     print("MEMORYADDRESS=>${MemoryManagement.getAddress()}");

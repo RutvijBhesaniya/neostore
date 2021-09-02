@@ -25,15 +25,7 @@ class AddAddressState extends BaseClassState {
 
   @override
   getAppBar() {
-    return AppBar(
-      leading: IconButton(
-        onPressed: () {
-          Navigator.pop(context);
-        },
-        icon: Icon(Icons.arrow_back),
-      ),
-      title: Text('Add Address'),
-    );
+    return _appBar();
   }
 
   @override
@@ -230,7 +222,7 @@ class AddAddressState extends BaseClassState {
 
                       AddAddressModel addaddressmodel =
                           AddAddressModel(addresslist: addAddressList);
-                      var addressvalue = json.encode(addaddressmodel);
+                      String addressvalue = json.encode(addaddressmodel);
                       MemoryManagement.setAddress(address: addressvalue);
                     } else {
                       print("notaddress");
@@ -266,19 +258,28 @@ class AddAddressState extends BaseClassState {
     );
   }
 
-  ///widget app bar
-  _appBar() {
+
+  Widget _appBar() {
     return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
+      backgroundColour: ColorStyles.red,
+      leading: InkWell(
+        onTap: (){
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
       ),
+
       text: ConstantStrings.addAddress,
       style: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),
     );
   }
+
+
+
 }

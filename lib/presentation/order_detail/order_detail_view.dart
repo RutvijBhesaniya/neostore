@@ -31,16 +31,7 @@ class _OrderDetailViewState extends BaseClassState {
 
   @override
   getAppBar() {
-    return AppBar(
-      leading: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.arrow_back,
-        ),
-      ),
-    );
+    return _appBar();
   }
 
   @override
@@ -50,49 +41,67 @@ class _OrderDetailViewState extends BaseClassState {
             child: CircularProgressIndicator(),
           )
         : Column(
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                physics: ScrollPhysics(),
-                itemCount: _orderDetailProvider
-                    .orderDetailResponse!.data!.orderDetails!.length,
-                itemBuilder: (context, index) {
-                  return _buildListItemDetail(
-                      _orderDetailProvider.orderDetailResponse, index);
-                },
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    NeoStoreTitle(
-                      text: 'Total',
-                        style: GoogleFonts.workSans(
-                          textStyle: TextStyles.titleHeadline!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: ColorStyles.red,
-                          ),
-                        )
-                    ),
-                    NeoStoreTitle(
-                      text: _orderDetailProvider.orderDetailResponse!.data!.cost
-                          .toString(),
-                        style: GoogleFonts.workSans(
-                          textStyle: TextStyles.titleHeadline!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: ColorStyles.red,
-                          ),
-                        )
-                    )
-                  ],
-                ),
-              )
-            ],
+            children: [_listViewBuilder(), _totalTitleAndCost()],
           );
   }
 
+  Padding _totalTitleAndCost() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ///total title widget
+          _totalTitle(),
+
+          _totalCost()
+        ],
+      ),
+    );
+  }
+
+  NeoStoreTitle _totalCost() {
+    return NeoStoreTitle(
+          text:
+              _orderDetailProvider.orderDetailResponse!.data!.cost.toString(),
+          style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+              fontWeight: FontWeight.w400,
+              color: ColorStyles.black,
+            ),
+          ),
+        );
+  }
+
+
+  ///total title widget
+  NeoStoreTitle _totalTitle() {
+    return NeoStoreTitle(
+          text: ConstantStrings.total,
+          style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+              fontWeight: FontWeight.w400,
+              color: ColorStyles.black,
+            ),
+          ),
+        );
+  }
+
+  ListView _listViewBuilder() {
+    return ListView.builder(
+      shrinkWrap: true,
+      scrollDirection: Axis.vertical,
+      physics: ScrollPhysics(),
+      itemCount:
+          _orderDetailProvider.orderDetailResponse!.data!.orderDetails!.length,
+      itemBuilder: (context, index) {
+        return _buildListItemDetail(
+            _orderDetailProvider.orderDetailResponse, index);
+      },
+    );
+  }
+
+  //list item detail
   Widget _buildListItemDetail(
       OrderDetailResponse? orderDetailResponse, int index) {
     return Padding(
@@ -100,67 +109,13 @@ class _OrderDetailViewState extends BaseClassState {
       child: Column(
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Container(
-                width: MediaQuery.of(context).size.width / 3.5,
-                height: MediaQuery.of(context).size.height / 7,
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    fit: BoxFit.fill,
-                    image: NetworkImage(orderDetailResponse!
-                        .data!.orderDetails![index].prodImage
-                        .toString()),
-                  ),
-                ),
-              ),
-              Column(
-                children: [
-                  NeoStoreTitle(
-                    text:
-                        orderDetailResponse.data!.orderDetails![index].prodName,
-                      style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: ColorStyles.red,
-                        ),
-                      )
-                  ),
-                  NeoStoreTitle(
-                    text: orderDetailResponse
-                        .data!.orderDetails![index].prodCatName,
-                      style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: ColorStyles.red,
-                        ),
-                      )
-                  ),
-                  NeoStoreTitle(
-                    text:
-                        'OTY : ${orderDetailResponse.data!.orderDetails![index].quantity} ',
-                      style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: ColorStyles.red,
-                        ),
-                      )
-                  )
-                ],
-              ),
-              Flexible(
-                child: Align(
-                    alignment: Alignment.bottomRight,
-                    child: NeoStoreTitle(
-                      text:
-                          'RS ${orderDetailResponse.data!.orderDetails![index].total}',
-                        style: GoogleFonts.workSans(
-                          textStyle: TextStyles.titleHeadline!.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: ColorStyles.red,
-                          ),
-                        )
-                    )),
-              ),
+              ///image widget
+              _image(orderDetailResponse!, index),
+
+              ///details widget
+              _details(orderDetailResponse, index),
             ],
           ),
           Divider(
@@ -171,19 +126,139 @@ class _OrderDetailViewState extends BaseClassState {
     );
   }
 
+  ///details widget
+  Padding _details(OrderDetailResponse orderDetailResponse, int index) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5),
+      child: Container(
+        height: MediaQuery.of(context).size.height / 8,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ///product title widget
+            _title(orderDetailResponse, index),
+
+            ///product category widget
+            _productCategoryName(orderDetailResponse, index),
+
+            ///quantity and cost widget
+            _quantityAndCost(orderDetailResponse, index)
+          ],
+        ),
+      ),
+    );
+  }
+
+  ///quantity and cost widget
+  Flexible _quantityAndCost(
+      OrderDetailResponse orderDetailResponse, int index) {
+    return Flexible(
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Container(
+          width: MediaQuery.of(context).size.width / 1.7,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ///quantity widget
+              _quantity(orderDetailResponse, index),
+
+              ///cost widget
+              _cost(orderDetailResponse, index),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///cost widget
+  NeoStoreTitle _cost(OrderDetailResponse orderDetailResponse, int index) {
+    return NeoStoreTitle(
+      text: 'RS ${orderDetailResponse.data!.orderDetails![index].total}',
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          fontWeight: FontWeight.w400,
+          color: ColorStyles.dark_grey,
+        ),
+      ),
+    );
+  }
+
+  ///quantity widget
+  NeoStoreTitle _quantity(OrderDetailResponse orderDetailResponse, int index) {
+    return NeoStoreTitle(
+      text: 'OTY : ${orderDetailResponse.data!.orderDetails![index].quantity} ',
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          fontWeight: FontWeight.w400,
+          color: ColorStyles.dark_grey,
+        ),
+      ),
+    );
+  }
+
+  ///product category widget
+  NeoStoreTitle _productCategoryName(
+      OrderDetailResponse orderDetailResponse, int index) {
+    return NeoStoreTitle(
+        text: orderDetailResponse.data!.orderDetails![index].prodCatName,
+        style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            fontWeight: FontWeight.w400,
+            color: ColorStyles.dark_grey,
+          ),
+        ));
+  }
+
+  ///product title widget
+  NeoStoreTitle _title(OrderDetailResponse orderDetailResponse, int index) {
+    return NeoStoreTitle(
+        maxLine: 1,
+        overflow: TextOverflow.ellipsis,
+        text: orderDetailResponse.data!.orderDetails![index].prodName,
+        style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            fontWeight: FontWeight.w400,
+            color: ColorStyles.dark_grey,
+          ),
+        ));
+  }
+
+  ///image widget
+  Container _image(OrderDetailResponse orderDetailResponse, int index) {
+    return Container(
+      width: MediaQuery.of(context).size.width / 3.5,
+      height: MediaQuery.of(context).size.height / 7,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          fit: BoxFit.fill,
+          image: NetworkImage(orderDetailResponse
+              .data!.orderDetails![index].prodImage
+              .toString()),
+        ),
+      ),
+    );
+  }
+
   ///appbar widget
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
+      backgroundColour: ColorStyles.red,
+      leading: GestureDetector(
+        onTap: (){
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
       ),
       text: ConstantStrings.editProfile,
-      style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,fontWeight: FontWeight.w400
-      )),
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 

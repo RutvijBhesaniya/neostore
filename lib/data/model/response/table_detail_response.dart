@@ -33,7 +33,7 @@ class Data {
   int? viewCount;
   String? created;
   String? modified;
-  List<Product_images>? productImages;
+  List<ProductImages>? productImages;
 
   Data({
       this.id, 
@@ -62,7 +62,7 @@ class Data {
     if (json['product_images'] != null) {
       productImages = [];
       json['product_images'].forEach((v) {
-        productImages?.add(Product_images.fromJson(v));
+        productImages?.add(ProductImages.fromJson(v));
       });
     }
   }
@@ -87,21 +87,21 @@ class Data {
 
 }
 
-class Product_images {
+class ProductImages {
   int? id;
   int? productId;
   String? image;
   String? created;
   String? modified;
 
-  Product_images({
+  ProductImages({
       this.id, 
       this.productId, 
       this.image, 
       this.created, 
       this.modified});
 
-  Product_images.fromJson(dynamic json) {
+  ProductImages.fromJson(dynamic json) {
     id = json['id'];
     productId = json['product_id'];
     image = json['image'];

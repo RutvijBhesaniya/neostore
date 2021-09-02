@@ -18,6 +18,7 @@ import 'package:neostore/presentation/table_category/table_category_viewmodel.da
 import 'package:neostore/presentation/table_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
+import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -113,8 +114,9 @@ class _NeoStoreState extends State<NeoStore> {
       debugShowCheckedModeBanner: false,
       title: ConstantStrings.neoStore,
       theme: ThemeData(
+        accentColor: Color(0xFFBB0100),
 
-        primarySwatch: Colors.blue,
+        // primarySwatch: Color(0xFFBB0100),
       ),
       // home: OrderDetailView(),
       home: (isUserLoggedIn == false) ? LoginScreen() : HomeScreen(),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/widget/neostore_title_border_with_icons.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_view.dart';
+import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
 import 'package:neostore/presentation/reset_password/reset_password_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -20,7 +21,7 @@ class MyAccount extends BaseClass {
 
 class MyAccountState extends BaseClassState {
   late MyAccountProvider _myAccountProvider =
-      Provider.of<MyAccountProvider>(context);
+  Provider.of<MyAccountProvider>(context);
 
   @override
   getAppBar() {
@@ -31,82 +32,93 @@ class MyAccountState extends BaseClassState {
   Widget getBody() {
     return _myAccountProvider.isLoading
         ? Center(
-            child: CircularProgressIndicator(),
-          )
+      child: CircularProgressIndicator(),
+    )
         : Scaffold(
-            body: Container(
-              ///widget background image
-              decoration: _backgroundImage(),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            bottom: 20,
-                          ),
-                          child: CircleAvatar(
-                            backgroundColor: ColorStyles.blue,
-                            radius: 100,
-                          ),
-                        ),
-                      ),
+      body: Container(
 
-                      ///widget first name
-                      _firstName(_myAccountProvider.myAccountResponse),
-
-                      ///widget last name
-                      _lastName(),
-
-                      ///widget email
-                      _email(),
-
-                      ///widget phone number
-                      _phoneNumber(),
-
-                      ///widget date of birth
-                      _dateOfBirth(),
-
-                      ///widget edit profile button
-                      _editProfileButton(context),
-                    ],
+        ///widget background image
+        decoration: _backgroundImage(),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(
+                      top: 20,
+                      bottom: 20,
+                    ),
+                    child: CircleAvatar(
+                      backgroundColor: ColorStyles.blue,
+                      radius: 100,
+                    ),
                   ),
                 ),
-              ),
+
+                ///widget first name
+                _firstName(_myAccountProvider.myAccountResponse),
+
+                ///widget last name
+                _lastName(),
+
+                ///widget email
+                _email(),
+
+                ///widget phone number
+                _phoneNumber(),
+
+                ///widget date of birth
+                _dateOfBirth(),
+
+                ///widget edit profile button
+                _editProfileButton(context),
+              ],
             ),
-            bottomNavigationBar: NeoStoreElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResetPassword(),
-                  ),
-                );
-              },
-              text: 'RESET PASSWORD',
-              textStyle: TextStyles.titleHeadline!.copyWith(
-                  fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
-              buttonStyle:
-                  TextButton.styleFrom(backgroundColor: ColorStyles.white),
+          ),
+        ),
+      ),
+      bottomNavigationBar: NeoStoreElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResetPassword(),
             ),
           );
+        },
+        text: 'RESET PASSWORD',
+        textStyle: TextStyles.titleHeadline?.copyWith(
+            fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
+        buttonStyle:
+        TextButton.styleFrom(backgroundColor: ColorStyles.white),
+      ),
+    );
   }
 
   ///widget app bar
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
+      backgroundColour: ColorStyles.red,
+      leading: InkWell(
+        onTap: () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
       ),
       text: ConstantStrings.myAccount,
-      style: TextStyles.titleHeadline!.copyWith(
+      style: TextStyles.titleHeadline?.copyWith(
         color: ColorStyles.white,
       ),
     );
@@ -115,7 +127,10 @@ class MyAccountState extends BaseClassState {
   ///widget edit profile button
   Widget _editProfileButton(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width,
       margin: EdgeInsets.only(top: 20, bottom: 30),
       child: NeoStoreElevatedButton(
         onPressed: () {
@@ -128,10 +143,10 @@ class MyAccountState extends BaseClassState {
         },
         text: ConstantStrings.editProfile,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-          fontWeight: FontWeight.bold,
-          color: ColorStyles.red,
-        )),
+            textStyle: TextStyles.titleHeadline?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: ColorStyles.red,
+            )),
         buttonStyle: TextButton.styleFrom(
           backgroundColor: ColorStyles.white,
         ),
@@ -147,7 +162,7 @@ class MyAccountState extends BaseClassState {
         icon: Icons.date_range,
         text: '01-11-2012',
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
@@ -159,9 +174,9 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.phone_android,
-        text: _myAccountProvider.myAccountResponse!.data!.userData!.phoneNo,
+        text: _myAccountProvider.myAccountResponse?.data?.userData?.phoneNo,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
@@ -173,13 +188,12 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.attach_email,
-        text: _myAccountProvider.myAccountResponse!.data!.userData!.email,
+        text: _myAccountProvider.myAccountResponse?.data?.userData?.email,
         style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
-        ),
+            textStyle: TextStyles.titleHeadline?.
+            copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
       ),
-    );
+    ),);
   }
 
   ///widget lastname
@@ -188,15 +202,13 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
-        text: _myAccountProvider.myAccountResponse!.data!.userData!.lastName,
+        text: _myAccountProvider.myAccountResponse?.data?.userData?.lastName,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
-
-  // prefixIcon: Image.asset('assets/images/username_icon.png'),
 
   ///widget first name
   Widget _firstName(myAccountResponse) {
@@ -204,9 +216,9 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
-        text: _myAccountProvider.myAccountResponse!.data!.userData!.firstName,
+        text: _myAccountProvider.myAccountResponse?.data?.userData?.firstName,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );

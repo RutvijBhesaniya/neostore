@@ -27,6 +27,8 @@ class EditProfileProvider extends ChangeNotifier {
     ),
   );
 
+
+
   bool _isLoading = true;
 
   get isLoading => _isLoading;
@@ -41,7 +43,7 @@ class EditProfileProvider extends ChangeNotifier {
     );
     print("asasasasassa=>${response}");
     _isLoading = false;
-    return response;
+    return await response;
     // notifyListeners();
   }
 }

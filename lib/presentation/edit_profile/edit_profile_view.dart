@@ -27,8 +27,7 @@ class EditProfileView extends BaseClass {
 
 class EditProfileViewState extends BaseClassState
     with NeoStoreConstantValidation {
-  late EditProfileProvider _editProfileProvider =
-  Provider.of<EditProfileProvider>(context, listen: false);
+  late EditProfileProvider _editProfileProvider;
 
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _firstController = new TextEditingController();
@@ -49,13 +48,18 @@ class EditProfileViewState extends BaseClassState
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
+      leading: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
       ),
       text: ConstantStrings.editProfile,
-      style: TextStyles.titleHeadline!.copyWith(
+      style: TextStyles.titleHeadline?.copyWith(
         color: ColorStyles.white,
       ),
     );
@@ -63,11 +67,12 @@ class EditProfileViewState extends BaseClassState
 
   @override
   Widget getBody() {
+    _editProfileProvider =
+        Provider.of<EditProfileProvider>(context, listen: false);
     return Scaffold(
       body: Form(
         key: _formKey,
         child: Container(
-
           ///widget background image
           decoration: _backgroundImage(),
           child: Padding(
@@ -115,10 +120,7 @@ class EditProfileViewState extends BaseClassState
   ///widget edit profile button
   Widget _editProfileButton(BuildContext context) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 20, bottom: 30),
       child: NeoStoreElevatedButton(
         onPressed: () {
@@ -128,10 +130,10 @@ class EditProfileViewState extends BaseClassState
         },
         text: ConstantStrings.submit,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-              fontWeight: FontWeight.w600,
-              color: ColorStyles.red,
-            )),
+            textStyle: TextStyles.titleHeadline?.copyWith(
+          fontWeight: FontWeight.w600,
+          color: ColorStyles.red,
+        )),
         buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
       ),
     );
@@ -146,7 +148,7 @@ class EditProfileViewState extends BaseClassState
         validation: validateName,
         controller: _dobController,
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Icon(
           Icons.date_range,
@@ -165,7 +167,7 @@ class EditProfileViewState extends BaseClassState
         validation: validatePhoneNumber,
         controller: _phoneNumberController,
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Icon(
           Icons.phone_android,
@@ -184,7 +186,7 @@ class EditProfileViewState extends BaseClassState
         validation: validateEmail,
         controller: _emailController,
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Icon(
           Icons.email,
@@ -203,7 +205,7 @@ class EditProfileViewState extends BaseClassState
         validation: validateName,
         controller: _lastController,
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
       ),
@@ -217,8 +219,8 @@ class EditProfileViewState extends BaseClassState
       validation: validateName,
       controller: _firstController,
       hintStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+              color: ColorStyles.white, fontWeight: FontWeight.w400)),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
     );
   }
@@ -249,10 +251,7 @@ class EditProfileViewState extends BaseClassState
   Widget bottomSheet() {
     return Container(
       height: 100,
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.symmetric(
         horizontal: 20,
         vertical: 20,
@@ -291,9 +290,10 @@ class EditProfileViewState extends BaseClassState
   }
 
   void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(source: source);
+    final pickedFile = await _picker.getImage(
+        source: source, imageQuality: 20, maxHeight: 100, maxWidth: 100);
     setState(() {
-      _imageFile = pickedFile;
+      _imageFile = pickedFile!;
     });
   }
 
@@ -326,20 +326,23 @@ class EditProfileViewState extends BaseClassState
     );
 
     if (editProfileResponse.status == 200) {
-      MemoryManagement.setFirstName(firstName: editProfileResponse.data!.firstName);
-      MemoryManagement.setLastName(lastName: editProfileResponse.data!.lastName);
-      MemoryManagement.setEmail(email: editProfileResponse.data!.email);
-      MemoryManagement.setPhoneNumber(phoneNumber: editProfileResponse.data!.phoneNo);
-      MemoryManagement.setDob(dob: editProfileResponse.data!.dob);
-      MemoryManagement.setProfilePic(profilepic: editProfileResponse.data!.profilePic);
-      print("editmemory=>${ MemoryManagement.getFirstName()
-      }");
+      MemoryManagement.setFirstName(
+          firstName: editProfileResponse.data?.firstName);
+      MemoryManagement.setLastName(
+          lastName: editProfileResponse.data?.lastName);
+      MemoryManagement.setEmail(email: editProfileResponse.data?.email);
+      MemoryManagement.setPhoneNumber(
+          phoneNumber: editProfileResponse.data?.phoneNo);
+      MemoryManagement.setDob(dob: editProfileResponse.data?.dob);
+      MemoryManagement.setProfilePic(
+          profilepic: editProfileResponse.data?.profilePic);
+      print("editmemory=>${MemoryManagement.getFirstName()}");
 
-    Navigator.of(context).push(
-    MaterialPageRoute(
-    builder: (context) => MyAccount(),
-    ),
-    );
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => MyAccount(),
+        ),
+      );
     }
-    }
+  }
 }

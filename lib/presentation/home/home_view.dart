@@ -24,7 +24,7 @@ class HomeScreen extends BaseClass {
 }
 
 class _HomeScreen extends BaseClassState {
-  late HomeProvider _homeProvider = Provider.of<HomeProvider>(context);
+  late HomeProvider _homeProvider;
   late DrawerProvider _drawerProvider;
 
   Duration duration = const Duration(microseconds: 300);
@@ -38,21 +38,20 @@ class _HomeScreen extends BaseClassState {
   @override
   Widget getBody() {
     _drawerProvider = Provider.of<DrawerProvider>(context);
+    _homeProvider = Provider.of<HomeProvider>(context);
 
     return _homeProvider.isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : Scaffold(
-            body: Container(
-              height: MediaQuery.of(context).size.height,
-              color: ColorStyles.dark_grey,
-              child: Stack(
-                children: [
-                  menu(context, _homeProvider.listCartResponse),
-                  dashboard(context),
-                ],
-              ),
+        : Container(
+            height: MediaQuery.of(context).size.height,
+            color: ColorStyles.dark_grey,
+            child: Stack(
+              children: [
+                menu(context, _homeProvider.listCartResponse),
+                dashboard(context),
+              ],
             ),
           );
   }
@@ -92,7 +91,7 @@ class _HomeScreen extends BaseClassState {
                     ),
 
                     ///my cart widget
-                    _myCart(listCartResponse!),
+                    _myCart(listCartResponse),
                     Padding(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
                       child: Divider(
@@ -198,9 +197,9 @@ class _HomeScreen extends BaseClassState {
       child: NeoStoreTitleWithIcons(
         image: ('assets/images/logout_icon.png'),
         text: ConstantStrings.logout,
-        style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
@@ -210,9 +209,9 @@ class _HomeScreen extends BaseClassState {
     return NeoStoreTitleWithIcons(
       image: ('assets/images/my_orders_icon.png'),
       text: ConstantStrings.myOrders,
-      style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,fontWeight: FontWeight.w400
-      )),
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -249,9 +248,9 @@ class _HomeScreen extends BaseClassState {
       child: NeoStoreTitleWithIcons(
         image: ('assets/images/username_icon.png'),
         text: ConstantStrings.myAccount,
-        style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
@@ -261,9 +260,9 @@ class _HomeScreen extends BaseClassState {
     return NeoStoreTitleWithIcons(
       image: ('assets/images/cupboard_icon.png'),
       text: ConstantStrings.cupboards,
-      style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,fontWeight: FontWeight.w400
-      )),
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -272,9 +271,9 @@ class _HomeScreen extends BaseClassState {
     return NeoStoreTitleWithIcons(
       image: ('assets/images/sofa_icon.png'),
       text: ConstantStrings.chairs,
-      style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,fontWeight: FontWeight.w400
-      )),
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -283,9 +282,9 @@ class _HomeScreen extends BaseClassState {
     return NeoStoreTitleWithIcons(
       image: ('assets/images/sofa_icon.png'),
       text: ConstantStrings.sofas,
-      style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,fontWeight: FontWeight.w400
-      )),
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -301,7 +300,7 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///my cart widget
-  Row _myCart(ListCartResponse listCartResponse) {
+  Row _myCart(ListCartResponse? listCartResponse) {
     return Row(
       children: [
         NeoStoreTitleWithIcons(
@@ -317,17 +316,17 @@ class _HomeScreen extends BaseClassState {
           ),
         ),
         SizedBox(
-          width: 25,
+          width: 0.22 * screenWidth!.toDouble(),
         ),
         Container(
           decoration: BoxDecoration(
-              border: Border.all(color: ColorStyles.light_red, width: 10),
+              border: Border.all(color: ColorStyles.light_red, width: 8),
               shape: BoxShape.circle,
               // borderRadius: BorderRadius.all(Radius.circular(50)),
               color: ColorStyles.light_red),
           child: NeoStoreTitle(
-            text: listCartResponse.data != null
-                ? listCartResponse.count.toString()
+            text: listCartResponse?.data != null
+                ? listCartResponse?.count.toString()
                 : '0',
             style: TextStyles.titleHeadline!.copyWith(color: ColorStyles.white),
           ),
@@ -339,7 +338,8 @@ class _HomeScreen extends BaseClassState {
   ///email
   NeoStoreTitle _email() {
     return NeoStoreTitle(
-      text: _homeProvider.myAccountResponse!.data!.userData!.email,
+      text: _homeProvider.myAccountResponse?.data?.userData?.email,
+      // _homeProvider.myAccountResponse?.data?.userData?.email,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.labelName!
             .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -350,8 +350,7 @@ class _HomeScreen extends BaseClassState {
   ///full name
   NeoStoreTitle _fullName() {
     return NeoStoreTitle(
-      text: _homeProvider.myAccountResponse!.data!.userData!.firstName! +
-          _homeProvider.myAccountResponse!.data!.userData!.lastName.toString(),
+      text: _homeProvider.myAccountResponse?.data?.userData?.firstName!,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline!
             .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -386,7 +385,7 @@ class _HomeScreen extends BaseClassState {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(15),
                       child: InkWell(
                         onTap: () {
                           var value = _drawerProvider.getCurrentDrawer;
@@ -402,7 +401,7 @@ class _HomeScreen extends BaseClassState {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(12.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: NeoStoreTitle(
                         text: ConstantStrings.neoStore,
                         style: TextStyles.titleHeadline!.copyWith(
@@ -411,7 +410,7 @@ class _HomeScreen extends BaseClassState {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: Icon(
                         Icons.search,
                         color: ColorStyles.white,
@@ -516,18 +515,26 @@ class _HomeScreen extends BaseClassState {
   }
 
   void fetchMyCartData() {
-    Future.delayed(
-      Duration(milliseconds: 300),
-      () {
-        _homeProvider.getListCountCart();
-        _homeProvider.getMyAccount();
-      },
-    );
+    _homeProvider.getListCountCart();
+    _homeProvider.getMyAccount();
+    // Future.delayed(
+    //   Duration(milliseconds: 300),
+    //   () {
+    //
+    //   },
+    // );
   }
 
   @override
   void initState() {
-    fetchMyCartData();
     super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      fetchMyCartData();
+    });
+    // if(mounted){
+    //   _homeProvider = Provider.of<HomeProvider>(context);
+    //   fetchMyCartData();
+    // }
   }
 }

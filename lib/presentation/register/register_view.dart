@@ -149,6 +149,8 @@ class _RegisterScreenState extends BaseClassState
         ),
         Flexible(
           child: RadioListTile<GenderTypes>(
+            activeColor: ColorStyles.dark_grey,
+
               value: GenderTypes.Male,
               title: Text(
                 'Male',
@@ -165,6 +167,9 @@ class _RegisterScreenState extends BaseClassState
         Flexible(
           fit: FlexFit.tight,
           child: RadioListTile<GenderTypes>(
+
+            activeColor: ColorStyles.dark_grey,
+
             value: GenderTypes.Female,
             title: Text(
               'Female',

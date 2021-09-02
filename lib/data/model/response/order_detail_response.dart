@@ -26,7 +26,7 @@ class Data {
   int? id;
   int? cost;
   String? address;
-  List<Order_details>? orderDetails;
+  List<OrderDetails>? orderDetails;
 
   Data({
       this.id, 
@@ -41,7 +41,7 @@ class Data {
     if (json['order_details'] != null) {
       orderDetails = [];
       json['order_details'].forEach((v) {
-        orderDetails?.add(Order_details.fromJson(v));
+        orderDetails?.add(OrderDetails.fromJson(v));
       });
     }
   }
@@ -59,7 +59,7 @@ class Data {
 
 }
 
-class Order_details {
+class OrderDetails {
   int? id;
   int? orderId;
   int? productId;
@@ -69,7 +69,7 @@ class Order_details {
   String? prodCatName;
   String? prodImage;
 
-  Order_details({
+  OrderDetails({
       this.id, 
       this.orderId, 
       this.productId, 
@@ -79,7 +79,7 @@ class Order_details {
       this.prodCatName, 
       this.prodImage});
 
-  Order_details.fromJson(dynamic json) {
+  OrderDetails.fromJson(dynamic json) {
     id = json['id'];
     orderId = json['order_id'];
     productId = json['product_id'];

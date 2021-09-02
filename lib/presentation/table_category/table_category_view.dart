@@ -8,6 +8,7 @@ import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_view.dart';
+import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -24,20 +25,36 @@ class _TableCategoryView extends BaseClassState {
 
   @override
   getAppBar() {
-    return NeoStoreAppBar(
-      text: 'Tables',
-      style: TextStyles.label!.copyWith(color: ColorStyles.deep_purple),
-    );
+    return _appBar();
   }
 
   @override
   Widget getBody() {
-    return Scaffold(
-      body: _tableCategoryProvider.isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : _buildListItem(_tableCategoryProvider.tableCategoryResponse),
+    return _tableCategoryProvider.isLoading
+        ? Center(
+            child: CircularProgressIndicator(),
+          )
+        : _buildListItem(_tableCategoryProvider.tableCategoryResponse);
+  }
+
+  ///widget app bar
+  NeoStoreAppBar _appBar() {
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.red,
+      leading: InkWell(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
+      ),
+      text: ConstantStrings.tables,
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 

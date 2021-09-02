@@ -23,6 +23,7 @@ class ColorStyles {
   static const grey = Colors.grey;
   // static const light_grey = Color(0xFFEEEEEE);
   static const black = Color(0xFFF111111);
+  static const dark_red = Color(0xFFBB0100);
   static const white = Color(0xFFFFFFFF);
   static const red = Color(0xFFE91C1A);
   static const light_red = Color(0xFFFE4040);
