@@ -1,4 +1,4 @@
 abstract class EditCartApi {
-  Future<dynamic> getEditCartApi(String productId, String quantity);
+  Future<dynamic> getEditCartApi(int productId, int quantity);
 }
 

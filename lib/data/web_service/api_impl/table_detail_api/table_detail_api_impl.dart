@@ -19,7 +19,7 @@ class TableDetailApiImpl extends TableDetailApi {
     );
 
     print('gotResponseee=>${response.runtimeType}');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

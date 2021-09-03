@@ -18,15 +18,15 @@ class TableDetailProvider extends ChangeNotifier {
   TableDetailUseCase _tableDetailUseCase = TableDetailUseCase(
     TableDetailRepositoryImpl(TableDetailApiImpl()),
   );
-  late TableDetailResponse _tableDetailResponse;
+  TableDetailResponse? _tableDetailResponse;
 
-  TableDetailResponse get tableDetailResponse => _tableDetailResponse;
+  TableDetailResponse? get tableDetailResponse => _tableDetailResponse;
 
   bool _isLoading = true;
 
   get isLoading => _isLoading;
 
-  void getTableDetail(int productId) async {
+  void getTableDetail(int? productId) async {
     _isLoading = true;
     var response = await _tableDetailUseCase.callApi(productId);
     _tableDetailResponse = TableDetailResponse.fromJson(jsonDecode(response));

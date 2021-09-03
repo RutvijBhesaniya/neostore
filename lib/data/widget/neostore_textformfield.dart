@@ -13,7 +13,7 @@ class NeoStoreTextFormField extends StatelessWidget {
     this.textStyle,
     this.errorStyle,
     this.maxLine,
-    this.fillColor,
+    this.fillColor, this.inputFormatters,
   });
 
 
@@ -28,11 +28,13 @@ class NeoStoreTextFormField extends StatelessWidget {
   final errorStyle;
   final maxLine;
   final fillColor;
+  final inputFormatters;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       style: textStyle,
+      inputFormatters: inputFormatters,
       controller: controller,
       validator: validation,
       obscureText: obscureText,

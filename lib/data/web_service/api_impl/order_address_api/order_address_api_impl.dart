@@ -23,7 +23,7 @@ class OrderAddressApiImpl extends OrderAddressApi {
         requestBody: formData,
         additionalHeaders: mapToken);
     print('gotOrderAddressresponse=>$response');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

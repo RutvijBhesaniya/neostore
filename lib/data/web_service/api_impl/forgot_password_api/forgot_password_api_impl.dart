@@ -19,7 +19,7 @@ class ForgotPasswordApiImpl extends ForgotPasswordApi {
       requestBody: formData
     );
     print('gotforgetpassword response=>$response');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

@@ -1,22 +1,29 @@
-import 'dart:ui';
+class ApiError {
+  int? status;
+  bool? data;
+  String? message;
+  String? userMsg;
 
-class APIError {
-  late String error;
-  late dynamic message;
-  late int status;
-  late VoidCallback onAlertPop;
+  ApiError({
+      this.status, 
+      this.data, 
+      this.message, 
+      this.userMsg});
 
-  APIError({required this.error, required this.status, required this.message, required this.onAlertPop});
-
-  APIError.fromJson(Map<String, dynamic> json) {
-    error = json['error'];
+  ApiError.fromJson(dynamic json) {
+    status = json['status'];
+    data = json['data'];
     message = json['message'];
+    userMsg = json['user_msg'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['error'] = this.error;
-    data['message'] = this.message;
-    return data;
+    var map = <String, dynamic>{};
+    map['status'] = status;
+    map['data'] = data;
+    map['message'] = message;
+    map['user_msg'] = userMsg;
+    return map;
   }
+
 }

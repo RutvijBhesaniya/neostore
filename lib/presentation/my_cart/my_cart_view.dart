@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/add_to_cart_response.dart';
 import 'package:neostore/data/model/response/delete_cart_response.dart';
+import 'package:neostore/data/model/response/edit_cart_response.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
@@ -26,7 +27,7 @@ class MyCartView extends BaseClass {
 }
 
 class MyCartViewState extends BaseClassState {
-  late ListCartProvider _listCartProvider;
+  ListCartProvider? _listCartProvider;
 
   TextEditingController _quantityController = new TextEditingController();
 
@@ -38,30 +39,30 @@ class MyCartViewState extends BaseClassState {
   @override
   Widget getBody() {
     _listCartProvider = Provider.of<ListCartProvider>(context);
-    return _listCartProvider.isLoading
+    return _listCartProvider?.isLoading
         ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : _listCartProvider.listCartResponse!.data != null
-            ? _buildListItem(
-                _listCartProvider.listCartResponse,
-                // _listCartProvider.tableDetailResponse,
-                // _listCartProvider.addToCartResponse,
-              )
-            : Center(
-                child: Text('Empty Cart'),
-              );
+      child: CircularProgressIndicator(),
+    )
+        : _listCartProvider?.listCartResponse?.data != null
+        ? _buildListItem(
+      _listCartProvider?.listCartResponse,
+      // _listCartProvider.tableDetailResponse,
+      // _listCartProvider.addToCartResponse,
+    )
+        : Center(
+      child: Text('Empty Cart'),
+    );
   }
 
-  Widget _buildListItem(
-    ListCartResponse? listCartResponse,
-    // TableDetailResponse? tableDetailResponse,
-    // AddToCartResponse? addToCartResponse,
-  ) {
+  Widget _buildListItem(ListCartResponse? listCartResponse,
+      // TableDetailResponse? tableDetailResponse,
+      // AddToCartResponse? addToCartResponse,
+      ) {
     return SingleChildScrollView(
       child: Container(
         child: Column(
           children: [
+
             ///list view builder
             _itemListViewBuilder(listCartResponse!),
 
@@ -84,7 +85,7 @@ class MyCartViewState extends BaseClassState {
       physics: ScrollPhysics(),
       itemCount: listCartResponse.data!.length,
       itemBuilder: (context, index) {
-        return _buildListItemDetail(index);
+        return _buildListItemDetail(listCartResponse.data![index]);
       },
     );
   }
@@ -94,11 +95,14 @@ class MyCartViewState extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        width: MediaQuery.of(context).size.width,
+        width: MediaQuery
+            .of(context)
+            .size
+            .width,
         child: NeoStoreElevatedButton(
             text: ConstantStrings.order_now,
             textStyle: GoogleFonts.workSans(
-              textStyle: TextStyles.titleHeadline!.copyWith(
+              textStyle: TextStyles.titleHeadline?.copyWith(
                 fontWeight: FontWeight.w600,
                 color: ColorStyles.white,
               ),
@@ -122,6 +126,7 @@ class MyCartViewState extends BaseClassState {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Row(
         children: [
+
           ///total price label widget
           _totalPriceLabel(),
 
@@ -138,10 +143,10 @@ class MyCartViewState extends BaseClassState {
   ///total rupees widget
   NeoStoreTitle _totalRupees() {
     return NeoStoreTitle(
-      text: _listCartProvider.listCartResponse!.total.toString(),
+      text: _listCartProvider?.listCartResponse?.total.toString(),
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline!
-            .copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
+        textStyle: TextStyles.titleHeadline
+            ?.copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
       ),
     );
   }
@@ -161,14 +166,14 @@ class MyCartViewState extends BaseClassState {
     return NeoStoreTitle(
       text: ConstantStrings.total,
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline!
-            .copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
+        textStyle: TextStyles.titleHeadline
+            ?.copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
       ),
     );
   }
 
   ///list view builder detail
-  Widget _buildListItemDetail(int index) {
+  Widget _buildListItemDetail(Data data) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -177,6 +182,7 @@ class MyCartViewState extends BaseClassState {
             actionPane: SlidableDrawerActionPane(),
             actionExtentRatio: 0.25,
             secondaryActions: [
+
               ///delete icon
               Container(
                 decoration: BoxDecoration(
@@ -189,13 +195,13 @@ class MyCartViewState extends BaseClassState {
                 ),
                 child: GestureDetector(
                   onTap: () async {
-                    var deleteResponse = await _listCartProvider.getDeleteCart(
-                        _listCartProvider
-                            .listCartResponse!.data![index].productId!);
+                    var deleteResponse =
+                    await _listCartProvider?.getDeleteCart(
+                        data.productId!.toInt());
                     DeleteCartResponse _deleteCartResponse =
-                        DeleteCartResponse.fromJson(jsonDecode(deleteResponse));
+                    DeleteCartResponse.fromJson(jsonDecode(deleteResponse));
                     if (_deleteCartResponse.status == 200) {
-                      _listCartProvider.getListCart();
+                      _listCartProvider?.getListCart();
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -213,25 +219,33 @@ class MyCartViewState extends BaseClassState {
             ],
             child: Row(
               children: [
+
                 ///image widget
-                _image(index),
+                _image(data.product?.productImages),
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Container(
-                    width: MediaQuery.of(context).size.width / 2.3,
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width / 2.3,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
+
                         ///product name widget
-                        _productName(index),
+                        _productName(data.product?.name),
 
                         ///product category widget
-                        _productCategoryType(index),
+                        _productCategoryType(data.product?.productCategory),
 
                         ///alert pop box
                         Container(
-                          width: MediaQuery.of(context).size.width / 6,
+                          width: MediaQuery
+                              .of(context)
+                              .size
+                              .width / 6,
                           child: GestureDetector(
                             onTap: () {
                               showDialog(
@@ -240,17 +254,19 @@ class MyCartViewState extends BaseClassState {
                                   return AlertDialog(
                                     content: Container(
                                       height:
-                                          MediaQuery.of(context).size.height /
-                                              1.7,
+                                      MediaQuery
+                                          .of(context)
+                                          .size
+                                          .height /
+                                          1.7,
                                       child: Column(
                                         children: [
                                           NeoStoreTitle(
-                                            text: _listCartProvider
-                                                .tableDetailResponse!
-                                                .data!
-                                                .name,
+                                            maxLine: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            text: data.product?.name,
                                             style:
-                                                TextStyles.titlelabel!.copyWith(
+                                            TextStyles.titlelabel?.copyWith(
                                               color: ColorStyles.black,
                                             ),
                                           ),
@@ -258,21 +274,17 @@ class MyCartViewState extends BaseClassState {
                                             padding: const EdgeInsets.symmetric(
                                                 vertical: 18),
                                             child: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  2.9,
+                                              height: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .height /
+                                                  3.7,
                                               width: 350,
                                               decoration: BoxDecoration(
                                                 image: DecorationImage(
                                                   fit: BoxFit.fill,
                                                   image: NetworkImage(
-                                                    _listCartProvider
-                                                        .tableDetailResponse!
-                                                        .data!
-                                                        .productImages!
-                                                        .first
-                                                        .image
+                                                    data.product!.productImages
                                                         .toString(),
                                                   ),
                                                 ),
@@ -285,7 +297,8 @@ class MyCartViewState extends BaseClassState {
                                             padding: const EdgeInsets.only(
                                                 bottom: 15),
                                             child: Container(
-                                              width: MediaQuery.of(context)
+                                              width: MediaQuery
+                                                  .of(context)
                                                   .size
                                                   .width,
                                               child: Center(
@@ -296,9 +309,10 @@ class MyCartViewState extends BaseClassState {
                                             ),
                                           ),
                                           Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
+                                            width: MediaQuery
+                                                .of(context)
+                                                .size
+                                                .width /
                                                 3,
                                             child: Center(
                                               child: NeoStoreTextFormField(
@@ -311,12 +325,14 @@ class MyCartViewState extends BaseClassState {
                                           ///submit button
                                           Flexible(
                                             child: Container(
-                                              width: MediaQuery.of(context)
+                                              width: MediaQuery
+                                                  .of(context)
                                                   .size
                                                   .width,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
+                                              height: MediaQuery
+                                                  .of(context)
+                                                  .size
+                                                  .height /
                                                   2,
                                               child: Padding(
                                                 padding: const EdgeInsets.only(
@@ -329,30 +345,28 @@ class MyCartViewState extends BaseClassState {
                                                     color: ColorStyles.white,
                                                   ),
                                                   buttonStyle:
-                                                      TextButton.styleFrom(
+                                                  TextButton.styleFrom(
                                                     backgroundColor:
-                                                        ColorStyles.red,
+                                                    ColorStyles.red,
                                                   ),
                                                   onPressed: () async {
-                                                    var response =
-                                                        await _listCartProvider
-                                                            .getAddToCart(
-                                                      _listCartProvider
-                                                          .tableDetailResponse!
-                                                          .data!
-                                                          .id!,
-                                                      int.parse(
-                                                          _quantityController
-                                                              .text),
-                                                    );
-                                                    AddToCartResponse
-                                                        _addToCartResponse =
-                                                        AddToCartResponse
-                                                            .fromJson(
+                                                    var response = await _listCartProvider
+                                                        ?.getEditCart(
+                                                        data.productId!.toInt(),
+                                                        int.parse(
+                                                            _quantityController
+                                                                .text));
+
+                                                    EditCartResponse
+                                                    _editCartResponse =
+                                                    EditCartResponse
+                                                        .fromJson(
                                                       jsonDecode(response),
                                                     );
-                                                    if (_addToCartResponse
-                                                            .status ==
+                                                    print(
+                                                        "cartdsdddsdresponse=>${response}");
+                                                    if (_editCartResponse
+                                                        .status ==
                                                         200) {
                                                       Navigator.push(
                                                         context,
@@ -384,9 +398,7 @@ class MyCartViewState extends BaseClassState {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     NeoStoreTitle(
-                                      text: _listCartProvider.listCartResponse!
-                                          .data![index].quantity
-                                          .toString(),
+                                        text: data.quantity
                                     ),
                                     Icon(Icons.arrow_drop_down)
                                   ],
@@ -405,11 +417,9 @@ class MyCartViewState extends BaseClassState {
                   child: Icon(Icons.money_off),
                 ),
                 NeoStoreTitle(
-                  text: _listCartProvider
-                      .listCartResponse!.data![index].product!.subTotal
-                      .toString(),
+                  text: data.product?.subTotal,
                   style: GoogleFonts.workSans(
-                    textStyle: TextStyles.titleHeadline!.copyWith(
+                    textStyle: TextStyles.titleHeadline?.copyWith(
                         color: ColorStyles.liver_grey,
                         fontWeight: FontWeight.w400),
                   ),
@@ -426,39 +436,43 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///product category widget
-  NeoStoreTitle _productCategoryType(int index) {
+  NeoStoreTitle _productCategoryType(String? productCategory) {
     return NeoStoreTitle(
-        text: _listCartProvider
-            .listCartResponse!.data![index].product!.productCategory,
+        text: productCategory,
         style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!.copyWith(
+          textStyle: TextStyles.titleHeadline?.copyWith(
               color: ColorStyles.liver_grey, fontWeight: FontWeight.w400),
         ));
   }
 
   ///product name widget
-  NeoStoreTitle _productName(int index) {
+  NeoStoreTitle _productName(String? name) {
     return NeoStoreTitle(
-      text: _listCartProvider.listCartResponse!.data![index].product!.name,
+      text: name,
       overflow: TextOverflow.ellipsis,
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline!.copyWith(
+        textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.liver_grey, fontWeight: FontWeight.w400),
       ),
     );
   }
 
   ///image widget
-  Widget _image(int index) {
+  Widget _image(String? productImages) {
     return Container(
-      width: MediaQuery.of(context).size.width / 3.5,
-      height: MediaQuery.of(context).size.height / 7,
+      width: MediaQuery
+          .of(context)
+          .size
+          .width / 3.5,
+      height: MediaQuery
+          .of(context)
+          .size
+          .height / 7,
       decoration: BoxDecoration(
         image: DecorationImage(
           fit: BoxFit.fill,
           image: NetworkImage(
-            _listCartProvider
-                .listCartResponse!.data![index].product!.productImages!,
+            productImages!,
           ),
         ),
       ),
@@ -466,18 +480,19 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///widget app bar
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
         onTap: () {
-          // Navigator.pushReplacement(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => TableProductDetailed(tableProductDetailed)
-          //   ),
-          // );
-          Navigator.pop(context);
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => TableProductDetailed()
+            ),
+          );
+          // Navigator.pop(context);
         },
         child: Icon(
           Icons.arrow_back_ios,
@@ -486,21 +501,21 @@ class MyCartViewState extends BaseClassState {
         ),
       ),
       text: ConstantStrings.myCart,
-      style: TextStyles.titleHeadline!.copyWith(
+      style: TextStyles.titleHeadline?.copyWith(
         color: ColorStyles.white,
       ),
     );
   }
 
   void fetchMyCartData() {
-    _listCartProvider.getListCart();
+    _listCartProvider?.getListCart();
   }
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
-      (_) {
+          (_) {
         fetchMyCartData();
       },
     );

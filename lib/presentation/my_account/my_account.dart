@@ -104,7 +104,9 @@ class MyAccountState extends BaseClassState {
       backgroundColour: ColorStyles.red,
       leading: InkWell(
         onTap: () {
-          Navigator.pushReplacement(
+          // Navigator.pop(context);
+
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => HomeScreen(),

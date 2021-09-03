@@ -23,7 +23,7 @@ class MyAccountApiImpl implements MyAccountApi {
     );
     print("urlmyaacount=>${APIs.fetchAccountDetail}");
     print('gotResponseinLoginApiImpl=>$response');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

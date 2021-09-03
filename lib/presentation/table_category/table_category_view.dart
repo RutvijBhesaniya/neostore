@@ -20,8 +20,7 @@ class TableCategoryView extends BaseClass {
 }
 
 class _TableCategoryView extends BaseClassState {
-  late TableCategoryProvider _tableCategoryProvider =
-      Provider.of<TableCategoryProvider>(context);
+  TableCategoryProvider? _tableCategoryProvider;
 
   @override
   getAppBar() {
@@ -30,11 +29,14 @@ class _TableCategoryView extends BaseClassState {
 
   @override
   Widget getBody() {
-    return _tableCategoryProvider.isLoading
+
+    _tableCategoryProvider =
+        Provider.of<TableCategoryProvider>(context);
+    return _tableCategoryProvider?.isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
-        : _buildListItem(_tableCategoryProvider.tableCategoryResponse);
+        : _buildListItem(_tableCategoryProvider?.tableCategoryResponse);
   }
 
   ///widget app bar
@@ -79,7 +81,7 @@ class _TableCategoryView extends BaseClassState {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                TableProductDetailed(tableCategoryResponse!.data![index].id),
+                TableProductDetailed(tableProductDetailed:tableCategoryResponse?.data?[index].id),
           ),
         );
       },
@@ -205,12 +207,13 @@ class _TableCategoryView extends BaseClassState {
         width: MediaQuery.of(context).size.width / 3,
         height: MediaQuery.of(context).size.height / 7,
         decoration: BoxDecoration(
-            image: DecorationImage(
-          fit: BoxFit.fill,
-          image: NetworkImage(
-            tableCategoryResponse.data![index].productImages.toString(),
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: NetworkImage(
+              tableCategoryResponse.data![index].productImages.toString(),
+            ),
           ),
-        )),
+        ),
       ),
     );
   }
@@ -218,7 +221,7 @@ class _TableCategoryView extends BaseClassState {
   ///fetch table data method
   void fetchTableCategoryData(int productCategoryId) {
     Future.delayed(Duration(milliseconds: 300), () {
-      _tableCategoryProvider.getTableCategory(productCategoryId);
+      _tableCategoryProvider?.getTableCategory(productCategoryId);
     });
   }
 

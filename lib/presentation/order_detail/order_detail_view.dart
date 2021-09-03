@@ -13,7 +13,7 @@ import 'package:provider/provider.dart';
 class OrderDetailView extends BaseClass {
   int? id;
 
-  OrderDetailView(this.id);
+  OrderDetailView({this.id});
 
   @override
   BaseClassState getState() {
@@ -24,8 +24,7 @@ class OrderDetailView extends BaseClass {
 class _OrderDetailViewState extends BaseClassState {
   _OrderDetailViewState(this.id);
 
-  late OrderDetailProvider _orderDetailProvider =
-      Provider.of<OrderDetailProvider>(context);
+  OrderDetailProvider? _orderDetailProvider;
 
   int? id;
 
@@ -36,7 +35,10 @@ class _OrderDetailViewState extends BaseClassState {
 
   @override
   getBody() {
-    return _orderDetailProvider.isLoading
+
+    _orderDetailProvider =
+        Provider.of<OrderDetailProvider>(context);
+    return _orderDetailProvider?.isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
@@ -62,29 +64,27 @@ class _OrderDetailViewState extends BaseClassState {
 
   NeoStoreTitle _totalCost() {
     return NeoStoreTitle(
-          text:
-              _orderDetailProvider.orderDetailResponse!.data!.cost.toString(),
-          style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-              fontWeight: FontWeight.w400,
-              color: ColorStyles.black,
-            ),
-          ),
-        );
+      text: _orderDetailProvider?.orderDetailResponse?.data?.cost.toString(),
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          fontWeight: FontWeight.w400,
+          color: ColorStyles.black,
+        ),
+      ),
+    );
   }
-
 
   ///total title widget
   NeoStoreTitle _totalTitle() {
     return NeoStoreTitle(
-          text: ConstantStrings.total,
-          style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-              fontWeight: FontWeight.w400,
-              color: ColorStyles.black,
-            ),
-          ),
-        );
+      text: ConstantStrings.total,
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          fontWeight: FontWeight.w400,
+          color: ColorStyles.black,
+        ),
+      ),
+    );
   }
 
   ListView _listViewBuilder() {
@@ -93,10 +93,10 @@ class _OrderDetailViewState extends BaseClassState {
       scrollDirection: Axis.vertical,
       physics: ScrollPhysics(),
       itemCount:
-          _orderDetailProvider.orderDetailResponse!.data!.orderDetails!.length,
+          _orderDetailProvider?.orderDetailResponse?.data?.orderDetails?.length,
       itemBuilder: (context, index) {
         return _buildListItemDetail(
-            _orderDetailProvider.orderDetailResponse, index);
+            _orderDetailProvider?.orderDetailResponse, index);
       },
     );
   }
@@ -246,7 +246,7 @@ class _OrderDetailViewState extends BaseClassState {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
-        onTap: (){
+        onTap: () {
           Navigator.pop(context);
         },
         child: Icon(
@@ -255,7 +255,7 @@ class _OrderDetailViewState extends BaseClassState {
           size: 20,
         ),
       ),
-      text: ConstantStrings.editProfile,
+      text: 'Order Id: ${_orderDetailProvider?.orderDetailResponse?.data?.id.toString() ?? ' '}',
       style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!
               .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -263,15 +263,15 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   void fetchOrderDetail(int orderId) {
-    Future.delayed(Duration(milliseconds: 300), () {
-      _orderDetailProvider.getOrderDetail(orderId);
-    });
+    _orderDetailProvider?.getOrderDetail(orderId);
   }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    fetchOrderDetail(id!);
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
+      fetchOrderDetail(id!);
+    });
   }
 }

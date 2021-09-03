@@ -23,14 +23,7 @@ class MyOrderViewState extends BaseClassState {
 
   @override
   getAppBar() {
-    return AppBar(
-      leading: GestureDetector(
-        onTap: () => Navigator.pop(context),
-        child: Icon(
-          Icons.arrow_back,
-        ),
-      ),
-    );
+    return _appBar();
   }
 
   @override
@@ -69,7 +62,7 @@ class MyOrderViewState extends BaseClassState {
             context,
             MaterialPageRoute(
               builder: (context) => OrderDetailView(
-                  _myOrderProvider.orderListResponse!.data![index].id),
+                  id:_myOrderProvider.orderListResponse!.data![index].id),
             ),
           );
         },
@@ -124,17 +117,22 @@ class MyOrderViewState extends BaseClassState {
   ///appbar widget
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
-      leading: Icon(
-        Icons.arrow_back_ios,
-        color: ColorStyles.white,
-        size: 20,
+      backgroundColour: ColorStyles.red,
+      leading: InkWell(
+        onTap: (){
+          Navigator.pop(context);
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
+        ),
       ),
-      text: ConstantStrings.editProfile,
+      text: ConstantStrings.myOrders,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline!.copyWith(
           fontWeight: FontWeight.w600,
-          color: ColorStyles.red,
+          color: ColorStyles.white,
         ),
       ),
     );

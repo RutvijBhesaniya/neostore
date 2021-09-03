@@ -27,7 +27,7 @@ class ResetPasswordApiImpl extends ResetPasswordApi {
     );
 
 
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

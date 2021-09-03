@@ -19,7 +19,7 @@ class LoginApiImpl implements LoginApi {
       context: context,
     );
     print('gotResponseinLoginApiImpl=>$response');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

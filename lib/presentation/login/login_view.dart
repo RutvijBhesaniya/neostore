@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/model/request/login_request.dart';
 import 'package:neostore/data/model/response/login_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
@@ -30,19 +31,12 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   late LoginScreenProvider _loginScreenProvider;
-  late ForgotProvider _forgotProvider = Provider.of<ForgotProvider>(context,listen: false);
-
-
-  // @override
-  // void initState() {
-  //   MemoryManagement.saveUserInfo();
-  //   print("shared${MemoryManagement.saveUserInfo()}");
-  //   super.initState();
-  // }
+  late ForgotProvider _forgotProvider;
 
   @override
   Widget getBody() {
     _loginScreenProvider = Provider.of<LoginScreenProvider>(context);
+    _forgotProvider = Provider.of<ForgotProvider>(context, listen: false);
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -108,9 +102,9 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
           },
           child: NeoStoreTitle(
             text: ConstantStrings.dontHaveAnAccount,
-            style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-              color: ColorStyles.white,fontWeight: FontWeight.w400
-            )),
+            style: GoogleFonts.workSans(
+                textStyle: TextStyles.titleHeadline!.copyWith(
+                    color: ColorStyles.white, fontWeight: FontWeight.w400)),
           ),
         ),
       ),
@@ -123,15 +117,26 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       padding: const EdgeInsets.only(top: 20),
       child: GestureDetector(
         onTap: () {
-          _forgotProvider.getForgotPassword(_emailcontroller.text);
+          if (_emailcontroller.text == null) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('Please enter email address'),
+              ),
+            );
+          } else {
+            _forgotProvider.getForgotPassword(_emailcontroller.text);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text('New password sent successfully'),
+              ),
+            );
+          }
         },
         child: NeoStoreTitle(
-          // text: ConstantStrings.welCome,
           text: ConstantStrings.forgotPassword,
-          style: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-            color: ColorStyles.white,
-            fontWeight: FontWeight.w400
-          )),
+          style: GoogleFonts.workSans(
+              textStyle: TextStyles.titleHeadline!.copyWith(
+                  color: ColorStyles.white, fontWeight: FontWeight.w400)),
         ),
       ),
     );
@@ -147,13 +152,11 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
           if (_formKey.currentState!.validate()) {
             loginUser(context);
           }
-
         },
         text: ConstantStrings.login,
-        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.red,
-          fontWeight: FontWeight.w600
-        )),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!
+                .copyWith(color: ColorStyles.red, fontWeight: FontWeight.w600)),
         buttonStyle: TextButton.styleFrom(
           backgroundColor: ColorStyles.white,
         ),
@@ -167,14 +170,12 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.password,
-        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-          fontWeight: FontWeight.w400
-        )),
-        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,
-          fontWeight: FontWeight.w400
-        )),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -193,17 +194,15 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
       padding: const EdgeInsets.only(top: 40),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.username,
-        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
-        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-
-
         controller: _emailcontroller,
         validation: validateName,
         prefixIcon: Image.asset('assets/images/username_icon.png'),
@@ -215,11 +214,12 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   Widget _title() {
     return NeoStoreTitle(
       text: ConstantStrings.neoStore,
-      style: GoogleFonts.workSans(textStyle: TextStyles.largeHeadline!.copyWith(
-        fontWeight: FontWeight.bold,
-
-        color: ColorStyles.white,
-      ),),
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.largeHeadline!.copyWith(
+          fontWeight: FontWeight.bold,
+          color: ColorStyles.white,
+        ),
+      ),
     );
   }
 
@@ -229,24 +229,28 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     loginRequest.password = _passwordController.text;
     var response = await _loginScreenProvider.getLogin(loginRequest, context);
 
-    LoginResponse loginResponse = LoginResponse.fromJson(
-      json.decode(response),
-    );
-    if (loginResponse.status == 200) {
-      MemoryManagement.setEmail(email: _emailcontroller.text);
-      MemoryManagement.setAccessToken(
-          accessToken: loginResponse.data!.accessToken);
-      MemoryManagement.setIsUserLoggedIn(isuserloggedin: true);
-
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+    if (response is ApiError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('UserName or Password is wrong'),
         ),
       );
     } else {
-      'Plesae register';
+      LoginResponse loginResponse = LoginResponse.fromJson(
+        json.decode(response),
+      );
+      if (loginResponse.status == 200) {
+        MemoryManagement.setEmail(email: _emailcontroller.text);
+        MemoryManagement.setAccessToken(
+            accessToken: loginResponse.data!.accessToken);
+        MemoryManagement.setIsUserLoggedIn(isuserloggedin: true);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => HomeScreen(),
+          ),
+        );
+      }
     }
   }
-
-
 }

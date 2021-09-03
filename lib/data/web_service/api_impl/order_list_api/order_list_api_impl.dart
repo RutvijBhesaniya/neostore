@@ -21,7 +21,7 @@ class OrderListApiImpl extends OrderListApi {
         // requestBody: formData,
         additionalHeaders: mapToken);
     print('gotOrderListresponse=>$response');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

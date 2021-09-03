@@ -19,7 +19,7 @@ class ListCartApiImpl extends ListCartApi {
             // requestBody: formData
             );
     print('gotlistcart response=>$response');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

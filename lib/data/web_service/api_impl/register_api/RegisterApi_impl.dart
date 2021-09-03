@@ -19,7 +19,7 @@ class RegisterApiImpl implements RegisterApi {
       requestBody: formData,
       context: context,
     );
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

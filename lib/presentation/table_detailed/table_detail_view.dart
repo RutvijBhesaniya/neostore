@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -19,9 +18,9 @@ import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
 class TableProductDetailed extends BaseClass {
-  var tableProductDetailed;
+  int? tableProductDetailed;
 
-  TableProductDetailed(this.tableProductDetailed);
+  TableProductDetailed({this.tableProductDetailed});
 
   @override
   BaseClassState getState() {
@@ -31,12 +30,10 @@ class TableProductDetailed extends BaseClass {
 
 class _TableProductDetailedState extends BaseClassState {
   var tableProductDetailed;
-  late TableDetailProvider _tableDetailProvider =
-      Provider.of<TableDetailProvider>(context);
-  late RatingProvider _ratingProvider =
-      Provider.of<RatingProvider>(context, listen: false);
-  late AddToCartProvider _addToCartProvider =
-      Provider.of<AddToCartProvider>(context, listen: false);
+
+  TableDetailProvider? _tableDetailProvider;
+  RatingProvider? _ratingProvider;
+  AddToCartProvider? _addToCartProvider;
 
   TextEditingController _quantityController = new TextEditingController();
 
@@ -49,8 +46,12 @@ class _TableProductDetailedState extends BaseClassState {
 
   @override
   Widget getBody() {
+    _tableDetailProvider = Provider.of<TableDetailProvider>(context);
+    _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+    _addToCartProvider = Provider.of<AddToCartProvider>(context, listen: false);
+
     return Scaffold(
-      body: _tableDetailProvider.isLoading
+      body: _tableDetailProvider?.isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -61,7 +62,7 @@ class _TableProductDetailedState extends BaseClassState {
                   _topScreen(),
 
                   ///between screen widget
-                  _betweenScreen(_tableDetailProvider.tableDetailResponse),
+                  _betweenScreen(_tableDetailProvider?.tableDetailResponse),
 
                   ///bottom screen widget
                   _bottomScreen(),
@@ -85,7 +86,7 @@ class _TableProductDetailedState extends BaseClassState {
           size: 20,
         ),
       ),
-      text: _tableDetailProvider.tableDetailResponse.data?.name,
+      text: _tableDetailProvider?.tableDetailResponse?.data?.name ?? ' ',
       style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!
               .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -104,13 +105,13 @@ class _TableProductDetailedState extends BaseClassState {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               ///but now button widget
-              _buyNowButton(_tableDetailProvider.tableDetailResponse),
+              _buyNowButton(_tableDetailProvider?.tableDetailResponse),
               SizedBox(
                 width: 10,
               ),
 
               ///rate button widget
-              _rateButton(_ratingProvider.ratingResponse),
+              _rateButton(_ratingProvider?.ratingResponse),
             ],
           ),
         ),
@@ -138,12 +139,7 @@ class _TableProductDetailedState extends BaseClassState {
                     height: MediaQuery.of(context).size.height / 1.5,
                     child: Column(
                       children: [
-                        NeoStoreTitle(
-                          text: ratingResponse!.data!.name,
-                          style: TextStyles.titlelabel!.copyWith(
-                            color: ColorStyles.black,
-                          ),
-                        ),
+                        _alertDialogBoxTitle(ratingResponse!),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 18),
                           child: Container(
@@ -164,7 +160,7 @@ class _TableProductDetailedState extends BaseClassState {
                                     color: ColorStyles.yellow,
                                   );
                                 },
-                                rating: ratingResponse.data!.rating!.toDouble(),
+                                rating: ratingResponse.data?.rating?.toDouble(),
                                 itemCount: 5,
                                 direction: Axis.horizontal,
                               ),
@@ -196,6 +192,15 @@ class _TableProductDetailedState extends BaseClassState {
         ),
       ),
     );
+  }
+
+  NeoStoreTitle _alertDialogBoxTitle(RatingResponse? ratingResponse) {
+    return NeoStoreTitle(
+                        text: ratingResponse!.data!.name,
+                        style: TextStyles.titlelabel!.copyWith(
+                          color: ColorStyles.black,
+                        ),
+                      );
   }
 
   ///but now button widget
@@ -264,7 +269,6 @@ class _TableProductDetailedState extends BaseClassState {
                           Flexible(
                             child: Container(
                               width: MediaQuery.of(context).size.width,
-                              // height: MediaQuery.of(context).size.height / 2,
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 5),
                                 child: NeoStoreElevatedButton(
@@ -277,15 +281,16 @@ class _TableProductDetailedState extends BaseClassState {
                                   ),
                                   onPressed: () async {
                                     var response =
-                                        await _addToCartProvider.getAddToCart(
-                                      _tableDetailProvider
-                                          .tableDetailResponse.data!.id!,
+                                        await _addToCartProvider?.getAddToCart(
+                                      int.parse(tableDetailResponse.data!.id
+                                          .toString()),
                                       int.parse(_quantityController.text),
                                     );
-                                    AddToCartResponse _addToCartResponse =
+                                    AddToCartResponse? _addToCartResponse =
                                         AddToCartResponse.fromJson(
                                       jsonDecode(response),
                                     );
+
                                     if (_addToCartResponse.status == 200) {
                                       Navigator.push(
                                         context,
@@ -293,9 +298,7 @@ class _TableProductDetailedState extends BaseClassState {
                                           builder: (context) => MyCartView(),
                                         ),
                                       );
-                                    } else {
-                                      'please';
-                                    }
+                                    } else {}
                                   },
                                 ),
                               ),
@@ -334,13 +337,13 @@ class _TableProductDetailedState extends BaseClassState {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ///product name widget
-              _productName(_tableDetailProvider.tableDetailResponse),
+              _productName(_tableDetailProvider?.tableDetailResponse),
 
               ///category name widget
               _categoryName(),
 
               ///product and rating widget
-              _producerAndRating(_tableDetailProvider.tableDetailResponse)
+              _producerAndRating(_tableDetailProvider?.tableDetailResponse)
             ],
           ),
         ),
@@ -349,7 +352,7 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///between screen widget
-  Widget _betweenScreen(TableDetailResponse tableDetailResponse) {
+  Widget _betweenScreen(TableDetailResponse? tableDetailResponse) {
     return Container(
       color: ColorStyles.light_grey,
       height: MediaQuery.of(context).size.height / 1.7,
@@ -381,7 +384,7 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///cost and icon widget
-  Widget _costAndIcon(TableDetailResponse tableDetailResponse) {
+  Widget _costAndIcon(TableDetailResponse? tableDetailResponse) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15),
       child: Row(
@@ -398,7 +401,7 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///image widget
-  Widget _centerImage(TableDetailResponse tableDetailResponse) {
+  Widget _centerImage(TableDetailResponse? tableDetailResponse) {
     return Padding(
       padding: const EdgeInsets.only(top: 2),
       child: Center(
@@ -409,7 +412,7 @@ class _TableProductDetailedState extends BaseClassState {
             image: DecorationImage(
               fit: BoxFit.fill,
               image: NetworkImage(
-                tableDetailResponse.data!.productImages!.first.image.toString(),
+                tableDetailResponse!.data!.productImages!.first.image!,
               ),
             ),
           ),
@@ -432,14 +435,14 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///description detail
-  Widget _descriptionDetail(TableDetailResponse tableDetailResponse) {
+  Widget _descriptionDetail(TableDetailResponse? tableDetailResponse) {
     return Padding(
       padding: const EdgeInsets.only(
         left: 10,
       ),
       child: NeoStoreTitle(
         maxLine: 5,
-        text: tableDetailResponse.data!.description,
+        text: tableDetailResponse?.data?.description,
         style: TextStyles.labelName,
       ),
     );
@@ -449,14 +452,14 @@ class _TableProductDetailedState extends BaseClassState {
   Widget _shareIcon() => Icon(Icons.share);
 
   ///cost widget
-  Widget _cost(TableDetailResponse tableDetailResponse) {
+  Widget _cost(TableDetailResponse? tableDetailResponse) {
     return NeoStoreTitle(
-        text: 'Rs. ${tableDetailResponse.data!.cost}',
+        text: 'Rs. ${tableDetailResponse?.data?.cost}',
         style: TextStyles.titlelabel);
   }
 
   ///product and rating widget
-  Widget _producerAndRating(TableDetailResponse tableDetailResponse) {
+  Widget _producerAndRating(TableDetailResponse? tableDetailResponse) {
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: Row(
@@ -473,7 +476,7 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///rating bar widget
-  Widget _ratingBarIndicator(TableDetailResponse tableDetailResponse) {
+  Widget _ratingBarIndicator(TableDetailResponse? tableDetailResponse) {
     return RatingBarIndicator(
       itemBuilder: (context, index) {
         return Icon(
@@ -481,7 +484,7 @@ class _TableProductDetailedState extends BaseClassState {
           color: ColorStyles.yellow,
         );
       },
-      rating: tableDetailResponse.data!.rating!.toDouble(),
+      rating: tableDetailResponse!.data!.rating!.toDouble(),
       itemCount: 5,
       itemSize: 15,
       direction: Axis.horizontal,
@@ -489,9 +492,9 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///producer name widget
-  Widget _producerName(TableDetailResponse tableDetailResponse) {
+  Widget _producerName(TableDetailResponse? tableDetailResponse) {
     return NeoStoreTitle(
-        text: tableDetailResponse.data!.producer, style: TextStyles.labelName);
+        text: tableDetailResponse?.data?.producer, style: TextStyles.labelName);
   }
 
   ///category name widget
@@ -501,30 +504,28 @@ class _TableProductDetailedState extends BaseClassState {
   }
 
   ///product name widget
-  Widget _productName(TableDetailResponse tableDetailResponse) {
+  Widget _productName(TableDetailResponse? tableDetailResponse) {
     return Padding(
       padding: const EdgeInsets.only(top: 5, bottom: 5),
       child: NeoStoreTitle(
-        text: tableDetailResponse.data!.name,
+        text: tableDetailResponse?.data?.name,
         style: TextStyles.titlelabel,
       ),
     );
   }
 
   void fetchTableDetail(int productId) {
-    Future.delayed(Duration(milliseconds: 300), () {
-      _tableDetailProvider.getTableDetail(productId);
-      _ratingProvider.getRating(productId);
-      print("fetchtabledetail =>$productId");
-    });
+    _tableDetailProvider?.getTableDetail(productId);
+    _ratingProvider?.getRating(productId);
   }
 
   @override
-  @override
   void initState() {
     super.initState();
-    print("got pproduct id=> $tableProductDetailed");
 
-    fetchTableDetail(tableProductDetailed);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      fetchTableDetail(tableProductDetailed);
+    });
+    print("got pproduct id=> $tableProductDetailed");
   }
 }

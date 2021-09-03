@@ -155,28 +155,28 @@ class APIHandler {
       print("messag ${e.response}");
 
       if (e.response?.statusCode == 403) {
-        APIError apiError = new APIError(
-          error: parseError(e.response?.data),
-          status: 403,
-          onAlertPop: () {},
-          message: null,
-        );
+        ApiError apiError = new ApiError(
+            data: false,
+            status: 403,
+            message: e.response?.data,
+            userMsg: e.message);
         completer.complete(apiError);
       } else {
-        APIError apiError = new APIError(
-            error: parseError(e.response?.data ?? ""),
+        ApiError apiError = new ApiError(
+            data: false,
             message: e.response?.data ?? "",
             status: e.response?.statusCode ?? 0,
-            onAlertPop: () {});
+            userMsg: e.message);
         completer.complete(apiError);
       }
     } catch (e) {
       print("errror ${e.toString()}");
-      APIError apiError = new APIError(
-          error: Messages.genericError,
-          status: 500,
-          onAlertPop: () {},
-          message: null);
+      ApiError apiError = new ApiError(
+        data: false,
+        status: 500,
+        message: e.toString(),
+        userMsg: e.toString()
+      );
       completer.complete(apiError);
     }
     return completer.future;

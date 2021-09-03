@@ -9,6 +9,9 @@ import 'package:neostore/presentation/home/drawer_viewmodel.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/my_account/my_account.dart';
+import 'package:neostore/presentation/my_cart/my_cart_view.dart';
+import 'package:neostore/presentation/my_order/my_order_view.dart';
+import 'package:neostore/presentation/order_detail/order_detail_view.dart';
 import 'package:neostore/presentation/store_locator/store_locator_view.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -24,7 +27,7 @@ class HomeScreen extends BaseClass {
 }
 
 class _HomeScreen extends BaseClassState {
-  late HomeProvider _homeProvider;
+  HomeProvider? _homeProvider;
   late DrawerProvider _drawerProvider;
 
   Duration duration = const Duration(microseconds: 300);
@@ -40,7 +43,7 @@ class _HomeScreen extends BaseClassState {
     _drawerProvider = Provider.of<DrawerProvider>(context);
     _homeProvider = Provider.of<HomeProvider>(context);
 
-    return _homeProvider.isLoading
+    return _homeProvider?.isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
@@ -49,7 +52,7 @@ class _HomeScreen extends BaseClassState {
             color: ColorStyles.dark_grey,
             child: Stack(
               children: [
-                menu(context, _homeProvider.listCartResponse),
+                menu(context, _homeProvider?.listCartResponse),
                 dashboard(context),
               ],
             ),
@@ -198,20 +201,33 @@ class _HomeScreen extends BaseClassState {
         image: ('assets/images/logout_icon.png'),
         text: ConstantStrings.logout,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
   }
 
   ///my order widget
-  NeoStoreTitleWithIcons _myOrder() {
-    return NeoStoreTitleWithIcons(
-      image: ('assets/images/my_orders_icon.png'),
-      text: ConstantStrings.myOrders,
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+  Widget _myOrder() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyOrderView(),
+          ),
+        );
+      },
+      child: NeoStoreTitleWithIcons(
+        image: ('assets/images/my_orders_icon.png'),
+        text: ConstantStrings.myOrders,
+        style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+      ),
     );
   }
 
@@ -229,7 +245,7 @@ class _HomeScreen extends BaseClassState {
       child: NeoStoreTitleWithIcons(
         image: ('assets/images/store_locator_icon.png'),
         text: ConstantStrings.storeLocator,
-        style: TextStyles.titleHeadline!.copyWith(
+        style: TextStyles.titleHeadline?.copyWith(
           color: ColorStyles.white,
         ),
       ),
@@ -249,7 +265,7 @@ class _HomeScreen extends BaseClassState {
         image: ('assets/images/username_icon.png'),
         text: ConstantStrings.myAccount,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
+            textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
     );
@@ -261,8 +277,8 @@ class _HomeScreen extends BaseClassState {
       image: ('assets/images/cupboard_icon.png'),
       text: ConstantStrings.cupboards,
       style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+              color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -272,8 +288,8 @@ class _HomeScreen extends BaseClassState {
       image: ('assets/images/sofa_icon.png'),
       text: ConstantStrings.chairs,
       style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+              color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -283,34 +299,56 @@ class _HomeScreen extends BaseClassState {
       image: ('assets/images/sofa_icon.png'),
       text: ConstantStrings.sofas,
       style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+        color: ColorStyles.white,
+        fontWeight: FontWeight.w400,
+      )),
     );
   }
 
   /// table category widget
-  NeoStoreTitleWithIcons _tableCategory() {
-    return NeoStoreTitleWithIcons(
-      image: ('assets/images/table_icon.png'),
-      text: ConstantStrings.tables,
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+  Widget _tableCategory() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TableCategoryView(),
+          ),
+        );
+      },
+      child: NeoStoreTitleWithIcons(
+        image: ('assets/images/table_icon.png'),
+        text: ConstantStrings.tables,
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline?.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+      ),
     );
   }
 
   ///my cart widget
-  Row _myCart(ListCartResponse? listCartResponse) {
+  Widget _myCart(ListCartResponse? listCartResponse) {
     return Row(
       children: [
-        NeoStoreTitleWithIcons(
-          image: ('assets/images/shopping_cart.png'),
-          text: ConstantStrings.myCart,
-          style: GoogleFonts.workSans(
-            textStyle: GoogleFonts.workSans(
-              textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white,
-                fontWeight: FontWeight.w400,
+        GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => MyCartView(),
+              ),
+            );
+          },
+          child: NeoStoreTitleWithIcons(
+            image: ('assets/images/shopping_cart.png'),
+            text: ConstantStrings.myCart,
+            style: GoogleFonts.workSans(
+              textStyle: GoogleFonts.workSans(
+                textStyle: TextStyles.titleHeadline?.copyWith(
+                  color: ColorStyles.white,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),
@@ -328,7 +366,7 @@ class _HomeScreen extends BaseClassState {
             text: listCartResponse?.data != null
                 ? listCartResponse?.count.toString()
                 : '0',
-            style: TextStyles.titleHeadline!.copyWith(color: ColorStyles.white),
+            style: TextStyles.titleHeadline?.copyWith(color: ColorStyles.white),
           ),
         )
       ],
@@ -338,11 +376,11 @@ class _HomeScreen extends BaseClassState {
   ///email
   NeoStoreTitle _email() {
     return NeoStoreTitle(
-      text: _homeProvider.myAccountResponse?.data?.userData?.email,
+      text: _homeProvider?.myAccountResponse?.data?.userData?.email,
       // _homeProvider.myAccountResponse?.data?.userData?.email,
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.labelName!
-            .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+        textStyle: TextStyles.labelName
+            ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
       ),
     );
   }
@@ -350,10 +388,10 @@ class _HomeScreen extends BaseClassState {
   ///full name
   NeoStoreTitle _fullName() {
     return NeoStoreTitle(
-      text: _homeProvider.myAccountResponse?.data?.userData?.firstName!,
+      text: _homeProvider?.myAccountResponse?.data?.userData?.firstName,
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline!
-            .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+        textStyle: TextStyles.titleHeadline
+            ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
       ),
       color: ColorStyles.red,
     );
@@ -404,7 +442,7 @@ class _HomeScreen extends BaseClassState {
                       padding: const EdgeInsets.all(15.0),
                       child: NeoStoreTitle(
                         text: ConstantStrings.neoStore,
-                        style: TextStyles.titleHeadline!.copyWith(
+                        style: TextStyles.titleHeadline?.copyWith(
                           color: ColorStyles.white,
                         ),
                       ),
@@ -515,26 +553,15 @@ class _HomeScreen extends BaseClassState {
   }
 
   void fetchMyCartData() {
-    _homeProvider.getListCountCart();
-    _homeProvider.getMyAccount();
-    // Future.delayed(
-    //   Duration(milliseconds: 300),
-    //   () {
-    //
-    //   },
-    // );
+    _homeProvider?.getListCountCart();
+    _homeProvider?.getMyAccount();
   }
 
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       fetchMyCartData();
     });
-    // if(mounted){
-    //   _homeProvider = Provider.of<HomeProvider>(context);
-    //   fetchMyCartData();
-    // }
   }
 }

@@ -9,7 +9,7 @@ class EditCartRepositoryImpl implements EditCartRepository {
   }
 
   @override
-  Future getEditCartRepository(String productId, String quantity) {
+  Future getEditCartRepository(int productId, int quantity) {
     return _editCartApi.getEditCartApi(productId, quantity);
   }
 }

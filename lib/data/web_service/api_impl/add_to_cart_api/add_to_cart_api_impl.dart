@@ -28,7 +28,7 @@ class AddToCartApiImpl extends AddToCartApi {
 
     print('gotCartResponseeeee=>${response.runtimeType}');
 
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

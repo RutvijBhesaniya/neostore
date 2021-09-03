@@ -18,7 +18,7 @@ class TableCategoryApiImpl implements TableCategoryApi {
       // context: context,
     );
     print('gotResponse=>${ response.runtimeType}');
-    if (response is APIError) {
+    if (response is ApiError) {
       completer.complete(response);
       return completer.future;
     } else {

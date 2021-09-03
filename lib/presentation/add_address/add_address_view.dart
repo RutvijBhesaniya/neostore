@@ -213,7 +213,6 @@ class AddAddressState extends BaseClassState {
                         jsonDecode(MemoryManagement.getAddress()!),
                       );
 
-
                       List<Addresslist> addAddressList = [];
 
                       addAddressList.addAll(addAddressModel.addresslist!);
@@ -260,12 +259,11 @@ class AddAddressState extends BaseClassState {
     );
   }
 
-
   Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: InkWell(
-        onTap: (){
+        onTap: () {
           Navigator.pop(context);
         },
         child: Icon(
@@ -274,14 +272,10 @@ class AddAddressState extends BaseClassState {
           size: 20,
         ),
       ),
-
       text: ConstantStrings.addAddress,
       style: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),
     );
   }
-
-
-
 }

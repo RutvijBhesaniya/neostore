@@ -29,10 +29,12 @@ class LoginScreenProvider extends ChangeNotifier {
     _isLoading = true;
     var response = await _loginUseCase.callApi(loginRequest, context);
     // _loginResponse = LoginResponse.fromJson(jsonDecode(response));
+    print("loginresponse=>${response}");
 
     print("responseruntime=>${response.runtimeType}");
     _isLoading = false;
     return response;
+
   }
 }
 

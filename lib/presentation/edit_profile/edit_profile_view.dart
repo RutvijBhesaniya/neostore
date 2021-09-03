@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
@@ -47,7 +46,7 @@ class EditProfileViewState extends BaseClassState
   ///appbar widget
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
-      backgroundColour: ColorStyles.purple,
+      backgroundColour: ColorStyles.red,
       leading: GestureDetector(
         onTap: () {
           Navigator.pop(context);
@@ -147,6 +146,10 @@ class EditProfileViewState extends BaseClassState
         hintText: 'DOB',
         validation: validateName,
         controller: _dobController,
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -166,6 +169,10 @@ class EditProfileViewState extends BaseClassState
         hintText: 'Phone Number',
         validation: validatePhoneNumber,
         controller: _phoneNumberController,
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -185,6 +192,10 @@ class EditProfileViewState extends BaseClassState
         hintText: ConstantStrings.email,
         validation: validateEmail,
         controller: _emailController,
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -204,6 +215,10 @@ class EditProfileViewState extends BaseClassState
         hintText: 'Last Name',
         validation: validateName,
         controller: _lastController,
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -218,6 +233,10 @@ class EditProfileViewState extends BaseClassState
       hintText: 'First Name',
       validation: validateName,
       controller: _firstController,
+      textStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!.copyWith(
+              color: ColorStyles.white, fontWeight: FontWeight.w400)),
+
       hintStyle: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
               color: ColorStyles.white, fontWeight: FontWeight.w400)),

@@ -88,17 +88,25 @@ class AddressListState extends BaseClassState {
                   width: MediaQuery.of(context).size.width,
                   child: NeoStoreElevatedButton(
                     onPressed: () async {
-                      var response = await _addressListProvider
-                          .getOrderAddress(_changeAddress.currentAddress!);
-                      OrderAddressResponse _orderAddressResponse =
-                          OrderAddressResponse.fromJson(jsonDecode(response));
-                      if (_orderAddressResponse.status == 200) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => MyOrderView(),
+                      if (_changeAddress.currentValue == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Please Select Address'),
                           ),
                         );
+                      } else {
+                        var response = await _addressListProvider
+                            .getOrderAddress(_changeAddress.currentAddress!);
+                        OrderAddressResponse _orderAddressResponse =
+                            OrderAddressResponse.fromJson(jsonDecode(response));
+                        if (_orderAddressResponse.status == 200) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MyOrderView(),
+                            ),
+                          );
+                        }
                       }
                     },
                     text: ConstantStrings.placeOrder,
@@ -119,7 +127,6 @@ class AddressListState extends BaseClassState {
   Widget _radioButton(Addresslist addresslist, int index) {
     return RadioListTile<int>(
       activeColor: ColorStyles.dark_grey,
-
       value: index,
       title: Container(
         decoration: BoxDecoration(
@@ -145,7 +152,8 @@ class AddressListState extends BaseClassState {
                 child: GestureDetector(
                   onTap: () async {
                     String? response = MemoryManagement.getAddress();
-                    AddAddressModel result = AddAddressModel.fromJson(json.decode(response!));
+                    AddAddressModel result =
+                        AddAddressModel.fromJson(json.decode(response!));
                     result.addresslist!.removeAt(index);
                     String addr = json.encode(result);
                     MemoryManagement.setAddress(address: addr);
@@ -180,7 +188,7 @@ class AddressListState extends BaseClassState {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: InkWell(
-        onTap: (){
+        onTap: () {
           Navigator.pop(context);
         },
         child: Icon(
