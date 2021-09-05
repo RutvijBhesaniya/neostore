@@ -6,7 +6,7 @@ import 'package:neostore/data/web_service/repository/my_account_repository/my_ac
 import 'package:neostore/domain/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
-class MyAccountProvider extends ChangeNotifier {
+class ProfileDetailsProvider extends ChangeNotifier {
   MyAccountResponse? _myAccountResponse;
 
   MyAccountResponse? get myAccountResponse => _myAccountResponse;

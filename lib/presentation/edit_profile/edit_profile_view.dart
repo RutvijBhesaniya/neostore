@@ -9,8 +9,9 @@ import 'package:neostore/data/model/response/edit_profile_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
+import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
-import 'package:neostore/presentation/my_account/my_account.dart';
+import 'package:neostore/presentation/profile_details/profile_details_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
@@ -46,6 +47,7 @@ class EditProfileViewState extends BaseClassState
   ///appbar widget
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
+      elevation: 0.0,
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
         onTap: () {
@@ -73,22 +75,15 @@ class EditProfileViewState extends BaseClassState
         key: _formKey,
         child: Container(
           ///widget background image
-          decoration: _backgroundImage(),
+          color: ColorStyles.red,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Center(
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        top: 20,
-                        bottom: 20,
-                      ),
-                      child: _imagePicker(),
-                    ),
-                  ),
+                  ///image picker widget
+                  _imagePicker(),
 
                   ///widget first name
                   _firstName(),
@@ -111,6 +106,38 @@ class EditProfileViewState extends BaseClassState
               ),
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+  ///image picker widget
+  Widget _imagePicker() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          top: 20,
+          bottom: 20,
+        ),
+        child: Stack(
+          children: [
+            CircleAvatar(
+                radius: 80,
+                backgroundImage: _imageFile == null
+                    ? AssetImage("assets/images/profile_pic.jpg")
+                    : FileImage(File(_imageFile!.path)) as ImageProvider),
+            Positioned(
+              bottom: 10,
+              right: 10,
+              child: InkWell(
+                onTap: () {
+                  showModalBottomSheet(
+                      context: context, builder: ((builder) => bottomSheet()));
+                },
+                child: Icon(Icons.camera_alt_outlined),
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -143,13 +170,15 @@ class EditProfileViewState extends BaseClassState
     return Padding(
       padding: const EdgeInsets.only(top: 20, bottom: 20),
       child: NeoStoreTextFormField(
-        hintText: 'DOB',
+        hintText: ConstantStrings.dob,
         validation: validateName,
         controller: _dobController,
+        errorStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
         textStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
-
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -166,13 +195,15 @@ class EditProfileViewState extends BaseClassState
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
-        hintText: 'Phone Number',
+        hintText: ConstantStrings.phoneNumber,
         validation: validatePhoneNumber,
         controller: _phoneNumberController,
+        errorStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
         textStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
-
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -192,10 +223,12 @@ class EditProfileViewState extends BaseClassState
         hintText: ConstantStrings.email,
         validation: validateEmail,
         controller: _emailController,
+        errorStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
         textStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
-
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -212,13 +245,15 @@ class EditProfileViewState extends BaseClassState
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
-        hintText: 'Last Name',
+        hintText: ConstantStrings.lastName,
         validation: validateName,
         controller: _lastController,
+        errorStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+        ),
         textStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
-
         hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -230,40 +265,19 @@ class EditProfileViewState extends BaseClassState
   ///widget first name
   Widget _firstName() {
     return NeoStoreTextFormField(
-      hintText: 'First Name',
+      hintText: ConstantStrings.firstName,
       validation: validateName,
       controller: _firstController,
+      errorStyle: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+      ),
       textStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!.copyWith(
-              color: ColorStyles.white, fontWeight: FontWeight.w400)),
-
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
       hintStyle: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
               color: ColorStyles.white, fontWeight: FontWeight.w400)),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
-    );
-  }
-
-  Widget _imagePicker() {
-    return Stack(
-      children: [
-        CircleAvatar(
-            radius: 80,
-            backgroundImage: _imageFile == null
-                ? AssetImage("assets/images/profile_pic.jpg")
-                : FileImage(File(_imageFile!.path)) as ImageProvider),
-        Positioned(
-          bottom: 10,
-          right: 10,
-          child: InkWell(
-            onTap: () {
-              showModalBottomSheet(
-                  context: context, builder: ((builder) => bottomSheet()));
-            },
-            child: Icon(Icons.camera_alt_outlined),
-          ),
-        )
-      ],
     );
   }
 
@@ -277,29 +291,35 @@ class EditProfileViewState extends BaseClassState
       ),
       child: Column(
         children: [
-          Text(
-            'Choose Profile photo',
+          NeoStoreTitle(
+            text: ConstantStrings.choose_profile_photo,
             style: TextStyle(fontSize: 20),
           ),
           SizedBox(
             height: 20,
           ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              FlatButton.icon(
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                ),
                 onPressed: () {
                   takePhoto(ImageSource.camera);
                 },
                 icon: Icon(Icons.camera_alt_outlined),
-                label: Text('Camera'),
+                label: Text(ConstantStrings.camera),
               ),
-              FlatButton.icon(
+              ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.red,
+                ),
                 onPressed: () {
                   takePhoto(ImageSource.gallery);
                 },
                 icon: Icon(Icons.camera_alt_outlined),
-                label: Text('Gallary'),
+                label: Text(ConstantStrings.galary),
               )
             ],
           )
@@ -316,15 +336,6 @@ class EditProfileViewState extends BaseClassState
     });
   }
 
-  ///widget background image
-  BoxDecoration _backgroundImage() {
-    return BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.fill,
-      ),
-    );
-  }
 
   void editProfileUser(BuildContext context) async {
     File file = File(_imageFile!.path);
@@ -359,7 +370,7 @@ class EditProfileViewState extends BaseClassState
 
       Navigator.of(context).push(
         MaterialPageRoute(
-          builder: (context) => MyAccount(),
+          builder: (context) => ProfileDetailsView(),
         ),
       );
     }

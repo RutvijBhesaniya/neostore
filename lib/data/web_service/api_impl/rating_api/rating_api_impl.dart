@@ -19,6 +19,7 @@ class RatingApiImpl extends RatingApi {
       // url: "${APIs.ratingBar}?product_id=$productId",
       url: "${APIs.ratingBar}",
       requestBody: formData
+
       // requestBody: {"product_id ": productId},
       // context: context,
     );

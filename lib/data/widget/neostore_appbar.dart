@@ -8,11 +8,12 @@ class NeoStoreAppBar extends StatefulWidget {
     this.suffixIcon,
     this.onPressed,
     this.style,
-    this.actions,
+    this.actions, this.elevation,
   });
 
   final backgroundColour;
   final String? text;
+  final elevation;
   final leading;
   final suffixIcon;
   final onPressed;
@@ -24,12 +25,12 @@ class NeoStoreAppBar extends StatefulWidget {
 }
 
 class _NeoStoreAppBarState extends State<NeoStoreAppBar> {
-  @override
-  // TODO: implement preferredSize
+
   Size get preferredSize => const Size.fromHeight(50);
 
   Widget build(BuildContext context) {
     return AppBar(
+      elevation: widget.elevation,
       backgroundColor: widget.backgroundColour,
       leading: widget.leading,
       title: Text(

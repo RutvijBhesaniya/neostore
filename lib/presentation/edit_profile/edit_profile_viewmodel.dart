@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/request/edit_profile_request.dart';
 import 'package:neostore/data/model/response/edit_profile_response.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api_impl.dart';
 import 'package:neostore/data/web_service/repository/edit_profile_repository/edit_profile_repository_impl.dart';
@@ -41,7 +39,7 @@ class EditProfileProvider extends ChangeNotifier {
     _editProfileResponse = EditProfileResponse.fromJson(
       jsonDecode(response),
     );
-    print("asasasasassa=>${response}");
+    print("asasasasassa=>$response");
     _isLoading = false;
     return await response;
     // notifyListeners();

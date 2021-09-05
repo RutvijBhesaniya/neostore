@@ -22,7 +22,7 @@ import 'package:neostore/domain/edit_cart_use_case.dart';
 import 'package:neostore/domain/list_cart_use_case.dart';
 import 'package:neostore/domain/table_detail_use_case.dart';
 
-class ListCartProvider extends ChangeNotifier {
+class MyCartProvider extends ChangeNotifier {
   DeleteCartUseCase _deleteCartUseCase = DeleteCartUseCase(
     DeleteCartRepositoryImpl(
       DeleteCartApiImpl(),

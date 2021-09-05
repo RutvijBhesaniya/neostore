@@ -17,7 +17,6 @@ class RegisterApiImpl implements RegisterApi {
     var response = await APIHandler.post(
       url: "${APIs.register}",
       requestBody: formData,
-      context: context,
     );
     if (response is ApiError) {
       completer.complete(response);

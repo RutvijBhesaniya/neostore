@@ -17,27 +17,27 @@ import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class TableProductDetailed extends BaseClass {
-  int? tableProductDetailed;
+class TableDetailView extends BaseClass {
+  final int? tableProductDetailed;
 
-  TableProductDetailed({this.tableProductDetailed});
+  TableDetailView({this.tableProductDetailed});
 
   @override
   BaseClassState getState() {
-    return _TableProductDetailedState(tableProductDetailed);
+    return _TableDetailViewState(tableProductDetailed);
   }
 }
 
-class _TableProductDetailedState extends BaseClassState {
+class _TableDetailViewState extends BaseClassState {
   var tableProductDetailed;
 
   TableDetailProvider? _tableDetailProvider;
-  RatingProvider? _ratingProvider;
-  AddToCartProvider? _addToCartProvider;
+  // RatingProvider? _ratingProvider;
+  // AddToCartProvider? _addToCartProvider;
 
   TextEditingController _quantityController = new TextEditingController();
 
-  _TableProductDetailedState(this.tableProductDetailed);
+  _TableDetailViewState(this.tableProductDetailed);
 
   @override
   getAppBar() {
@@ -47,8 +47,8 @@ class _TableProductDetailedState extends BaseClassState {
   @override
   Widget getBody() {
     _tableDetailProvider = Provider.of<TableDetailProvider>(context);
-    _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
-    _addToCartProvider = Provider.of<AddToCartProvider>(context, listen: false);
+    // _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
+    // _addToCartProvider = Provider.of<AddToCartProvider>(context, listen: false);
 
     return Scaffold(
       body: _tableDetailProvider?.isLoading
@@ -111,7 +111,7 @@ class _TableProductDetailedState extends BaseClassState {
               ),
 
               ///rate button widget
-              _rateButton(_ratingProvider?.ratingResponse),
+              _rateButton(_tableDetailProvider?.ratingResponse),
             ],
           ),
         ),
@@ -139,7 +139,7 @@ class _TableProductDetailedState extends BaseClassState {
                     height: MediaQuery.of(context).size.height / 1.5,
                     child: Column(
                       children: [
-                        _alertDialogBoxTitle(ratingResponse!),
+                        _alertDialogBoxTitle(ratingResponse),
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 18),
                           child: Container(
@@ -160,7 +160,7 @@ class _TableProductDetailedState extends BaseClassState {
                                     color: ColorStyles.yellow,
                                   );
                                 },
-                                rating: ratingResponse.data?.rating?.toDouble(),
+                                rating: ratingResponse?.data?.rating?.toDouble(),
                                 itemCount: 5,
                                 direction: Axis.horizontal,
                               ),
@@ -172,13 +172,15 @@ class _TableProductDetailedState extends BaseClassState {
                             width: double.infinity,
                             child: NeoStoreElevatedButton(
                               text: ConstantStrings.rateNow,
-                              textStyle: TextStyles.titlelabel!.copyWith(
+                              textStyle: TextStyles.titlelabel?.copyWith(
                                 color: ColorStyles.white,
                               ),
                               buttonStyle: TextButton.styleFrom(
                                 backgroundColor: ColorStyles.red,
                               ),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
                             ),
                           ),
                         )
@@ -194,13 +196,13 @@ class _TableProductDetailedState extends BaseClassState {
     );
   }
 
-  NeoStoreTitle _alertDialogBoxTitle(RatingResponse? ratingResponse) {
+  Widget _alertDialogBoxTitle(RatingResponse? ratingResponse) {
     return NeoStoreTitle(
-                        text: ratingResponse!.data!.name,
-                        style: TextStyles.titlelabel!.copyWith(
-                          color: ColorStyles.black,
-                        ),
-                      );
+      text: ratingResponse?.data?.name,
+      style: TextStyles.titlelabel?.copyWith(
+        color: ColorStyles.black,
+      ),
+    );
   }
 
   ///but now button widget
@@ -220,8 +222,8 @@ class _TableProductDetailedState extends BaseClassState {
                       child: Column(
                         children: [
                           NeoStoreTitle(
-                            text: tableDetailResponse!.data!.name,
-                            style: TextStyles.titlelabel!.copyWith(
+                            text: tableDetailResponse?.data?.name,
+                            style: TextStyles.titlelabel?.copyWith(
                               color: ColorStyles.black,
                             ),
                           ),
@@ -234,8 +236,7 @@ class _TableProductDetailedState extends BaseClassState {
                                 image: DecorationImage(
                                   fit: BoxFit.fill,
                                   image: NetworkImage(
-                                    tableDetailResponse
-                                        .data!.productImages!.first.image
+                                    tableDetailResponse!.data!.productImages!.first.image
                                         .toString(),
                                   ),
                                 ),
@@ -273,32 +274,52 @@ class _TableProductDetailedState extends BaseClassState {
                                 padding: const EdgeInsets.only(top: 5),
                                 child: NeoStoreElevatedButton(
                                   text: ConstantStrings.submit,
-                                  textStyle: TextStyles.titlelabel!.copyWith(
+                                  textStyle: TextStyles.titlelabel?.copyWith(
                                     color: ColorStyles.white,
                                   ),
                                   buttonStyle: TextButton.styleFrom(
                                     backgroundColor: ColorStyles.red,
                                   ),
                                   onPressed: () async {
-                                    var response =
-                                        await _addToCartProvider?.getAddToCart(
-                                      int.parse(tableDetailResponse.data!.id
-                                          .toString()),
-                                      int.parse(_quantityController.text),
-                                    );
-                                    AddToCartResponse? _addToCartResponse =
-                                        AddToCartResponse.fromJson(
-                                      jsonDecode(response),
-                                    );
-
-                                    if (_addToCartResponse.status == 200) {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) => MyCartView(),
+                                    if (_quantityController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content:
+                                              Text('Please enter quantity'),
                                         ),
                                       );
-                                    } else {}
+                                    } else if(int.parse(_quantityController.text) >= 8) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content:
+                                          Text('Enter less than 8'),
+                                        ),
+                                      );
+                                    }
+                                    else {
+                                      var response = await _tableDetailProvider
+                                          ?.getAddToCart(
+                                        int.parse(tableDetailResponse.data!.id
+                                            .toString()),
+                                        int.parse(_quantityController.text),
+                                      );
+                                      AddToCartResponse? _addToCartResponse =
+                                          AddToCartResponse.fromJson(
+                                        jsonDecode(response),
+                                      );
+
+                                      if (_addToCartResponse.status == 200) {
+                                        Navigator.pop(context);
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => MyCartView(),
+                                          ),
+                                        );
+                                      } else {}
+                                    }
                                   },
                                 ),
                               ),
@@ -314,7 +335,7 @@ class _TableProductDetailedState extends BaseClassState {
           },
           buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.red),
           text: ConstantStrings.buyNow,
-          textStyle: TextStyles.titlelabel!.copyWith(
+          textStyle: TextStyles.titlelabel?.copyWith(
             color: ColorStyles.white,
           ),
         ),
@@ -429,7 +450,7 @@ class _TableProductDetailedState extends BaseClassState {
       ),
       child: NeoStoreTitle(
         text: ConstantStrings.description,
-        style: TextStyles.titleHeadline!.copyWith(fontWeight: FontWeight.bold),
+        style: TextStyles.titleHeadline?.copyWith(fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -516,7 +537,7 @@ class _TableProductDetailedState extends BaseClassState {
 
   void fetchTableDetail(int productId) {
     _tableDetailProvider?.getTableDetail(productId);
-    _ratingProvider?.getRating(productId);
+    _tableDetailProvider?.getRating(productId);
   }
 
   @override

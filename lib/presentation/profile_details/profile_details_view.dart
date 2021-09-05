@@ -4,7 +4,7 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/widget/neostore_title_border_with_icons.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_view.dart';
 import 'package:neostore/presentation/home/home_view.dart';
-import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
+import 'package:neostore/presentation/profile_details/profile_details_viewmodel.dart';
 import 'package:neostore/presentation/reset_password/reset_password_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
@@ -12,16 +12,15 @@ import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class MyAccount extends BaseClass {
+class ProfileDetailsView extends BaseClass {
   @override
   BaseClassState getState() {
-    return MyAccountState();
+    return ProfileDetailsViewState();
   }
 }
 
-class MyAccountState extends BaseClassState {
-  late MyAccountProvider _myAccountProvider =
-  Provider.of<MyAccountProvider>(context);
+class ProfileDetailsViewState extends BaseClassState {
+  ProfileDetailsProvider? _myAccountProvider;
 
   @override
   getAppBar() {
@@ -30,15 +29,19 @@ class MyAccountState extends BaseClassState {
 
   @override
   Widget getBody() {
-    return _myAccountProvider.isLoading
+
+    _myAccountProvider =
+        Provider.of<ProfileDetailsProvider>(context);
+    return _myAccountProvider?.isLoading
         ? Center(
       child: CircularProgressIndicator(),
     )
         : Scaffold(
       body: Container(
+        color: ColorStyles.red,
 
         ///widget background image
-        decoration: _backgroundImage(),
+
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: SingleChildScrollView(
@@ -53,13 +56,13 @@ class MyAccountState extends BaseClassState {
                     ),
                     child: CircleAvatar(
                       backgroundColor: ColorStyles.blue,
-                      radius: 100,
+                      radius: 70,
                     ),
                   ),
                 ),
 
                 ///widget first name
-                _firstName(_myAccountProvider.myAccountResponse),
+                _firstName(_myAccountProvider?.myAccountResponse),
 
                 ///widget last name
                 _lastName(),
@@ -85,7 +88,7 @@ class MyAccountState extends BaseClassState {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ResetPassword(),
+              builder: (context) => ResetPasswordView(),
             ),
           );
         },
@@ -99,8 +102,9 @@ class MyAccountState extends BaseClassState {
   }
 
   ///widget app bar
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
+      elevation: 0.0,
       backgroundColour: ColorStyles.red,
       leading: InkWell(
         onTap: () {
@@ -176,7 +180,7 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.phone_android,
-        text: _myAccountProvider.myAccountResponse?.data?.userData?.phoneNo,
+        text: _myAccountProvider?.myAccountResponse?.data?.userData?.phoneNo,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -190,7 +194,7 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.attach_email,
-        text: _myAccountProvider.myAccountResponse?.data?.userData?.email,
+        text: _myAccountProvider?.myAccountResponse?.data?.userData?.email,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.
             copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -204,7 +208,7 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
-        text: _myAccountProvider.myAccountResponse?.data?.userData?.lastName,
+        text: _myAccountProvider?.myAccountResponse?.data?.userData?.lastName,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -218,7 +222,7 @@ class MyAccountState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
-        text: _myAccountProvider.myAccountResponse?.data?.userData?.firstName,
+        text: _myAccountProvider?.myAccountResponse?.data?.userData?.firstName,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -226,25 +230,21 @@ class MyAccountState extends BaseClassState {
     );
   }
 
-  ///widget background image
-  BoxDecoration _backgroundImage() {
-    return BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.fill,
-      ),
-    );
-  }
+
 
   void fetchTableCategoryData() {
-    Future.delayed(Duration(milliseconds: 300), () {
-      _myAccountProvider.getMyAccount();
-    });
+    _myAccountProvider?.getMyAccount();
+
   }
 
   @override
   void initState() {
-    fetchTableCategoryData();
     super.initState();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      fetchTableCategoryData();
+
+    });
+
   }
 }

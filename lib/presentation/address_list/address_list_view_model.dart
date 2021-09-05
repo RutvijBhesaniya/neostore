@@ -1,13 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/response/order_address_response.dart';
 import 'package:neostore/data/web_service/api_impl/order_address_api/order_address_api_impl.dart';
 import 'package:neostore/data/web_service/repository/order_address_repository/order_address_repository_impl.dart';
 import 'package:neostore/domain/order_address_use_case.dart';
-import 'package:neostore/presentation/address_list/address_list_view.dart';
 
 class AddressListProvider extends ChangeNotifier {
+
+  int? _value;
+  String? address;
+
+
+  int? get currentValue => _value;
+  String? get currentAddress => address;
   OrderAddressUseCase _orderAddressUseCase = OrderAddressUseCase(
     OrderAddressRepositoryImpl(
       OrderAddressApiImpl(),
@@ -22,6 +26,12 @@ class AddressListProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
+  void changeModel(int type, String s) {
+    _value = type;
+    address = s;
+    notifyListeners();
+  }
+
   Future<dynamic> getOrderAddress(String address) async {
     _isLoading = true;
     var response = await _orderAddressUseCase.callApi(address);
@@ -35,17 +45,8 @@ class AddressListProvider extends ChangeNotifier {
 
 
 class ChangeAddress with ChangeNotifier {
-  int? _value;
-  String? address;
 
 
-  int? get currentValue => _value;
-  String? get currentAddress => address;
 
-  void changeModel(int type, String s) {
-    _value = type;
-    address = s;
-    notifyListeners();
-  }
 }
 

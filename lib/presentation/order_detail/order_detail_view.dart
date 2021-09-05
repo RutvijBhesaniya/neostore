@@ -11,7 +11,7 @@ import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
 class OrderDetailView extends BaseClass {
-  int? id;
+  final int? id;
 
   OrderDetailView({this.id});
 
@@ -35,19 +35,23 @@ class _OrderDetailViewState extends BaseClassState {
 
   @override
   getBody() {
-
-    _orderDetailProvider =
-        Provider.of<OrderDetailProvider>(context);
+    _orderDetailProvider = Provider.of<OrderDetailProvider>(context);
     return _orderDetailProvider?.isLoading
         ? Center(
             child: CircularProgressIndicator(),
           )
         : Column(
-            children: [_listViewBuilder(), _totalTitleAndCost()],
+            children: [
+              _listViewBuilder(),
+
+              ///title and cost widget
+              _totalTitleAndCost()
+            ],
           );
   }
 
-  Padding _totalTitleAndCost() {
+  ///title and cost widget
+  Widget _totalTitleAndCost() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -56,13 +60,16 @@ class _OrderDetailViewState extends BaseClassState {
           ///total title widget
           _totalTitle(),
 
+
+          ///total cost widget
           _totalCost()
         ],
       ),
     );
   }
 
-  NeoStoreTitle _totalCost() {
+  ///total cost widget
+  Widget _totalCost() {
     return NeoStoreTitle(
       text: _orderDetailProvider?.orderDetailResponse?.data?.cost.toString(),
       style: GoogleFonts.workSans(
@@ -75,7 +82,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///total title widget
-  NeoStoreTitle _totalTitle() {
+  Widget _totalTitle() {
     return NeoStoreTitle(
       text: ConstantStrings.total,
       style: GoogleFonts.workSans(
@@ -87,7 +94,7 @@ class _OrderDetailViewState extends BaseClassState {
     );
   }
 
-  ListView _listViewBuilder() {
+  Widget _listViewBuilder() {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
@@ -127,7 +134,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///details widget
-  Padding _details(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _details(OrderDetailResponse orderDetailResponse, int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 5),
       child: Container(
@@ -150,8 +157,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///quantity and cost widget
-  Flexible _quantityAndCost(
-      OrderDetailResponse orderDetailResponse, int index) {
+  Widget _quantityAndCost(OrderDetailResponse orderDetailResponse, int index) {
     return Flexible(
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -173,7 +179,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///cost widget
-  NeoStoreTitle _cost(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _cost(OrderDetailResponse orderDetailResponse, int index) {
     return NeoStoreTitle(
       text: 'RS ${orderDetailResponse.data!.orderDetails![index].total}',
       style: GoogleFonts.workSans(
@@ -186,7 +192,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///quantity widget
-  NeoStoreTitle _quantity(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _quantity(OrderDetailResponse orderDetailResponse, int index) {
     return NeoStoreTitle(
       text: 'OTY : ${orderDetailResponse.data!.orderDetails![index].quantity} ',
       style: GoogleFonts.workSans(
@@ -199,7 +205,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///product category widget
-  NeoStoreTitle _productCategoryName(
+  Widget _productCategoryName(
       OrderDetailResponse orderDetailResponse, int index) {
     return NeoStoreTitle(
         text: orderDetailResponse.data!.orderDetails![index].prodCatName,
@@ -212,7 +218,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///product title widget
-  NeoStoreTitle _title(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _title(OrderDetailResponse orderDetailResponse, int index) {
     return NeoStoreTitle(
         maxLine: 1,
         overflow: TextOverflow.ellipsis,
@@ -226,7 +232,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///image widget
-  Container _image(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _image(OrderDetailResponse orderDetailResponse, int index) {
     return Container(
       width: MediaQuery.of(context).size.width / 3.5,
       height: MediaQuery.of(context).size.height / 7,
@@ -242,7 +248,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///appbar widget
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
@@ -255,7 +261,8 @@ class _OrderDetailViewState extends BaseClassState {
           size: 20,
         ),
       ),
-      text: 'Order Id: ${_orderDetailProvider?.orderDetailResponse?.data?.id.toString() ?? ' '}',
+      text:
+          'Order Id: ${_orderDetailProvider?.orderDetailResponse?.data?.id.toString() ?? ' '}',
       style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!
               .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -268,7 +275,6 @@ class _OrderDetailViewState extends BaseClassState {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance?.addPostFrameCallback((_) {
       fetchOrderDetail(id!);

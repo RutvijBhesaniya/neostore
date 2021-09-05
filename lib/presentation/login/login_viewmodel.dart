@@ -28,8 +28,6 @@ class LoginScreenProvider extends ChangeNotifier {
       LoginRequest loginRequest, BuildContext context) async {
     _isLoading = true;
     var response = await _loginUseCase.callApi(loginRequest, context);
-    // _loginResponse = LoginResponse.fromJson(jsonDecode(response));
-    print("loginresponse=>${response}");
 
     print("responseruntime=>${response.runtimeType}");
     _isLoading = false;

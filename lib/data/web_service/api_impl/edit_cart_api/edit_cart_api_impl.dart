@@ -22,7 +22,7 @@ class EditCartApiImpl extends EditCartApi {
     var response = await APIHandler.post(
       url: "${APIs.editCart}",
       requestBody: formData,
-      additionalHeaders: mapToken
+      additionalHeaders: mapToken,
     );
     if (response is ApiError) {
       completer.complete(response);

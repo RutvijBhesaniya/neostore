@@ -4,7 +4,7 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/order_list_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
-import 'package:neostore/presentation/my_account/my_account_viewmodel.dart';
+import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/my_order/my_order_viewmodel.dart';
 import 'package:neostore/presentation/order_detail/order_detail_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -19,7 +19,7 @@ class MyOrderView extends BaseClass {
 }
 
 class MyOrderViewState extends BaseClassState {
-  late MyOrderProvider _myOrderProvider = Provider.of<MyOrderProvider>(context);
+  MyOrderProvider? _myOrderProvider;
 
   @override
   getAppBar() {
@@ -28,15 +28,18 @@ class MyOrderViewState extends BaseClassState {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    fetchOrderListData();
+
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      fetchOrderListData();
+    });
   }
 
   @override
   getBody() {
+    _myOrderProvider = Provider.of<MyOrderProvider>(context);
     return Container(
-      child: _myOrderProvider.isLoading
+      child: _myOrderProvider?.isLoading
           ? Center(
               child: CircularProgressIndicator(),
             )
@@ -44,10 +47,10 @@ class MyOrderViewState extends BaseClassState {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               physics: ScrollPhysics(),
-              itemCount: _myOrderProvider.orderListResponse!.data!.length,
+              itemCount: _myOrderProvider?.orderListResponse?.data?.length,
               itemBuilder: (context, index) {
                 return _buildListItem(
-                    _myOrderProvider.orderListResponse, index);
+                    _myOrderProvider?.orderListResponse, index);
               },
             ),
     );
@@ -62,7 +65,7 @@ class MyOrderViewState extends BaseClassState {
             context,
             MaterialPageRoute(
               builder: (context) => OrderDetailView(
-                  id:_myOrderProvider.orderListResponse!.data![index].id),
+                  id: _myOrderProvider?.orderListResponse?.data?[index].id),
             ),
           );
         },
@@ -70,15 +73,14 @@ class MyOrderViewState extends BaseClassState {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             NeoStoreTitle(
-              text:
-                  ('Order ID: ${orderListResponse!.data![index].id.toString()}'),
+                text:
+                    ('Order ID: ${orderListResponse?.data?[index].id.toString()}'),
                 style: GoogleFonts.workSans(
-                  textStyle: TextStyles.titleHeadline!.copyWith(
+                  textStyle: TextStyles.titleHeadline?.copyWith(
                     fontWeight: FontWeight.w400,
                     color: ColorStyles.liver_grey,
                   ),
-                )
-            ),
+                )),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,9 +88,9 @@ class MyOrderViewState extends BaseClassState {
                 Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: NeoStoreTitle(
-                      text: 'Rs ${orderListResponse.data![index].cost}',
+                      text: 'Rs ${orderListResponse?.data?[index].cost}',
                       style: GoogleFonts.workSans(
-                        textStyle: TextStyles.titleHeadline!.copyWith(
+                        textStyle: TextStyles.titleHeadline?.copyWith(
                           fontWeight: FontWeight.w400,
                           color: ColorStyles.liver_grey,
                         ),
@@ -97,14 +99,14 @@ class MyOrderViewState extends BaseClassState {
               ],
             ),
             NeoStoreTitle(
-              text: 'Ordered Date:  ${orderListResponse.data![index].created}',
+                text:
+                    'Ordered Date:  ${orderListResponse?.data?[index].created}',
                 style: GoogleFonts.workSans(
-                  textStyle: TextStyles.titleHeadline!.copyWith(
+                  textStyle: TextStyles.titleHeadline?.copyWith(
                     fontWeight: FontWeight.w400,
                     color: ColorStyles.liver_grey,
                   ),
-                )
-            ),
+                )),
             Divider(
               color: ColorStyles.liver_grey,
             )
@@ -115,12 +117,17 @@ class MyOrderViewState extends BaseClassState {
   }
 
   ///appbar widget
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: InkWell(
-        onTap: (){
-          Navigator.pop(context);
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
         },
         child: Icon(
           Icons.arrow_back_ios,
@@ -130,7 +137,7 @@ class MyOrderViewState extends BaseClassState {
       ),
       text: ConstantStrings.myOrders,
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline!.copyWith(
+        textStyle: TextStyles.titleHeadline?.copyWith(
           fontWeight: FontWeight.w600,
           color: ColorStyles.white,
         ),
@@ -139,8 +146,6 @@ class MyOrderViewState extends BaseClassState {
   }
 
   void fetchOrderListData() {
-    Future.delayed(Duration(milliseconds: 300), () {
-      _myOrderProvider.getOrderList();
-    });
+    _myOrderProvider?.getOrderList();
   }
 }

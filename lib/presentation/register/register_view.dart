@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/model/response/register_response.dart';
 import 'package:neostore/data/widget/radio_button.dart';
@@ -18,20 +19,20 @@ import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class RegisterScreen extends BaseClass {
-  const RegisterScreen({Key? key}) : super(key: key);
+class RegisterView extends BaseClass {
+  const RegisterView({Key? key}) : super(key: key);
 
   @override
   BaseClassState getState() {
-    return _RegisterScreenState();
+    return _RegisterViewState();
   }
 }
 
 enum GenderTypes { Male, Female }
 
-class _RegisterScreenState extends BaseClassState
+class _RegisterViewState extends BaseClassState
     with NeoStoreConstantValidation {
-  late RegisterScreenProvider _registerScreenProvider;
+  late RegisterViewProvider _registerScreenProvider;
   late ChangeGender _changeColorModel;
 
   final _formKey = GlobalKey<FormState>();
@@ -60,6 +61,7 @@ class _RegisterScreenState extends BaseClassState
 
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
+      elevation: 0.0,
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
         onTap: () {
@@ -80,17 +82,17 @@ class _RegisterScreenState extends BaseClassState
 
   @override
   Widget getBody() {
-    _registerScreenProvider = Provider.of<RegisterScreenProvider>(context);
+    _registerScreenProvider = Provider.of<RegisterViewProvider>(context);
     _changeColorModel = Provider.of<ChangeGender>(context);
     return _registerForm();
   }
 
-  Form _registerForm() {
+  Widget _registerForm() {
     return Form(
       key: _formKey,
       child: Container(
         height: double.infinity,
-        decoration: _backgroundImage(),
+        color: ColorStyles.red,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
@@ -115,6 +117,7 @@ class _RegisterScreenState extends BaseClassState
                 ///widget confirm password
                 _confirmPassword(),
 
+                ///gender widget
                 _gender(),
 
                 ///widget phone number
@@ -133,59 +136,82 @@ class _RegisterScreenState extends BaseClassState
     );
   }
 
+  ///gender widget
   Widget _gender() {
     return Row(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(
-            top: 10,
-          ),
-          child: NeoStoreTitle(
-            text: 'Gender',
-            style: GoogleFonts.workSans(
-                textStyle: TextStyles.titleHeadline!.copyWith(
-                    color: ColorStyles.white, fontWeight: FontWeight.w400)),
-          ),
-        ),
-        Flexible(
-          child: RadioListTile<GenderTypes>(
-            activeColor: ColorStyles.dark_grey,
+        ///gender title widget
+        _genderTitle(),
 
-              value: GenderTypes.Male,
-              title: Text(
-                'Male',
-                style: GoogleFonts.workSans(
-                  textStyle: TextStyles.titleHeadline!.copyWith(
-                      color: ColorStyles.white, fontWeight: FontWeight.w400),
-                ),
-              ),
-              groupValue: _changeColorModel.currentValue,
-              onChanged: (value) {
-                _changeColorModel.changeModel(value!);
-              }),
-        ),
-        Flexible(
-          fit: FlexFit.tight,
-          child: RadioListTile<GenderTypes>(
+        ///male radio button
+        _maleRadioButton(),
 
-            activeColor: ColorStyles.dark_grey,
-
-            value: GenderTypes.Female,
-            title: Text(
-              'Female',
-              style: GoogleFonts.workSans(
-                textStyle: TextStyles.labelName!.copyWith(
-                    color: ColorStyles.white, fontWeight: FontWeight.w400),
-              ),
-              maxLines: 1,
-            ),
-            groupValue: _changeColorModel.currentValue,
-            onChanged: (value) {
-              _changeColorModel.changeModel(value!);
-            },
-          ),
-        )
+        ///female radio button
+        _femaleRadioButton()
       ],
+    );
+  }
+
+  ///gender title widget
+  Widget _genderTitle() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 10),
+      child: Container(
+        width: MediaQuery.of(context).size.width / 5.8,
+        child: NeoStoreTitle(
+          text: 'Gender',
+          style: GoogleFonts.workSans(
+              textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          )),
+        ),
+      ),
+    );
+  }
+
+  ///female radio button
+  Widget _femaleRadioButton() {
+    return Container(
+      width: MediaQuery.of(context).size.width / 2.8,
+      child: RadioListTile<GenderTypes>(
+        activeColor: ColorStyles.white,
+        value: GenderTypes.Female,
+        title: Text(
+          'Female',
+          style: GoogleFonts.workSans(
+            textStyle: TextStyles.labelName!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400),
+          ),
+          maxLines: 1,
+        ),
+        groupValue: _changeColorModel.currentValue,
+        onChanged: (value) {
+          _changeColorModel.changeModel(value!);
+        },
+      ),
+    );
+  }
+
+  ///male radio button
+  Widget _maleRadioButton() {
+    return Container(
+      width: MediaQuery.of(context).size.width / 2.8,
+      child: RadioListTile<GenderTypes>(
+        activeColor: ColorStyles.white,
+        value: GenderTypes.Male,
+        title: Text(
+          'Male',
+          style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400),
+          ),
+        ),
+        groupValue: _changeColorModel.currentValue,
+        onChanged: (value) {
+          _changeColorModel.changeModel(value!);
+        },
+      ),
     );
   }
 
@@ -195,15 +221,16 @@ class _RegisterScreenState extends BaseClassState
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-            width: 20,
-            height: 20,
-            // color: ColorStyles.white,
-            child: Checkbox(
-              value: _registerScreenProvider.checkValue,
-              onChanged: (val) {
-                _registerScreenProvider.changeCheckValue(val!);
-              },
-            )),
+          width: 10,
+          height: 10,
+          child: Checkbox(
+            activeColor: ColorStyles.white,
+            value: _registerScreenProvider.checkValue,
+            onChanged: (val) {
+              _registerScreenProvider.changeCheckValue(val!);
+            },
+          ),
+        ),
         Padding(
           padding: const EdgeInsets.only(left: 20),
           child: RichText(
@@ -416,14 +443,6 @@ class _RegisterScreenState extends BaseClassState
     );
   }
 
-  ///widget background
-  _backgroundImage() {
-    return BoxDecoration(
-      image: DecorationImage(
-          image: AssetImage('assets/images/background.png'), fit: BoxFit.fill),
-    );
-  }
-
   void registerUser(BuildContext context) async {
     RegisterRequest registerRequest = RegisterRequest();
     registerRequest.firstName = _firstNameController.text;
@@ -435,25 +454,28 @@ class _RegisterScreenState extends BaseClassState
     registerRequest.gender =
         _changeColorModel.currentValue == GenderTypes.Male ? 'Male' : 'Female';
 
-    // _registerScreenProvider.getRegisterUser(registerRequest, context);
-
     var response =
         await _registerScreenProvider.getRegisterUser(registerRequest, context);
 
-    RegisterResponse registerResponse = RegisterResponse.fromJson(
-      json.decode(response),
-    );
-
-    if (registerResponse.status == 200) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => LoginScreen(),
+    if (response is ApiError) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Email Id Already Exist'),
         ),
       );
     } else {
-      'Please Register';
-      print(('PleaseRegister'));
+      RegisterResponse registerResponse =
+          RegisterResponse.fromJson(json.decode(response));
+
+      if (registerResponse.status == 200) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => LoginScreenView(),
+          ),
+        );
+      } else {
+      }
     }
   }
 }

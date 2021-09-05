@@ -38,6 +38,15 @@ class HomeProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
+  bool collapsed = false;
+
+  bool get getCurrentDrawer => collapsed;
+
+  void setCurrentDrawer(bool drawer) {
+    collapsed = drawer;
+    notifyListeners();
+  }
+
   void getListCountCart() async {
     _isLoading = true;
     var response = await _listCartUseCase.callApi();

@@ -5,13 +5,14 @@ import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/widget/carousel_slider.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/data/widget/neostore_title_with_icons.dart';
-import 'package:neostore/presentation/home/drawer_viewmodel.dart';
+import 'package:neostore/presentation/chair_category/chair_category_view.dart';
+import 'package:neostore/presentation/cupboard_category/cupboard_category_view.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
 import 'package:neostore/presentation/login/login_view.dart';
-import 'package:neostore/presentation/my_account/my_account.dart';
 import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
-import 'package:neostore/presentation/order_detail/order_detail_view.dart';
+import 'package:neostore/presentation/profile_details/profile_details_view.dart';
+import 'package:neostore/presentation/sofa_category/sofa_category_view.dart';
 import 'package:neostore/presentation/store_locator/store_locator_view.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -28,7 +29,6 @@ class HomeScreen extends BaseClass {
 
 class _HomeScreen extends BaseClassState {
   HomeProvider? _homeProvider;
-  late DrawerProvider _drawerProvider;
 
   Duration duration = const Duration(microseconds: 300);
 
@@ -40,7 +40,7 @@ class _HomeScreen extends BaseClassState {
 
   @override
   Widget getBody() {
-    _drawerProvider = Provider.of<DrawerProvider>(context);
+    // _drawerProvider = Provider.of<DrawerProvider>(context);
     _homeProvider = Provider.of<HomeProvider>(context);
 
     return _homeProvider?.isLoading
@@ -184,7 +184,7 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///logout widget
-  GestureDetector _logout(context) {
+  Widget _logout(context) {
     return GestureDetector(
       onTap: () async {
         print('logout${MemoryManagement.clearMemory()}');
@@ -193,7 +193,7 @@ class _HomeScreen extends BaseClassState {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-              builder: (context) => LoginScreen(),
+              builder: (context) => LoginScreenView(),
             ),
             (route) => false);
       },
@@ -232,13 +232,13 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///store locator widget
-  GestureDetector _storeLocator(context) {
+  Widget _storeLocator(context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => StoreLocator(),
+            builder: (context) => StoreLocatorView(),
           ),
         );
       },
@@ -253,12 +253,12 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///my account widget
-  GestureDetector _myAccount(context) {
+  Widget _myAccount(context) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => MyAccount()),
+          MaterialPageRoute(builder: (context) => ProfileDetailsView()),
         );
       },
       child: NeoStoreTitleWithIcons(
@@ -272,37 +272,69 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///cupboard category widget
-  NeoStoreTitleWithIcons _cupboardCategory() {
-    return NeoStoreTitleWithIcons(
-      image: ('assets/images/cupboard_icon.png'),
-      text: ConstantStrings.cupboards,
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline?.copyWith(
-              color: ColorStyles.white, fontWeight: FontWeight.w400)),
+  Widget _cupboardCategory() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CupboardCategoryView(),
+          ),
+        );
+      },
+      child: NeoStoreTitleWithIcons(
+        image: ('assets/images/cupboard_icon.png'),
+        text: ConstantStrings.cupboards,
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline?.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+      ),
     );
   }
 
   ///chair category widget
-  NeoStoreTitleWithIcons _chairCategory() {
-    return NeoStoreTitleWithIcons(
-      image: ('assets/images/sofa_icon.png'),
-      text: ConstantStrings.chairs,
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline?.copyWith(
-              color: ColorStyles.white, fontWeight: FontWeight.w400)),
+  Widget _chairCategory() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ChairCategoryView(),
+          ),
+        );
+
+      },
+      child: NeoStoreTitleWithIcons(
+        image: ('assets/images/sofa_icon.png'),
+        text: ConstantStrings.chairs,
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline?.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+      ),
     );
   }
 
   ///sofa category widget
-  NeoStoreTitleWithIcons _sofaCategory() {
-    return NeoStoreTitleWithIcons(
-      image: ('assets/images/sofa_icon.png'),
-      text: ConstantStrings.sofas,
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline?.copyWith(
-        color: ColorStyles.white,
-        fontWeight: FontWeight.w400,
-      )),
+  Widget _sofaCategory() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SofaCategoryView(),
+          ),
+        );
+
+      },
+      child: NeoStoreTitleWithIcons(
+        image: ('assets/images/sofa_icon.png'),
+        text: ConstantStrings.sofas,
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline?.copyWith(
+          color: ColorStyles.white,
+          fontWeight: FontWeight.w400,
+        )),
+      ),
     );
   }
 
@@ -374,7 +406,7 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///email
-  NeoStoreTitle _email() {
+  Widget _email() {
     return NeoStoreTitle(
       text: _homeProvider?.myAccountResponse?.data?.userData?.email,
       // _homeProvider.myAccountResponse?.data?.userData?.email,
@@ -386,9 +418,9 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///full name
-  NeoStoreTitle _fullName() {
+  Widget _fullName() {
     return NeoStoreTitle(
-      text: _homeProvider?.myAccountResponse?.data?.userData?.firstName,
+      text: _homeProvider?.myAccountResponse?.data?.userData?.firstName!,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline
             ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -398,20 +430,23 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///profile pic widget
-  CircleAvatar _profilePic() {
-    return CircleAvatar(
-      backgroundColor: ColorStyles.blue,
-      radius: 60,
+  Widget _profilePic() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: CircleAvatar(
+        backgroundColor: ColorStyles.blue,
+        radius: 60,
+      ),
     );
   }
 
   Widget dashboard(context) {
     return AnimatedPositioned(
       duration: duration,
-      top: !_drawerProvider.getCurrentDrawer ? 0 : 0.2 * screenHeight!,
-      bottom: !_drawerProvider.getCurrentDrawer ? 0 : 0.2 * screenWidth!,
-      left: !_drawerProvider.getCurrentDrawer ? 0 : 0.7 * screenWidth!,
-      right: !_drawerProvider.getCurrentDrawer ? 0 : -0.4 * screenWidth!,
+      top: !_homeProvider!.getCurrentDrawer ? 0 : 0.2 * screenHeight!,
+      bottom: !_homeProvider!.getCurrentDrawer ? 0 : 0.2 * screenWidth!,
+      left: !_homeProvider!.getCurrentDrawer ? 0 : 0.7 * screenWidth!,
+      right: !_homeProvider!.getCurrentDrawer ? 0 : -0.4 * screenWidth!,
       child: SafeArea(
         child: Material(
           elevation: 8,
@@ -426,12 +461,12 @@ class _HomeScreen extends BaseClassState {
                       padding: const EdgeInsets.all(15),
                       child: InkWell(
                         onTap: () {
-                          var value = _drawerProvider.getCurrentDrawer;
-                          _drawerProvider.setCurrentDrawer(!value);
-                          print("current=>${_drawerProvider.getCurrentDrawer}");
+                          var value = _homeProvider?.getCurrentDrawer;
+                          _homeProvider?.setCurrentDrawer(!value!);
+                          // print("current=>${_drawerProvider.getCurrentDrawer}");
                         },
                         child: Icon(
-                          _drawerProvider.getCurrentDrawer
+                          _homeProvider!.getCurrentDrawer
                               ? Icons.arrow_back
                               : Icons.menu,
                           color: ColorStyles.white,
@@ -493,16 +528,27 @@ class _HomeScreen extends BaseClassState {
                           SizedBox(
                             height: 10,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  'assets/images/chairs_image.png',
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ChairCategoryView(),
+                                ),
+                              );
+
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                    'assets/images/chairs_image.png',
+                                  ),
                                 ),
                               ),
+                              height: MediaQuery.of(context).size.height / 4,
                             ),
-                            height: MediaQuery.of(context).size.height / 4,
                           )
                         ],
                       ),
@@ -514,30 +560,51 @@ class _HomeScreen extends BaseClassState {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  'assets/images/sofa_image.png',
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => SofaCategoryView(),
+                                ),
+                              );
+
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                    'assets/images/sofa_image.png',
+                                  ),
                                 ),
                               ),
+                              height: MediaQuery.of(context).size.height / 4,
                             ),
-                            height: MediaQuery.of(context).size.height / 4,
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              image: DecorationImage(
-                                fit: BoxFit.fill,
-                                image: AssetImage(
-                                  'assets/images/cupboard_image.png',
+                          GestureDetector(
+                            onTap: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CupboardCategoryView(),
+                                ),
+                              );
+                              },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: AssetImage(
+                                    'assets/images/cupboard_image.png',
+                                  ),
                                 ),
                               ),
+                              height: MediaQuery.of(context).size.height / 4,
                             ),
-                            height: MediaQuery.of(context).size.height / 4,
                           )
                         ],
                       ),
@@ -562,6 +629,7 @@ class _HomeScreen extends BaseClassState {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       fetchMyCartData();
+      _homeProvider?.setCurrentDrawer(false);
     });
   }
 }

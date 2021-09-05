@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:dio/dio.dart';
 import 'package:neostore/base/network_model/api_constant.dart';
 import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/base/network_model/api_handler.dart';
@@ -19,7 +18,8 @@ class OrderListApiImpl extends OrderListApi {
     var response = await APIHandler.get(
         url: "${APIs.orderList}",
         // requestBody: formData,
-        additionalHeaders: mapToken);
+        additionalHeaders: mapToken,
+    );
     print('gotOrderListresponse=>$response');
     if (response is ApiError) {
       completer.complete(response);

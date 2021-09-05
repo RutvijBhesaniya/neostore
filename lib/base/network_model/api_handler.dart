@@ -20,12 +20,12 @@ class APIHandler {
   // POST method
   static Future<dynamic> post({
     dynamic requestBody,
-    @required BuildContext? context,
+    // @required BuildContext? context,
     String? url,
     Map<String, String> additionalHeaders = const {},
   }) async {
     var response = await _hitApi(
-      context: context,
+      // context: context,
       url: url,
       methodType: MethodType.POST,
       requestBody: requestBody,
@@ -38,12 +38,12 @@ class APIHandler {
   // GET method
   static Future<dynamic> get({
     @required String? url,
-    @required BuildContext? context,
+    // @required BuildContext? context,
     dynamic requestBody,
     Map<String, String> additionalHeaders = const {},
   }) async {
     return await _hitApi(
-      context: context,
+      // context: context,
       url: url,
       methodType: MethodType.GET,
       requestBody: requestBody,
@@ -58,7 +58,7 @@ class APIHandler {
     Map<String, String> additionalHeaders = const {},
   }) async {
     return await _hitApi(
-      context: context,
+      // context: context,
       url: url,
       methodType: MethodType.DELETE,
       additionalHeaders: additionalHeaders,
@@ -73,7 +73,7 @@ class APIHandler {
     Map<String, String> additionalHeaders = const {},
   }) async {
     return await _hitApi(
-      context: context,
+      // context: context,
       url: url,
       methodType: MethodType.PUT,
       requestBody: requestBody,
@@ -83,7 +83,7 @@ class APIHandler {
 
   // Generic HTTP method
   static Future<dynamic> _hitApi({
-    @required BuildContext? context,
+    // @required BuildContext? context,
     @required MethodType? methodType,
     @required String? url,
     dynamic requestBody,

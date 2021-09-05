@@ -16,7 +16,7 @@ class ForgotPasswordApiImpl extends ForgotPasswordApi {
 
     var response = await APIHandler.post(
       url: "${APIs.forgot}",
-      requestBody: formData
+      requestBody: formData,
     );
     print('gotforgetpassword response=>$response');
     if (response is ApiError) {

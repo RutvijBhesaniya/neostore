@@ -18,13 +18,31 @@ class TableDetailProvider extends ChangeNotifier {
   TableDetailUseCase _tableDetailUseCase = TableDetailUseCase(
     TableDetailRepositoryImpl(TableDetailApiImpl()),
   );
+  RatingUseCase _ratingUseCase = RatingUseCase(
+    RatingRepositoryImpl(
+      RatingApiImpl(),
+    ),
+  );
+  AddToCartUseCase _addToCartUseCase = AddToCartUseCase(
+    AddToCartRepositoryImpl(
+      AddToCartApiImpl(),
+    ),
+  );
+
   TableDetailResponse? _tableDetailResponse;
+  RatingResponse? _ratingResponse;
+  AddToCartResponse? _addToCartResponse;
+
 
   TableDetailResponse? get tableDetailResponse => _tableDetailResponse;
+  AddToCartResponse? get addToCartResponse => _addToCartResponse;
+
 
   bool _isLoading = true;
 
   get isLoading => _isLoading;
+
+  get ratingResponse => _ratingResponse;
 
   void getTableDetail(int? productId) async {
     _isLoading = true;
@@ -33,22 +51,10 @@ class TableDetailProvider extends ChangeNotifier {
     _isLoading = false;
     notifyListeners();
   }
-}
 
-class RatingProvider extends ChangeNotifier {
-  RatingUseCase _ratingUseCase =
-      RatingUseCase(RatingRepositoryImpl(RatingApiImpl()));
-
-  RatingResponse? _ratingResponse;
-
-  get ratingResponse => _ratingResponse;
-  bool _isLoading = true;
-
-  get isLoading => _isLoading;
-
-  void getRating(int productid) async {
+  void getRating(int productId) async {
     _isLoading = true;
-    var response = await _ratingUseCase.callApi(productid);
+    var response = await _ratingUseCase.callApi(productId);
     print("abcdef=>$response");
 
     _ratingResponse = RatingResponse.fromJson(jsonDecode(response));
@@ -57,20 +63,7 @@ class RatingProvider extends ChangeNotifier {
 
     notifyListeners();
   }
-}
 
-class AddToCartProvider extends ChangeNotifier {
-  AddToCartUseCase _addToCartUseCase = AddToCartUseCase(
-    AddToCartRepositoryImpl(
-      AddToCartApiImpl(),
-    ),
-  );
-  AddToCartResponse? _addToCartResponse;
-
-  AddToCartResponse? get addToCartResponse => _addToCartResponse;
-  bool _isLoading = true;
-
-  get isLoading => _isLoading;
 
   Future<dynamic> getAddToCart(int productId, int quantity) async {
     _isLoading = true;
@@ -82,4 +75,9 @@ class AddToCartProvider extends ChangeNotifier {
     return response;
     // notifyListeners();
   }
+
 }
+
+
+
+

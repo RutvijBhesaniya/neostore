@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/network_model/api_constant.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
@@ -59,13 +58,7 @@ class EditProfileApiImpl extends EditProfileApi {
     print('phoneNo=>$phoneNo');
     request.fields.addAll(map);
     print("editmappppppppp=>$map");
-    // request.fields.addAll({
-    //   'first_name': firstName,
-    //   'last_name': lastName,
-    //   'email': email,
-    //   'dob': dob,
-    //   'phone_no': phoneNo
-    // });
+
     request.files
         .add(await http.MultipartFile.fromBytes('profile_pic', profilePic));
     request.headers.addAll(headers);
@@ -90,7 +83,7 @@ class EditProfileApiImpl extends EditProfileApi {
 
     if (response.statusCode == 200) {
       var responseString = await response.stream.bytesToString();
-      print("editresponstrrrrrr=>${responseString}");
+      print("editresponstrrrrrr=>$responseString");
       return responseString;
     } else {
       Center(child: CircularProgressIndicator(),);

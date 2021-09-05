@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import 'package:meta/meta.dart';
-import 'package:neostore/data/model/response/login_response.dart';
 import 'package:neostore/utils/shared_preferences/SharedPrefsKeys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

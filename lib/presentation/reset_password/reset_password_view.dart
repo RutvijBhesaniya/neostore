@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/order_list_response.dart';
 import 'package:neostore/data/model/response/reset_password_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/login/login_view.dart';
@@ -16,16 +15,16 @@ import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class ResetPassword extends BaseClass {
-  const ResetPassword({Key? key}) : super(key: key);
+class ResetPasswordView extends BaseClass {
+  const ResetPasswordView({Key? key}) : super(key: key);
 
   @override
   BaseClassState getState() {
-    return _ResetPasswordState();
+    return _ResetPasswordViewState();
   }
 }
 
-class _ResetPasswordState extends BaseClassState
+class _ResetPasswordViewState extends BaseClassState
     with NeoStoreConstantValidation {
   final _formKey = GlobalKey<FormState>();
   late ResetPasswordProvider _resetPasswordProvider =
@@ -49,11 +48,11 @@ class _ResetPasswordState extends BaseClassState
   @override
   NeoStoreAppBar getAppBar() {
     return _appBar();
-
   }
 
   NeoStoreAppBar _appBar() {
     return NeoStoreAppBar(
+      elevation: 0.0,
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(
         onTap: () {
@@ -72,13 +71,12 @@ class _ResetPasswordState extends BaseClassState
     );
   }
 
-
   @override
   Widget getBody() {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      decoration: _backgroundImage(),
+      color: ColorStyles.red,
       child: SingleChildScrollView(
         child: Container(
           margin: EdgeInsets.fromLTRB(20, 50, 20, 0),
@@ -116,23 +114,9 @@ class _ResetPasswordState extends BaseClassState
       margin: EdgeInsets.only(top: 20, bottom: 30),
       child: NeoStoreElevatedButton(
         onPressed: () async {
-          var response = await _resetPasswordProvider.getResetPassword(
-              _currentPasswordController.text,
-              _newPasswordController.text,
-              _confirmPasswordController.text);
 
-          ResetPasswordResponse _resetPasswordResponse =
-              ResetPasswordResponse.fromJson(jsonDecode(response));
-
-
-          print("resetpasswordresponse=>${response}");
-          if (_resetPasswordResponse.status == 200) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LoginScreen(),
-              ),
-            );
+          if (_formKey.currentState!.validate()) {
+            resetPasswordUser();
           }
         },
         text: ConstantStrings.resetPassword.toUpperCase(),
@@ -147,6 +131,25 @@ class _ResetPasswordState extends BaseClassState
     );
   }
 
+  void resetPasswordUser() async {
+    var response = await _resetPasswordProvider.getResetPassword(
+        _currentPasswordController.text,
+        _newPasswordController.text,
+        _confirmPasswordController.text);
+
+    ResetPasswordResponse _resetPasswordResponse =
+        ResetPasswordResponse.fromJson(jsonDecode(response));
+
+    if (_resetPasswordResponse.status == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginScreenView(),
+        ),
+      );
+    }
+  }
+
   ///widget confirm password
   Widget _confirmPassword() {
     return Padding(
@@ -155,18 +158,20 @@ class _ResetPasswordState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        ),),
+        textStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+        ),
         hintText: ConstantStrings.confirmPassword,
-        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
         controller: _confirmPasswordController,
-        // validation: validateConfirmPassword,
+        validation: validateName,
+
       ),
     );
   }
@@ -180,17 +185,19 @@ class _ResetPasswordState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
-        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
+        textStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
         controller: _newPasswordController,
-        // validation: validatePassword,
+
+        validation: validateName,
+
       ),
     );
   }
@@ -204,15 +211,19 @@ class _ResetPasswordState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        textStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
-        hintStyle: GoogleFonts.workSans(textStyle: TextStyles.titleHeadline!.copyWith(
-          color: ColorStyles.white,fontWeight: FontWeight.w400
-        )),
+        textStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+        ),
+        hintStyle: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+        ),
+
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
+        validation: validateName,
         controller: _currentPasswordController,
         // validation: validatePassword,
       ),
@@ -228,21 +239,13 @@ class _ResetPasswordState extends BaseClassState
           text: ConstantStrings.neoStore,
           style: GoogleFonts.workSans(
               textStyle: TextStyles.largeHeadline!.copyWith(
-                fontWeight: FontWeight.bold,
-                color: ColorStyles.white,
-              )),
+            fontWeight: FontWeight.bold,
+            color: ColorStyles.white,
+          )),
         ),
       ),
     );
   }
 
-  ///widget background image
-  BoxDecoration _backgroundImage() {
-    return BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.fill,
-      ),
-    );
-  }
+
 }

@@ -11,40 +11,25 @@ import 'package:neostore/presentation/add_address/add_address_view.dart';
 import 'package:neostore/presentation/address_list/address_list_view_model.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/utils/shared_preferences/SharedPrefsKeys.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class AddressList extends BaseClass {
+class AddressListView extends BaseClass {
   @override
   BaseClassState getState() {
-    return AddressListState();
+    return AddressListViewState();
   }
 }
 
-enum Type { ischecked, isnotchecked }
-
-class AddressListState extends BaseClassState {
-  final snackBar = SnackBar(
-    content: NeoStoreTitle(
-      text: 'Please Enter Address',
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!.copyWith(
-        fontWeight: FontWeight.w600,
-        color: ColorStyles.red,
-      )),
-    ),
-  );
-  List<Addresslist> addAddressList = [];
-  late ChangeAddress _changeAddress;
-  late AddressListProvider _addressListProvider =
-      Provider.of<AddressListProvider>(context, listen: false);
+class AddressListViewState extends BaseClassState {
+  List<AddressList> addAddressList = [];
+  AddressListProvider? _addressListProvider;
 
   @override
   void initState() {
-    // TODO: implement initState
-    getaddAddress();
+    super.initState();
+    getAddAddress();
   }
 
   @override
@@ -54,7 +39,8 @@ class AddressListState extends BaseClassState {
 
   @override
   getBody() {
-    _changeAddress = Provider.of<ChangeAddress>(context);
+    _addressListProvider =
+        Provider.of<AddressListProvider>(context);
 
     return addAddressList.length > 0
         ? Padding(
@@ -62,33 +48,19 @@ class AddressListState extends BaseClassState {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                NeoStoreTitle(
-                  text: 'Shipping Address',
-                  style: GoogleFonts.workSans(
-                    textStyle: TextStyles.titleHeadline!.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: ColorStyles.dark_grey,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, bottom: 10),
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    physics: ScrollPhysics(),
-                    itemCount: addAddressList.length,
-                    itemBuilder: (context, index) {
-                      return _radioButton(addAddressList[index], index);
-                      // Text(addAddressList[index].address!);
-                    },
-                  ),
-                ),
+                ///shipping address title widget
+                _shippingAddressTitle(),
+
+                ///radio button list tile
+                _addressRadioButton(),
+
+
+                ///place order button widget
                 Container(
                   width: MediaQuery.of(context).size.width,
                   child: NeoStoreElevatedButton(
                     onPressed: () async {
-                      if (_changeAddress.currentValue == null) {
+                      if (_addressListProvider?.currentValue == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text('Please Select Address'),
@@ -96,7 +68,7 @@ class AddressListState extends BaseClassState {
                         );
                       } else {
                         var response = await _addressListProvider
-                            .getOrderAddress(_changeAddress.currentAddress!);
+                            ?.getOrderAddress(_addressListProvider!.currentAddress!);
                         OrderAddressResponse _orderAddressResponse =
                             OrderAddressResponse.fromJson(jsonDecode(response));
                         if (_orderAddressResponse.status == 200) {
@@ -113,7 +85,7 @@ class AddressListState extends BaseClassState {
                     buttonStyle:
                         TextButton.styleFrom(backgroundColor: ColorStyles.red),
                     textStyle: GoogleFonts.workSans(
-                        textStyle: TextStyles.titlelabel!.copyWith(
+                        textStyle: TextStyles.titlelabel?.copyWith(
                             color: ColorStyles.white,
                             fontWeight: FontWeight.w600)),
                   ),
@@ -121,12 +93,49 @@ class AddressListState extends BaseClassState {
               ],
             ),
           )
-        : Text('Add Address');
+        : NeoStoreTitle(text: 'Add Address',style: GoogleFonts.workSans(
+      textStyle: TextStyles.titleHeadline?.copyWith(
+        fontWeight: FontWeight.w400,
+        color: ColorStyles.dark_grey,
+      ),
+    ),);
   }
 
-  Widget _radioButton(Addresslist addresslist, int index) {
+
+  ///radio button list tile
+  Widget _addressRadioButton() {
+    return Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 10),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.vertical,
+                  physics: ScrollPhysics(),
+                  itemCount: addAddressList.length,
+                  itemBuilder: (context, index) {
+                    return _radioButton(addAddressList[index], index);
+                  },
+                ),
+              );
+  }
+
+
+  ///shipping address title widget
+  Widget _shippingAddressTitle() {
+    return NeoStoreTitle(
+                text: 'Shipping Address',
+                style: GoogleFonts.workSans(
+                  textStyle: TextStyles.titleHeadline?.copyWith(
+                    fontWeight: FontWeight.w400,
+                    color: ColorStyles.dark_grey,
+                  ),
+                ),
+              );
+  }
+
+  Widget _radioButton(AddressList addressList, int index) {
     return RadioListTile<int>(
       activeColor: ColorStyles.dark_grey,
+
       value: index,
       title: Container(
         decoration: BoxDecoration(
@@ -142,7 +151,7 @@ class AddressListState extends BaseClassState {
           child: Stack(
             children: [
               NeoStoreTitle(
-                text: addresslist.address!,
+                text: addressList.address,
                 style: TextStyles.labelName,
                 maxLine: 4,
               ),
@@ -160,7 +169,7 @@ class AddressListState extends BaseClassState {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddressList(),
+                        builder: (context) => AddressListView(),
                       ),
                     );
                   },
@@ -177,9 +186,9 @@ class AddressListState extends BaseClassState {
           ),
         ),
       ),
-      groupValue: _changeAddress.currentValue,
+      groupValue: _addressListProvider?.currentValue,
       onChanged: (value) {
-        _changeAddress.changeModel(value!, addresslist.address!);
+        _addressListProvider?.changeModel(value!, addressList.address!);
       },
     );
   }
@@ -203,7 +212,7 @@ class AddressListState extends BaseClassState {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddAddress(),
+                builder: (context) => AddAddressView(),
               ),
             );
           },
@@ -211,13 +220,12 @@ class AddressListState extends BaseClassState {
         )
       ],
       text: ConstantStrings.addAddress,
-      style: TextStyles.titleHeadline!.copyWith(
-        color: ColorStyles.white,
+      style: TextStyles.titleHeadline?.copyWith(color: ColorStyles.white,
       ),
     );
   }
 
-  void getaddAddress() {
+  void getAddAddress() {
     print("MEMORYADDRESS=>${MemoryManagement.getAddress()}");
     if (MemoryManagement.getAddress() != null) {
       print("address=>${MemoryManagement.getAddress().toString()}");

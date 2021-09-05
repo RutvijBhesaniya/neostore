@@ -6,6 +6,7 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/table_category_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
+import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_view.dart';
 import 'package:neostore/utils/constant_strings.dart';
@@ -29,9 +30,7 @@ class _TableCategoryView extends BaseClassState {
 
   @override
   Widget getBody() {
-
-    _tableCategoryProvider =
-        Provider.of<TableCategoryProvider>(context);
+    _tableCategoryProvider = Provider.of<TableCategoryProvider>(context);
     return _tableCategoryProvider?.isLoading
         ? Center(
             child: CircularProgressIndicator(),
@@ -40,12 +39,17 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///widget app bar
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: InkWell(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
         },
         child: Icon(
           Icons.arrow_back_ios,
@@ -61,7 +65,7 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///list view method
-  ListView _buildListItem(TableCategoryResponse? tableCategoryResponse) {
+  Widget _buildListItem(TableCategoryResponse? tableCategoryResponse) {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
@@ -80,8 +84,8 @@ class _TableCategoryView extends BaseClassState {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) =>
-                TableProductDetailed(tableProductDetailed:tableCategoryResponse?.data?[index].id),
+            builder: (context) => TableDetailView(
+                tableProductDetailed: tableCategoryResponse?.data?[index].id),
           ),
         );
       },
@@ -151,7 +155,7 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///rating bar widget
-  RatingBarIndicator _ratingBar(
+  Widget _ratingBar(
       TableCategoryResponse tableCategoryResponse, index) {
     return RatingBarIndicator(
       rating: tableCategoryResponse.data![index].rating!.toDouble(),
@@ -220,19 +224,16 @@ class _TableCategoryView extends BaseClassState {
 
   ///fetch table data method
   void fetchTableCategoryData(int productCategoryId) {
-    Future.delayed(Duration(milliseconds: 300), () {
-      _tableCategoryProvider?.getTableCategory(productCategoryId);
-    });
+    _tableCategoryProvider?.getTableCategory(productCategoryId);
   }
 
   @override
   void initState() {
     super.initState();
-    fetchTableCategoryData(1);
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      fetchTableCategoryData(1);
+    });
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
+
 }

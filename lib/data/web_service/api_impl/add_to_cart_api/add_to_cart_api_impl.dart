@@ -23,7 +23,8 @@ class AddToCartApiImpl extends AddToCartApi {
     var response = await APIHandler.post(
       url: "${APIs.addToCart}",
       requestBody: formData,
-      additionalHeaders: mapToken
+      additionalHeaders: mapToken,
+
     );
 
     print('gotCartResponseeeee=>${response.runtimeType}');

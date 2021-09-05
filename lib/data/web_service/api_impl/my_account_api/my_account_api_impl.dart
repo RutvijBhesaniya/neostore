@@ -17,7 +17,9 @@ class MyAccountApiImpl implements MyAccountApi {
 
     var response = await APIHandler.get(
       additionalHeaders:map,
-      url: "${APIs.fetchAccountDetail}",
+      url: "${APIs.fetchAccountDetail
+      }"
+
       // requestBody: MemoryManagement.getAccessToken(),
       // context: context,
     );

@@ -1,5 +1,5 @@
 class AddAddressModel {
-  List<Addresslist>? addresslist;
+  List<AddressList>? addresslist;
 
   AddAddressModel({
       this.addresslist});
@@ -8,7 +8,7 @@ class AddAddressModel {
     if (json['addresslist'] != null) {
       addresslist = [];
       json['addresslist'].forEach((v) {
-        addresslist?.add(Addresslist.fromJson(v));
+        addresslist?.add(AddressList.fromJson(v));
       });
     }
   }
@@ -23,13 +23,13 @@ class AddAddressModel {
 
 }
 
-class Addresslist {
+class AddressList {
   String? address;
 
-  Addresslist({
+  AddressList({
       this.address});
 
-  Addresslist.fromJson(dynamic json) {
+  AddressList.fromJson(dynamic json) {
     address = json['address'];
   }
 

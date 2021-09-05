@@ -17,21 +17,22 @@ import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends BaseClass {
-  const LoginScreen({Key? key}) : super(key: key);
+class LoginScreenView extends BaseClass {
+  const LoginScreenView({Key? key}) : super(key: key);
 
   @override
   BaseClassState getState() {
-    return _LoginScreenState();
+    return _LoginScreenViewState();
   }
 }
 
-class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
+class _LoginScreenViewState extends BaseClassState
+    with NeoStoreConstantValidation {
   TextEditingController _emailcontroller = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  late LoginScreenProvider _loginScreenProvider;
-  late ForgotProvider _forgotProvider;
+  LoginScreenProvider? _loginScreenProvider;
+  ForgotProvider? _forgotProvider;
 
   @override
   Widget getBody() {
@@ -40,7 +41,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
-      decoration: _backgroundImage(),
+      color: ColorStyles.red,
       child: Stack(
         children: [
           Form(
@@ -76,15 +77,6 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     );
   }
 
-  ///background image
-  BoxDecoration _backgroundImage() {
-    return BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage('assets/images/background.png'),
-        fit: BoxFit.fill,
-      ),
-    );
-  }
 
   ///widget don't have an account
   Widget _dontHaveAccount() {
@@ -97,7 +89,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RegisterScreen(),
+                  builder: (context) => RegisterView(),
                 ));
           },
           child: NeoStoreTitle(
@@ -114,17 +106,17 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
   ///widget forgot password
   Widget _forgotPassword() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20),
+      padding: const EdgeInsets.only(top: 5),
       child: GestureDetector(
         onTap: () {
-          if (_emailcontroller.text == null) {
+          if (_emailcontroller.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('Please enter email address'),
               ),
             );
           } else {
-            _forgotProvider.getForgotPassword(_emailcontroller.text);
+            _forgotProvider?.getForgotPassword(_emailcontroller.text);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text('New password sent successfully'),
@@ -227,7 +219,7 @@ class _LoginScreenState extends BaseClassState with NeoStoreConstantValidation {
     LoginRequest loginRequest = LoginRequest();
     loginRequest.email = _emailcontroller.text;
     loginRequest.password = _passwordController.text;
-    var response = await _loginScreenProvider.getLogin(loginRequest, context);
+    var response = await _loginScreenProvider?.getLogin(loginRequest, context);
 
     if (response is ApiError) {
       ScaffoldMessenger.of(context).showSnackBar(
