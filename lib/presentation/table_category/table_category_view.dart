@@ -58,6 +58,12 @@ class _TableCategoryView extends BaseClassState {
         ),
       ),
       text: ConstantStrings.tables,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.search),
+        )
+      ],
       style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!
               .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -155,8 +161,7 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///rating bar widget
-  Widget _ratingBar(
-      TableCategoryResponse tableCategoryResponse, index) {
+  Widget _ratingBar(TableCategoryResponse tableCategoryResponse, index) {
     return RatingBarIndicator(
       rating: tableCategoryResponse.data![index].rating!.toDouble(),
       itemBuilder: (context, index) {
@@ -234,6 +239,4 @@ class _TableCategoryView extends BaseClassState {
       fetchTableCategoryData(1);
     });
   }
-
-
 }

@@ -28,7 +28,7 @@ class LoginScreenView extends BaseClass {
 
 class _LoginScreenViewState extends BaseClassState
     with NeoStoreConstantValidation {
-  TextEditingController _emailcontroller = new TextEditingController();
+  TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   LoginScreenProvider? _loginScreenProvider;
@@ -109,17 +109,17 @@ class _LoginScreenViewState extends BaseClassState
       padding: const EdgeInsets.only(top: 5),
       child: GestureDetector(
         onTap: () {
-          if (_emailcontroller.text.isEmpty) {
+          if (_emailController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Please enter email address'),
+                content: NeoStoreTitle(text:ConstantStrings.please_enter_email_address,),
               ),
             );
           } else {
-            _forgotProvider?.getForgotPassword(_emailcontroller.text);
+            _forgotProvider?.getForgotPassword(_emailController.text);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('New password sent successfully'),
+                content: NeoStoreTitle(text: ConstantStrings.new_password_sent_successfully),
               ),
             );
           }
@@ -195,7 +195,7 @@ class _LoginScreenViewState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
-        controller: _emailcontroller,
+        controller: _emailController,
         validation: validateName,
         prefixIcon: Image.asset('assets/images/username_icon.png'),
       ),
@@ -217,14 +217,14 @@ class _LoginScreenViewState extends BaseClassState
 
   void loginUser(BuildContext context) async {
     LoginRequest loginRequest = LoginRequest();
-    loginRequest.email = _emailcontroller.text;
+    loginRequest.email = _emailController.text;
     loginRequest.password = _passwordController.text;
     var response = await _loginScreenProvider?.getLogin(loginRequest, context);
 
     if (response is ApiError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('UserName or Password is wrong'),
+          content: NeoStoreTitle(text: ConstantStrings.username_or_password_is_wrong),
         ),
       );
     } else {
@@ -232,7 +232,7 @@ class _LoginScreenViewState extends BaseClassState
         json.decode(response),
       );
       if (loginResponse.status == 200) {
-        MemoryManagement.setEmail(email: _emailcontroller.text);
+        MemoryManagement.setEmail(email: _emailController.text);
         MemoryManagement.setAccessToken(
             accessToken: loginResponse.data!.accessToken);
         MemoryManagement.setIsUserLoggedIn(isuserloggedin: true);

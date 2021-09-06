@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/widget/carousel_slider.dart';
+import 'package:neostore/data/widget/neostore_divider.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/data/widget/neostore_title_with_icons.dart';
 import 'package:neostore/presentation/chair_category/chair_category_view.dart';
@@ -88,7 +89,7 @@ class _HomeScreen extends BaseClassState {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
+                      child: NeoStoreDivider(
                         color: ColorStyles.black,
                       ),
                     ),
@@ -96,83 +97,74 @@ class _HomeScreen extends BaseClassState {
                     ///my cart widget
                     _myCart(listCartResponse),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     /// table category widget
                     _tableCategory(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///sofa category widget
                     _sofaCategory(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///chair category widget
                     _chairCategory(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///cupboard category widget
                     _cupboardCategory(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///my account widget
                     _myAccount(context),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///store locator widget
                     _storeLocator(context),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///my order widget
                     _myOrder(),
                     Padding(
-                      padding: const EdgeInsets.only(top: 5, bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(top: 5, bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
 
                     ///logout widget
                     _logout(context),
                     Padding(
-                      padding: const EdgeInsets.only(bottom: 5),
-                      child: Divider(
-                        color: ColorStyles.black,
-                      ),
-                    ),
+                        padding: const EdgeInsets.only(bottom: 5),
+                        child: NeoStoreDivider(
+                          color: ColorStyles.black,
+                        )),
                   ],
                 ),
               ),
@@ -302,7 +294,6 @@ class _HomeScreen extends BaseClassState {
             builder: (context) => ChairCategoryView(),
           ),
         );
-
       },
       child: NeoStoreTitleWithIcons(
         image: ('assets/images/sofa_icon.png'),
@@ -324,7 +315,6 @@ class _HomeScreen extends BaseClassState {
             builder: (context) => SofaCategoryView(),
           ),
         );
-
       },
       child: NeoStoreTitleWithIcons(
         image: ('assets/images/sofa_icon.png'),
@@ -529,14 +519,13 @@ class _HomeScreen extends BaseClassState {
                             height: 10,
                           ),
                           GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => ChairCategoryView(),
                                 ),
                               );
-
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -561,14 +550,13 @@ class _HomeScreen extends BaseClassState {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SofaCategoryView(),
                                 ),
                               );
-
                             },
                             child: Container(
                               decoration: BoxDecoration(
@@ -586,14 +574,14 @@ class _HomeScreen extends BaseClassState {
                             height: 10,
                           ),
                           GestureDetector(
-                            onTap: (){
+                            onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => CupboardCategoryView(),
                                 ),
                               );
-                              },
+                            },
                             child: Container(
                               decoration: BoxDecoration(
                                 image: DecorationImage(

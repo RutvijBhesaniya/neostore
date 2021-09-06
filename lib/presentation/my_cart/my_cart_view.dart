@@ -8,6 +8,7 @@ import 'package:neostore/data/model/response/delete_cart_response.dart';
 import 'package:neostore/data/model/response/edit_cart_response.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/widget/neostore_appbar.dart';
+import 'package:neostore/data/widget/neostore_divider.dart';
 import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/data/widget/neostore_textformfield.dart';
 import 'package:neostore/data/widget/neostore_title.dart';
@@ -47,7 +48,9 @@ class MyCartViewState extends BaseClassState {
                 _listCartProvider?.listCartResponse,
               )
             : Center(
-                child: Text('Empty Cart'),
+                child: NeoStoreTitle(
+                  text: ConstantStrings.empty_cart,
+                ),
               );
   }
 
@@ -329,9 +332,9 @@ class MyCartViewState extends BaseClassState {
                                                               context)
                                                           .showSnackBar(
                                                         SnackBar(
-                                                          content: Text(
-                                                              'Please enter quantity'),
-                                                        ),
+                                                            content: NeoStoreTitle(
+                                                                text: ConstantStrings
+                                                                    .please_enter_quantity)),
                                                       );
                                                     } else if (int.parse(
                                                             _quantityController
@@ -341,8 +344,9 @@ class MyCartViewState extends BaseClassState {
                                                               context)
                                                           .showSnackBar(
                                                         SnackBar(
-                                                          content: Text(
-                                                              'Enter less than 8'),
+                                                          content: NeoStoreTitle(
+                                                              text: ConstantStrings
+                                                                  .enter_less_than_8),
                                                         ),
                                                       );
                                                     } else {
@@ -371,9 +375,7 @@ class MyCartViewState extends BaseClassState {
                                                                 MyCartView(),
                                                           ),
                                                         );
-                                                      } else {
-
-                                                      }
+                                                      } else {}
                                                     }
                                                   },
                                                 ),
@@ -422,9 +424,9 @@ class MyCartViewState extends BaseClassState {
               ],
             ),
           ),
-          Divider(
+          NeoStoreDivider(
             color: ColorStyles.black,
-          ),
+          )
         ],
       ),
     );
@@ -433,11 +435,14 @@ class MyCartViewState extends BaseClassState {
   ///product category widget
   Widget _productCategoryType(String? productCategory) {
     return NeoStoreTitle(
-        text: productCategory,
-        style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline?.copyWith(
-              color: ColorStyles.liver_grey, fontWeight: FontWeight.w400),
-        ));
+      text: productCategory,
+      style: GoogleFonts.workSans(
+        textStyle: TextStyles.titleHeadline?.copyWith(
+          color: ColorStyles.liver_grey,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
+    );
   }
 
   ///product name widget
@@ -492,6 +497,12 @@ class MyCartViewState extends BaseClassState {
       style: TextStyles.titleHeadline?.copyWith(
         color: ColorStyles.white,
       ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.search),
+        )
+      ],
     );
   }
 

@@ -45,7 +45,7 @@ class EditProfileViewState extends BaseClassState
   }
 
   ///appbar widget
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       elevation: 0.0,
       backgroundColour: ColorStyles.red,

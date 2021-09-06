@@ -63,7 +63,7 @@ class AddressListViewState extends BaseClassState {
                       if (_addressListProvider?.currentValue == null) {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('Please Select Address'),
+                            content: NeoStoreTitle(text: ConstantStrings.please_select_address,),
                           ),
                         );
                       } else {
@@ -93,7 +93,7 @@ class AddressListViewState extends BaseClassState {
               ],
             ),
           )
-        : NeoStoreTitle(text: 'Add Address',style: GoogleFonts.workSans(
+        : NeoStoreTitle(text: ConstantStrings.addAddress,style: GoogleFonts.workSans(
       textStyle: TextStyles.titleHeadline?.copyWith(
         fontWeight: FontWeight.w400,
         color: ColorStyles.dark_grey,
@@ -122,7 +122,7 @@ class AddressListViewState extends BaseClassState {
   ///shipping address title widget
   Widget _shippingAddressTitle() {
     return NeoStoreTitle(
-                text: 'Shipping Address',
+                text: ConstantStrings.shipping_address,
                 style: GoogleFonts.workSans(
                   textStyle: TextStyles.titleHeadline?.copyWith(
                     fontWeight: FontWeight.w400,

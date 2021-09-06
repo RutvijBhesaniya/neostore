@@ -268,7 +268,7 @@ class _RegisterViewState extends BaseClassState
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: Text('Please accept Terms and Conditions'),
+                  content: NeoStoreTitle(text: ConstantStrings.please_accept_terms_and_conditions,),
                 ),
               );
             }
@@ -460,7 +460,7 @@ class _RegisterViewState extends BaseClassState
     if (response is ApiError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Email Id Already Exist'),
+          content: NeoStoreTitle(text: ConstantStrings.email_id_already_exist,),
         ),
       );
     } else {

@@ -135,6 +135,12 @@ class MyOrderViewState extends BaseClassState {
           size: 20,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.search),
+        )
+      ],
       text: ConstantStrings.myOrders,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline?.copyWith(

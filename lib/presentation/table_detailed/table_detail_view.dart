@@ -32,8 +32,6 @@ class _TableDetailViewState extends BaseClassState {
   var tableProductDetailed;
 
   TableDetailProvider? _tableDetailProvider;
-  // RatingProvider? _ratingProvider;
-  // AddToCartProvider? _addToCartProvider;
 
   TextEditingController _quantityController = new TextEditingController();
 
@@ -47,8 +45,6 @@ class _TableDetailViewState extends BaseClassState {
   @override
   Widget getBody() {
     _tableDetailProvider = Provider.of<TableDetailProvider>(context);
-    // _ratingProvider = Provider.of<RatingProvider>(context, listen: false);
-    // _addToCartProvider = Provider.of<AddToCartProvider>(context, listen: false);
 
     return Scaffold(
       body: _tableDetailProvider?.isLoading
@@ -56,24 +52,28 @@ class _TableDetailViewState extends BaseClassState {
               child: CircularProgressIndicator(),
             )
           : SafeArea(
-              child: Column(
-                children: [
-                  ///top screen widget
-                  _topScreen(),
+              child: SingleChildScrollView(
+              child: Container(
+                height: MediaQuery.of(context).size.height,
+                child: Column(
+                  children: [
+                    ///top screen widget
+                    _topScreen(),
 
-                  ///between screen widget
-                  _betweenScreen(_tableDetailProvider?.tableDetailResponse),
+                    ///between screen widget
+                    _betweenScreen(_tableDetailProvider?.tableDetailResponse),
 
-                  ///bottom screen widget
-                  _bottomScreen(),
-                ],
+                    ///bottom screen widget
+                    _bottomScreen(),
+                  ],
+                ),
               ),
-            ),
+            )),
     );
   }
 
   ///widget app bar
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: InkWell(
@@ -86,6 +86,12 @@ class _TableDetailViewState extends BaseClassState {
           size: 20,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.search),
+        )
+      ],
       text: _tableDetailProvider?.tableDetailResponse?.data?.name ?? ' ',
       style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!
@@ -95,26 +101,21 @@ class _TableDetailViewState extends BaseClassState {
 
   ///bottom screen widget
   Widget _bottomScreen() {
-    return Flexible(
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 10),
-          height: MediaQuery.of(context).size.height / 7.5,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              ///but now button widget
-              _buyNowButton(_tableDetailProvider?.tableDetailResponse),
-              SizedBox(
-                width: 10,
-              ),
-
-              ///rate button widget
-              _rateButton(_tableDetailProvider?.ratingResponse),
-            ],
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      height: MediaQuery.of(context).size.height / 7.5,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          ///but now button widget
+          _buyNowButton(_tableDetailProvider?.tableDetailResponse),
+          SizedBox(
+            width: 10,
           ),
-        ),
+
+          ///rate button widget
+          _rateButton(_tableDetailProvider?.ratingResponse),
+        ],
       ),
     );
   }
@@ -136,7 +137,7 @@ class _TableDetailViewState extends BaseClassState {
               builder: (BuildContext context) {
                 return AlertDialog(
                   content: Container(
-                    height: MediaQuery.of(context).size.height / 1.5,
+                    height: MediaQuery.of(context).size.height / 1.6,
                     child: Column(
                       children: [
                         _alertDialogBoxTitle(ratingResponse),
@@ -160,7 +161,8 @@ class _TableDetailViewState extends BaseClassState {
                                     color: ColorStyles.yellow,
                                   );
                                 },
-                                rating: ratingResponse?.data?.rating?.toDouble(),
+                                rating:
+                                    ratingResponse?.data?.rating?.toDouble(),
                                 itemCount: 5,
                                 direction: Axis.horizontal,
                               ),
@@ -198,6 +200,8 @@ class _TableDetailViewState extends BaseClassState {
 
   Widget _alertDialogBoxTitle(RatingResponse? ratingResponse) {
     return NeoStoreTitle(
+      maxLine: 1,
+      overflow: TextOverflow.ellipsis,
       text: ratingResponse?.data?.name,
       style: TextStyles.titlelabel?.copyWith(
         color: ColorStyles.black,
@@ -209,123 +213,112 @@ class _TableDetailViewState extends BaseClassState {
   Widget _buyNowButton(TableDetailResponse? tableDetailResponse) {
     return Flexible(
       child: Container(
-        width: MediaQuery.of(context).size.width / 2,
+        width: MediaQuery.of(context).size.width / 1.6,
         child: NeoStoreElevatedButton(
           onPressed: () {
             {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    content: Container(
-                      height: MediaQuery.of(context).size.height / 1.5,
-                      child: Column(
-                        children: [
-                          NeoStoreTitle(
-                            text: tableDetailResponse?.data?.name,
-                            style: TextStyles.titlelabel?.copyWith(
-                              color: ColorStyles.black,
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 18),
-                            child: Container(
-                              height: MediaQuery.of(context).size.height / 3.5,
-                              width: 350,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: NetworkImage(
-                                    tableDetailResponse!.data!.productImages!.first.image
-                                        .toString(),
+                  return SingleChildScrollView(
+                    child: AlertDialog(
+                      content: Container(
+                        height: MediaQuery.of(context).size.height / 1.7,
+                        child: Column(
+                          children: [
+                            _alertBoxTitle(tableDetailResponse),
+                            _alertBoxImage(context, tableDetailResponse),
+
+                            ///enter qty title
+                            Padding(
+                              padding: const EdgeInsets.only(bottom: 10),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Center(
+                                  child: NeoStoreTitle(
+                                    text: 'Enter Qty',
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-
-                          ///enter qty title
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
+                            Container(
+                              width: MediaQuery.of(context).size.width / 3,
                               child: Center(
-                                child: NeoStoreTitle(
-                                  text: 'Enter Qty',
+                                child: NeoStoreTextFormField(
+                                  hintText: 'qty',
+                                  controller: _quantityController,
                                 ),
                               ),
                             ),
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            child: Center(
-                              child: NeoStoreTextFormField(
-                                hintText: 'qty',
-                                controller: _quantityController,
-                              ),
-                            ),
-                          ),
 
-                          ///submit button
-                          Flexible(
-                            child: Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 5),
-                                child: NeoStoreElevatedButton(
-                                  text: ConstantStrings.submit,
-                                  textStyle: TextStyles.titlelabel?.copyWith(
-                                    color: ColorStyles.white,
-                                  ),
-                                  buttonStyle: TextButton.styleFrom(
-                                    backgroundColor: ColorStyles.red,
-                                  ),
-                                  onPressed: () async {
-                                    if (_quantityController.text.isEmpty) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content:
-                                              Text('Please enter quantity'),
-                                        ),
-                                      );
-                                    } else if(int.parse(_quantityController.text) >= 8) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          content:
-                                          Text('Enter less than 8'),
-                                        ),
-                                      );
-                                    }
-                                    else {
-                                      var response = await _tableDetailProvider
-                                          ?.getAddToCart(
-                                        int.parse(tableDetailResponse.data!.id
-                                            .toString()),
-                                        int.parse(_quantityController.text),
-                                      );
-                                      AddToCartResponse? _addToCartResponse =
-                                          AddToCartResponse.fromJson(
-                                        jsonDecode(response),
-                                      );
-
-                                      if (_addToCartResponse.status == 200) {
-                                        Navigator.pop(context);
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => MyCartView(),
+                            ///submit button
+                            Flexible(
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 5),
+                                  child: NeoStoreElevatedButton(
+                                    text: ConstantStrings.submit,
+                                    textStyle: TextStyles.titlelabel?.copyWith(
+                                      color: ColorStyles.white,
+                                    ),
+                                    buttonStyle: TextButton.styleFrom(
+                                      backgroundColor: ColorStyles.red,
+                                    ),
+                                    onPressed: () async {
+                                      if (_quantityController.text.isEmpty) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: NeoStoreTitle(
+                                                text: ConstantStrings
+                                                    .please_enter_quantity),
                                           ),
                                         );
-                                      } else {}
-                                    }
-                                  },
+                                      } else if (int.parse(
+                                              _quantityController.text) >=
+                                          8) {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: NeoStoreTitle(
+                                              text: ConstantStrings
+                                                  .enter_less_than_8,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        var response =
+                                            await _tableDetailProvider
+                                                ?.getAddToCart(
+                                          int.parse(tableDetailResponse!
+                                              .data!.id
+                                              .toString()),
+                                          int.parse(_quantityController.text),
+                                        );
+                                        AddToCartResponse? _addToCartResponse =
+                                            AddToCartResponse.fromJson(
+                                          jsonDecode(response),
+                                        );
+
+                                        if (_addToCartResponse.status == 200) {
+                                          Navigator.pop(context);
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  MyCartView(),
+                                            ),
+                                          );
+                                        } else {}
+                                      }
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   );
@@ -339,6 +332,38 @@ class _TableDetailViewState extends BaseClassState {
             color: ColorStyles.white,
           ),
         ),
+      ),
+    );
+  }
+
+  ///alert box image
+  Widget _alertBoxImage(
+      BuildContext context, TableDetailResponse? tableDetailResponse) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 18),
+      child: Container(
+        height: MediaQuery.of(context).size.height / 3.5,
+        width: 350,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            fit: BoxFit.fill,
+            image: NetworkImage(
+              tableDetailResponse!.data!.productImages!.first.image.toString(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  ///alert box title
+  Widget _alertBoxTitle(TableDetailResponse? tableDetailResponse) {
+    return NeoStoreTitle(
+      maxLine: 1,
+      overflow: TextOverflow.ellipsis,
+      text: tableDetailResponse?.data?.name,
+      style: TextStyles.titlelabel?.copyWith(
+        color: ColorStyles.black,
       ),
     );
   }
@@ -376,7 +401,7 @@ class _TableDetailViewState extends BaseClassState {
   Widget _betweenScreen(TableDetailResponse? tableDetailResponse) {
     return Container(
       color: ColorStyles.light_grey,
-      height: MediaQuery.of(context).size.height / 1.7,
+      height: MediaQuery.of(context).size.height / 1.5,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Card(
@@ -461,10 +486,14 @@ class _TableDetailViewState extends BaseClassState {
       padding: const EdgeInsets.only(
         left: 10,
       ),
-      child: NeoStoreTitle(
-        maxLine: 5,
-        text: tableDetailResponse?.data?.description,
-        style: TextStyles.labelName,
+      child: Column(
+        children: [
+          NeoStoreTitle(
+            maxLine: 5,
+            text: tableDetailResponse?.data?.description,
+            style: TextStyles.labelName,
+          ),
+        ],
       ),
     );
   }

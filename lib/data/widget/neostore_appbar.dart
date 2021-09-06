@@ -33,9 +33,11 @@ class _NeoStoreAppBarState extends State<NeoStoreAppBar> {
       elevation: widget.elevation,
       backgroundColor: widget.backgroundColour,
       leading: widget.leading,
-      title: Text(
-        widget.text!,
-        style: widget.style,
+      title: Center(
+        child: Text(
+          widget.text!,
+          style: widget.style,
+        ),
       ),
       actions: widget.actions,
     );

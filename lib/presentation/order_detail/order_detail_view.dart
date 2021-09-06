@@ -261,6 +261,14 @@ class _OrderDetailViewState extends BaseClassState {
           size: 20,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {
+
+          },
+          icon: Icon(Icons.search),
+        )
+      ],
       text:
           'Order Id: ${_orderDetailProvider?.orderDetailResponse?.data?.id.toString() ?? ' '}',
       style: GoogleFonts.workSans(

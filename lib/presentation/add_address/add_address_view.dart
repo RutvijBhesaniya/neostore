@@ -118,7 +118,7 @@ class AddAddressViewState extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: NeoStoreTextFormField(
-        hintText: 'Address',
+        hintText: ConstantStrings.address,
         hintStyle: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!.copyWith(
             color: ColorStyles.black,
@@ -162,6 +162,12 @@ class AddAddressViewState extends BaseClassState {
           size: 20,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.search),
+        )
+      ],
       text: ConstantStrings.addAddress,
       style: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
