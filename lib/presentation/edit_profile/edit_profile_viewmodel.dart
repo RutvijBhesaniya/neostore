@@ -25,8 +25,6 @@ class EditProfileProvider extends ChangeNotifier {
     ),
   );
 
-
-
   bool _isLoading = true;
 
   get isLoading => _isLoading;
@@ -36,12 +34,14 @@ class EditProfileProvider extends ChangeNotifier {
     _isLoading = true;
     var response = await _editProfileUseCase.callApi(
         email, dob, phoneNo, profilePic, firstName, lastName);
+
     _editProfileResponse = EditProfileResponse.fromJson(
       jsonDecode(response),
     );
+
     print("asasasasassa=>$response");
     _isLoading = false;
-    return await response;
+    return response;
     // notifyListeners();
   }
 }

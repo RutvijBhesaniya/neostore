@@ -174,13 +174,16 @@ class _RegisterViewState extends BaseClassState
   Widget _femaleRadioButton() {
     return Container(
       width: MediaQuery.of(context).size.width / 2.8,
-      child: RadioListTile<GenderTypes>(
+      child:
+      RadioListTile<GenderTypes>(
+        dense: true,
+        contentPadding: EdgeInsets.all(0.0),
         activeColor: ColorStyles.white,
         value: GenderTypes.Female,
         title: Text(
           'Female',
           style: GoogleFonts.workSans(
-            textStyle: TextStyles.labelName!.copyWith(
+            textStyle: TextStyles.titleHeadline!.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400),
           ),
           maxLines: 1,
@@ -198,6 +201,8 @@ class _RegisterViewState extends BaseClassState
     return Container(
       width: MediaQuery.of(context).size.width / 2.8,
       child: RadioListTile<GenderTypes>(
+        dense: true,
+        contentPadding: EdgeInsets.all(0.0),
         activeColor: ColorStyles.white,
         value: GenderTypes.Male,
         title: Text(

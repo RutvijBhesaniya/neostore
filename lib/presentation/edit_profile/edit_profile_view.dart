@@ -336,7 +336,6 @@ class EditProfileViewState extends BaseClassState
     });
   }
 
-
   void editProfileUser(BuildContext context) async {
     File file = File(_imageFile!.path);
     Uint8List bytes = file.readAsBytesSync();
@@ -351,21 +350,21 @@ class EditProfileViewState extends BaseClassState
 
     print('zzzzzz=>$response');
 
-    EditProfileResponse editProfileResponse = EditProfileResponse.fromJson(
+    EditProfileResponse _editProfileResponse = EditProfileResponse.fromJson(
       json.decode(response),
     );
 
-    if (editProfileResponse.status == 200) {
+    if (_editProfileResponse.status == 200) {
       MemoryManagement.setFirstName(
-          firstName: editProfileResponse.data?.firstName);
+          firstName: _editProfileResponse.data?.firstName);
       MemoryManagement.setLastName(
-          lastName: editProfileResponse.data?.lastName);
-      MemoryManagement.setEmail(email: editProfileResponse.data?.email);
+          lastName: _editProfileResponse.data?.lastName);
+      MemoryManagement.setEmail(email: _editProfileResponse.data?.email);
       MemoryManagement.setPhoneNumber(
-          phoneNumber: editProfileResponse.data?.phoneNo);
-      MemoryManagement.setDob(dob: editProfileResponse.data?.dob);
+          phoneNumber: _editProfileResponse.data?.phoneNo);
+      MemoryManagement.setDob(dob: _editProfileResponse.data?.dob);
       MemoryManagement.setProfilePic(
-          profilepic: editProfileResponse.data?.profilePic);
+          profilepic: _editProfileResponse.data?.profilePic);
       print("editmemory=>${MemoryManagement.getFirstName()}");
 
       Navigator.of(context).push(

@@ -22,8 +22,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await MemoryManagement.init();
 
-  // print("userlog=>$isUserLoggedIn");
-
   runApp(
     MultiProvider(
       providers: [
