@@ -6,12 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/edit_profile_response.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
-import 'package:neostore/data/widget/neostore_textformfield.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/presentation/profile_details/profile_details_view.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
@@ -35,7 +35,8 @@ class EditProfileViewState extends BaseClassState
   TextEditingController _phoneNumberController = new TextEditingController();
   TextEditingController _dobController = new TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  PickedFile? _imageFile;
+
+  // PickedFile? _imageFile;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -122,10 +123,14 @@ class EditProfileViewState extends BaseClassState
         child: Stack(
           children: [
             CircleAvatar(
-                radius: 80,
-                backgroundImage: _imageFile == null
-                    ? AssetImage("assets/images/profile_pic.jpg")
-                    : FileImage(File(_imageFile!.path)) as ImageProvider),
+              radius: 80,
+              child: _editProfileProvider.imageFile == null
+                  ? Image.asset("assets/images/profile_pic.jpg")
+                  : Image.file(_editProfileProvider.imageFile!),
+              // backgroundImage: _editProfileProvider.imageFile == null
+              //     ? AssetImage("assets/images/profile_pic.jpg")
+              //     : Image.file(_editProfileProvider.imageFile!)),
+            ),
             Positioned(
               bottom: 10,
               right: 10,
@@ -186,6 +191,7 @@ class EditProfileViewState extends BaseClassState
           Icons.date_range,
           color: ColorStyles.white,
         ),
+        maxLine: 1,
       ),
     );
   }
@@ -196,6 +202,7 @@ class EditProfileViewState extends BaseClassState
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.phoneNumber,
+        maxLine: 1,
         validation: validatePhoneNumber,
         controller: _phoneNumberController,
         errorStyle: TextStyles.titleHeadline!.copyWith(
@@ -222,6 +229,7 @@ class EditProfileViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.email,
         validation: validateEmail,
+        maxLine: 1,
         controller: _emailController,
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
@@ -247,6 +255,7 @@ class EditProfileViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.lastName,
         validation: validateName,
+        maxLine: 1,
         controller: _lastController,
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
@@ -267,6 +276,7 @@ class EditProfileViewState extends BaseClassState
     return NeoStoreTextFormField(
       hintText: ConstantStrings.firstName,
       validation: validateName,
+      maxLine: 1,
       controller: _firstController,
       errorStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
@@ -306,7 +316,8 @@ class EditProfileViewState extends BaseClassState
                   primary: Colors.red,
                 ),
                 onPressed: () {
-                  takePhoto(ImageSource.camera);
+                  _onImageButtonPressed(ImageSource.camera, context);
+                  // takePhoto(ImageSource.camera);
                 },
                 icon: Icon(Icons.camera_alt_outlined),
                 label: Text(ConstantStrings.camera),
@@ -316,7 +327,8 @@ class EditProfileViewState extends BaseClassState
                   primary: Colors.red,
                 ),
                 onPressed: () {
-                  takePhoto(ImageSource.gallery);
+                  _onImageButtonPressed(ImageSource.gallery, context);
+                  // takePhoto(ImageSource.gallery);
                 },
                 icon: Icon(Icons.camera_alt_outlined),
                 label: Text(ConstantStrings.galary),
@@ -328,17 +340,32 @@ class EditProfileViewState extends BaseClassState
     );
   }
 
-  void takePhoto(ImageSource source) async {
-    final pickedFile = await _picker.getImage(
-        source: source, imageQuality: 20, maxHeight: 100, maxWidth: 100);
-    setState(() {
-      _imageFile = pickedFile!;
-    });
+  ///take photo method
+  // void takePhoto(ImageSource source) async {
+  //   final pickedFile = await _picker.pickImage(
+  //       source: source, imageQuality: 20, maxHeight: 100, maxWidth: 100);
+  //   setState(() {
+  //     _imageFile = pickedFile! as PickedFile?;
+  //   });
+  // }
+
+  void _onImageButtonPressed(ImageSource source, BuildContext context) async {
+    XFile? pickedFile = await _picker.pickImage(
+      source: source,
+      // maxWidth: _maxWidth,
+      // maxHeight: _maxHeight,
+      imageQuality: 100,
+    );
+    if (pickedFile != null) {
+      final File file = File(pickedFile.path);
+      _editProfileProvider.updateFieldValue(context, false, file);
+    }
   }
 
   void editProfileUser(BuildContext context) async {
-    File file = File(_imageFile!.path);
+    File file = File(_editProfileProvider.imageFile!.path);
     Uint8List bytes = file.readAsBytesSync();
+    print("sizepic=>${bytes.length}");
 
     var response = await _editProfileProvider.getEditProfile(
         _emailController.text,

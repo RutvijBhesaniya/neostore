@@ -7,12 +7,12 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/add_to_cart_response.dart';
 import 'package:neostore/data/model/response/rating_response.dart';
 import 'package:neostore/data/model/response/table_detail_response.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
-import 'package:neostore/data/widget/neostore_textformfield.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_viewmodel.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -53,22 +53,23 @@ class _TableDetailViewState extends BaseClassState {
             )
           : SafeArea(
               child: SingleChildScrollView(
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                child: Column(
-                  children: [
-                    ///top screen widget
-                    _topScreen(),
+                child: Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Column(
+                    children: [
+                      ///top screen widget
+                      _topScreen(),
 
-                    ///between screen widget
-                    _betweenScreen(_tableDetailProvider?.tableDetailResponse),
+                      ///between screen widget
+                      _betweenScreen(_tableDetailProvider?.tableDetailResponse),
 
-                    ///bottom screen widget
-                    _bottomScreen(),
-                  ],
+                      ///bottom screen widget
+                      _bottomScreen(),
+                    ],
+                  ),
                 ),
               ),
-            )),
+            ),
     );
   }
 
@@ -519,14 +520,14 @@ class _TableDetailViewState extends BaseClassState {
           _producerName(tableDetailResponse),
 
           ///rating bar widget
-          _ratingBarIndicator(tableDetailResponse)
+          _ratingBarIndicator(tableDetailResponse?.data?.rating)
         ],
       ),
     );
   }
 
   ///rating bar widget
-  Widget _ratingBarIndicator(TableDetailResponse? tableDetailResponse) {
+  Widget _ratingBarIndicator(int? rating) {
     return RatingBarIndicator(
       itemBuilder: (context, index) {
         return Icon(
@@ -534,7 +535,7 @@ class _TableDetailViewState extends BaseClassState {
           color: ColorStyles.yellow,
         );
       },
-      rating: tableDetailResponse!.data!.rating!.toDouble(),
+      rating: rating!.toDouble(),
       itemCount: 5,
       itemSize: 15,
       direction: Axis.horizontal,
@@ -565,7 +566,10 @@ class _TableDetailViewState extends BaseClassState {
   }
 
   void fetchTableDetail(int productId) {
+    ///get table detail method
     _tableDetailProvider?.getTableDetail(productId);
+
+    ///get rating method
     _tableDetailProvider?.getRating(productId);
   }
 
@@ -576,6 +580,5 @@ class _TableDetailViewState extends BaseClassState {
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       fetchTableDetail(tableProductDetailed);
     });
-    print("got pproduct id=> $tableProductDetailed");
   }
 }

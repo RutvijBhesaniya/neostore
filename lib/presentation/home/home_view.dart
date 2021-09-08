@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
-import 'package:neostore/data/widget/carousel_slider.dart';
-import 'package:neostore/data/widget/neostore_divider.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
-import 'package:neostore/data/widget/neostore_title_with_icons.dart';
 import 'package:neostore/presentation/chair_category/chair_category_view.dart';
 import 'package:neostore/presentation/cupboard_category/cupboard_category_view.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
@@ -16,6 +12,10 @@ import 'package:neostore/presentation/profile_details/profile_details_view.dart'
 import 'package:neostore/presentation/sofa_category/sofa_category_view.dart';
 import 'package:neostore/presentation/store_locator/store_locator_view.dart';
 import 'package:neostore/presentation/table_category/table_category_view.dart';
+import 'package:neostore/presentation/widget/carousel_slider.dart';
+import 'package:neostore/presentation/widget/neostore_divider.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
+import 'package:neostore/presentation/widget/neostore_title_with_icons.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
@@ -35,7 +35,6 @@ class _HomeScreen extends BaseClassState {
 
   late Size size = MediaQuery.of(context).size;
 
-  // Size size = MediaQuery.
   late double? screenHeight = size.height;
   late double? screenWidth = size.width;
 
@@ -423,12 +422,22 @@ class _HomeScreen extends BaseClassState {
   Widget _profilePic() {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: CircleAvatar(
-        backgroundColor: ColorStyles.blue,
-        radius: 60,
-      ),
+      child: getImage(_homeProvider?.myAccountResponse?.data?.userData?.profilePic),
     );
   }
+
+  Widget getImage(profilePic) {
+    if(profilePic.toString().isEmpty){
+      return CircleAvatar(
+          child: Image.network(profilePic),
+          radius: 70);
+    }else{
+      return CircleAvatar(
+          backgroundImage: NetworkImage("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
+          radius: 70);
+    }
+  }
+
 
   Widget dashboard(context) {
     return AnimatedPositioned(

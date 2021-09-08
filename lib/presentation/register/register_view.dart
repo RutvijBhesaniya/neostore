@@ -7,15 +7,15 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/model/response/register_response.dart';
-import 'package:neostore/data/widget/radio_button.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
+import 'package:neostore/presentation/widget/radio_button.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
-import 'package:neostore/data/widget/neostore_textformfield.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -55,11 +55,11 @@ class _RegisterViewState extends BaseClassState
   }
 
   @override
-  NeoStoreAppBar getAppBar() {
+  Widget getAppBar() {
     return _appBar();
   }
 
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       elevation: 0.0,
       backgroundColour: ColorStyles.red,
@@ -311,6 +311,7 @@ class _RegisterViewState extends BaseClassState
           color: ColorStyles.white,
         ),
         validation: validatePhoneNumber,
+        maxLine: 1,
         controller: _phoneController,
       ),
     );
@@ -385,6 +386,7 @@ class _RegisterViewState extends BaseClassState
           color: ColorStyles.white,
         ),
         validation: validateEmail,
+        maxLine: 1,
         controller: _emailController,
       ),
     );
@@ -407,6 +409,7 @@ class _RegisterViewState extends BaseClassState
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
         validation: validateName,
+        maxLine: 1,
         controller: _lastNameController,
       ),
     );
@@ -426,6 +429,7 @@ class _RegisterViewState extends BaseClassState
           textStyle: TextStyles.titleHeadline!
               .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
+      maxLine: 1,
       validation: validateName,
       controller: _firstNameController,
     );

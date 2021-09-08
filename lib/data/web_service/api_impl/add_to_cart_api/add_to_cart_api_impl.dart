@@ -10,7 +10,6 @@ class AddToCartApiImpl extends AddToCartApi {
   @override
   Future getAddToCartApi(int productId, int quantity) async {
     Map<String, dynamic> map = Map<String, dynamic>();
-    // Map<String, dynamic> mapToken = Map<String, dynamic>();
     Map<String, String> mapToken = Map<String, String>();
     map.putIfAbsent("product_id", () => productId);
     map.putIfAbsent("quantity", () => quantity);

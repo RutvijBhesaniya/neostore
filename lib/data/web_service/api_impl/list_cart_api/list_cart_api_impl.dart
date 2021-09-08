@@ -15,10 +15,9 @@ class ListCartApiImpl extends ListCartApi {
     Completer<dynamic> completer = new Completer<dynamic>();
 
     var response = await APIHandler.get(
-      url: "${APIs.listCart}", additionalHeaders: map,
-      // requestBody: formData
+      url: "${APIs.listCart}",
+      additionalHeaders: map,
     );
-    print('gotlistcart response=>$response');
     if (response is ApiError) {
       completer.complete(response);
       return completer.future;

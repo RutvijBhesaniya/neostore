@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -17,8 +16,16 @@ class LoginScreenProvider extends ChangeNotifier {
 
   get loginResponse => _loginResponse;
 
+  ForgotPasswordResponse? _forgotPasswordResponse;
+
+  get forgotPasswordResponse => _forgotPasswordResponse;
+
   LoginUseCase _loginUseCase =
-  LoginUseCase(LoginRepositoryImpl(LoginApiImpl()));
+      LoginUseCase(LoginRepositoryImpl(LoginApiImpl()));
+
+  ForgotUseCase _forgotUseCase = ForgotUseCase(
+    ForgotPasswordRepositoryImpl(ForgotPasswordApiImpl()),
+  );
 
   bool _isLoading = true;
 
@@ -29,32 +36,15 @@ class LoginScreenProvider extends ChangeNotifier {
     _isLoading = true;
     var response = await _loginUseCase.callApi(loginRequest, context);
 
-    print("responseruntime=>${response.runtimeType}");
     _isLoading = false;
     return response;
-
   }
-}
-
-class ForgotProvider extends ChangeNotifier {
-  ForgotUseCase _forgotUseCase = ForgotUseCase(
-    ForgotPasswordRepositoryImpl(ForgotPasswordApiImpl()),
-  );
-
-  ForgotPasswordResponse? _forgotPasswordResponse;
-
-  get forgotPasswordResponse => _forgotPasswordResponse;
-
-  bool _isLoading = true;
-
-  get isLoading => _isLoading;
 
   void getForgotPassword(String email) async {
     _isLoading = true;
     var response = await _forgotUseCase.callApi(email);
     _forgotPasswordResponse =
         ForgotPasswordResponse.fromJson(jsonDecode(response));
-    print("forgotresponse$response");
 
     _isLoading = false;
     notifyListeners();

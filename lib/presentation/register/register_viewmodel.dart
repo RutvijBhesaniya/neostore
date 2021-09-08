@@ -29,7 +29,6 @@ class RegisterViewProvider extends ChangeNotifier {
     _isLoading = true;
     var response = await _registerUseCase.callApi(registerRequest, context);
 
-    print("response=>$response");
 
     _isLoading = false;
     return response;

@@ -67,14 +67,13 @@ class MyCartProvider extends ChangeNotifier {
 
   AddToCartResponse? get addToCartResponse => _addToCartResponse;
 
-
   EditCartResponse? _editCartResponse;
+
   EditCartResponse? get editCartResponse => _editCartResponse;
 
   bool _isLoading = true;
 
   get isLoading => _isLoading;
-
 
   void getListCart() async {
     _isLoading = true;
@@ -94,14 +93,12 @@ class MyCartProvider extends ChangeNotifier {
     return deleteResponse;
   }
 
-  Future<dynamic> getEditCart(int productId,int quantity)async{
+  Future<dynamic> getEditCart(int productId, int quantity) async {
     _isLoading = true;
-    var editCartResponse = await _editCartUseCase.callApi(productId,quantity);
+    var editCartResponse = await _editCartUseCase.callApi(productId, quantity);
     _editCartResponse = EditCartResponse.fromJson(jsonDecode(editCartResponse));
     _isLoading = false;
     return editCartResponse;
-
-
   }
 
   void getTableDetail(int productId) async {
@@ -110,17 +107,13 @@ class MyCartProvider extends ChangeNotifier {
     _tableDetailResponse = TableDetailResponse.fromJson(jsonDecode(response));
     _isLoading = false;
     return response;
-    // notifyListeners();
   }
 
   Future<dynamic> getAddToCart(int productId, int quantity) async {
     _isLoading = true;
-    print("loading=>$_isLoading");
     var response = await _addToCartUseCase.callApi(productId, quantity);
-    print("casrtResponse=>$response");
     _addToCartResponse = AddToCartResponse.fromJson(jsonDecode(response));
     _isLoading = false;
     return response;
-    // notifyListeners();
   }
 }

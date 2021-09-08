@@ -19,14 +19,9 @@ class TableCategoryProvider extends ChangeNotifier {
 
   void getTableCategory(int productCategoryId) async {
     _isLoading = true;
-    print("got is loading in line 22: " + _isLoading.toString());
-    // var response = await Future.wait([_tableCategoryUseCase.callApi(productCategoryId)]);
     var response = await _tableCategoryUseCase.callApi(productCategoryId);
-    print(response.runtimeType);
     _tableCategoryResponse = TableCategoryResponse.fromJson(jsonDecode(response));
-    // print("got the table response in line 27: " + _tableCategoryResponse.toString());
     _isLoading = false;
-    print("got is loading: " + _isLoading.toString());
     notifyListeners();
   }
 }

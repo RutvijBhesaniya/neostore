@@ -8,11 +8,11 @@ import 'package:neostore/data/model/response/login_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/register/register_view.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
-import 'package:neostore/data/widget/neostore_textformfield.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -32,12 +32,12 @@ class _LoginScreenViewState extends BaseClassState
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   LoginScreenProvider? _loginScreenProvider;
-  ForgotProvider? _forgotProvider;
+  // ForgotProvider? _forgotProvider;
 
   @override
   Widget getBody() {
     _loginScreenProvider = Provider.of<LoginScreenProvider>(context);
-    _forgotProvider = Provider.of<ForgotProvider>(context, listen: false);
+    // _forgotProvider = Provider.of<ForgotProvider>(context, listen: false);
     return Container(
       height: MediaQuery.of(context).size.height,
       width: double.infinity,
@@ -116,7 +116,7 @@ class _LoginScreenViewState extends BaseClassState
               ),
             );
           } else {
-            _forgotProvider?.getForgotPassword(_emailController.text);
+            _loginScreenProvider?.getForgotPassword(_emailController.text);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: NeoStoreTitle(text: ConstantStrings.new_password_sent_successfully),
@@ -195,6 +195,7 @@ class _LoginScreenViewState extends BaseClassState
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
+        maxLine: 1,
         controller: _emailController,
         validation: validateName,
         prefixIcon: Image.asset('assets/images/username_icon.png'),

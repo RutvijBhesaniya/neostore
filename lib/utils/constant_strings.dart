@@ -43,6 +43,7 @@ class ConstantStrings {
   static const storeLocator = 'Store Locator';
   static const myOrders = 'My Orders';
   static const placeOrder = 'PLACE ORDER';
+  static const dataNotFound = 'Data Not Found';
 
   ///password
   static const currentPassword = 'Current Password';

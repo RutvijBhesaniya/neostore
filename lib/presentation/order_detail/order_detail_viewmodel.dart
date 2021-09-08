@@ -25,7 +25,6 @@ class OrderDetailProvider extends ChangeNotifier {
     var response =await _orderDetailUseCase.callApi(orderId);
     _orderDetailResponse = OrderDetailResponse.fromJson(jsonDecode(response));
     _isLoading = false;
-    print("got is loading: " + _isLoading.toString());
     notifyListeners();
 
   }

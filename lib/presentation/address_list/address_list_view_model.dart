@@ -5,12 +5,11 @@ import 'package:neostore/data/web_service/repository/order_address_repository/or
 import 'package:neostore/domain/order_address_use_case.dart';
 
 class AddressListProvider extends ChangeNotifier {
-
   int? _value;
   String? address;
 
-
   int? get currentValue => _value;
+
   String? get currentAddress => address;
   OrderAddressUseCase _orderAddressUseCase = OrderAddressUseCase(
     OrderAddressRepositoryImpl(
@@ -32,21 +31,12 @@ class AddressListProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///get order address method
   Future<dynamic> getOrderAddress(String address) async {
     _isLoading = true;
     var response = await _orderAddressUseCase.callApi(address);
 
     _isLoading = false;
     return response;
-
   }
 }
-
-
-
-class ChangeAddress with ChangeNotifier {
-
-
-
-}
-

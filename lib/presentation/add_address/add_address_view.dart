@@ -5,11 +5,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/add_address_model.dart';
 import 'package:neostore/presentation/address_list/address_list_view.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
-import 'package:neostore/data/widget/neostore_textformfield.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 
@@ -60,7 +60,7 @@ class AddAddressViewState extends BaseClassState {
     return Container(
       width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(
-        top: 20,
+        top: 5,
         bottom: 30,
       ),
       child: NeoStoreElevatedButton(
@@ -117,17 +117,20 @@ class AddAddressViewState extends BaseClassState {
   Widget _addressTextField() {
     return Padding(
       padding: const EdgeInsets.only(top: 10),
-      child: NeoStoreTextFormField(
-        hintText: ConstantStrings.address,
-        hintStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!.copyWith(
-            color: ColorStyles.black,
-            fontWeight: FontWeight.w400,
+      child: Container(
+        height: MediaQuery.of(context).size.height /5,
+        child: NeoStoreTextFormField(
+          hintText: ConstantStrings.address,
+          hintStyle: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!.copyWith(
+              color: ColorStyles.black,
+              fontWeight: FontWeight.w400,
+            ),
           ),
+          controller: _addAddressController,
+          maxLine: 4,
+          fillColor: ColorStyles.white,
         ),
-        controller: _addAddressController,
-        maxLine: 4,
-        fillColor: ColorStyles.white,
       ),
     );
   }

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/widget/neostore_title_border_with_icons.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_view.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/profile_details/profile_details_viewmodel.dart';
 import 'package:neostore/presentation/reset_password/reset_password_view.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_title_border_with_icons.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -29,76 +29,71 @@ class ProfileDetailsViewState extends BaseClassState {
 
   @override
   Widget getBody() {
-
-    _myAccountProvider =
-        Provider.of<ProfileDetailsProvider>(context);
+    _myAccountProvider = Provider.of<ProfileDetailsProvider>(context);
     return _myAccountProvider?.isLoading
         ? Center(
-      child: CircularProgressIndicator(),
-    )
+            child: CircularProgressIndicator(),
+          )
         : Scaffold(
-      body: Container(
-        color: ColorStyles.red,
+            body: Container(
+              color: ColorStyles.red,
 
-        ///widget background image
+              ///widget background image
 
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      top: 20,
-                      bottom: 20,
-                    ),
-                    child: CircleAvatar(
-                      backgroundColor: ColorStyles.blue,
-                      radius: 70,
-                    ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                            top: 20,
+                            bottom: 20,
+                          ),
+                          child: getImage(_myAccountProvider?.myAccountResponse?.data?.userData?.profilePic),
+                        ),
+                      ),
+
+                      ///widget first name
+                      _firstName(_myAccountProvider?.myAccountResponse),
+
+                      ///widget last name
+                      _lastName(),
+
+                      ///widget email
+                      _email(),
+
+                      ///widget phone number
+                      _phoneNumber(),
+
+                      ///widget date of birth
+                      _dateOfBirth(),
+
+                      ///widget edit profile button
+                      _editProfileButton(context),
+                    ],
                   ),
                 ),
-
-                ///widget first name
-                _firstName(_myAccountProvider?.myAccountResponse),
-
-                ///widget last name
-                _lastName(),
-
-                ///widget email
-                _email(),
-
-                ///widget phone number
-                _phoneNumber(),
-
-                ///widget date of birth
-                _dateOfBirth(),
-
-                ///widget edit profile button
-                _editProfileButton(context),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: NeoStoreElevatedButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResetPasswordView(),
+            bottomNavigationBar: NeoStoreElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ResetPasswordView(),
+                  ),
+                );
+              },
+              text: 'RESET PASSWORD',
+              textStyle: TextStyles.titleHeadline?.copyWith(
+                  fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
+              buttonStyle:
+                  TextButton.styleFrom(backgroundColor: ColorStyles.white),
             ),
           );
-        },
-        text: 'RESET PASSWORD',
-        textStyle: TextStyles.titleHeadline?.copyWith(
-            fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
-        buttonStyle:
-        TextButton.styleFrom(backgroundColor: ColorStyles.white),
-      ),
-    );
   }
 
   ///widget app bar
@@ -133,10 +128,7 @@ class ProfileDetailsViewState extends BaseClassState {
   ///widget edit profile button
   Widget _editProfileButton(BuildContext context) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       margin: EdgeInsets.only(top: 20, bottom: 30),
       child: NeoStoreElevatedButton(
         onPressed: () {
@@ -150,9 +142,9 @@ class ProfileDetailsViewState extends BaseClassState {
         text: ConstantStrings.editProfile,
         textStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: ColorStyles.red,
-            )),
+          fontWeight: FontWeight.bold,
+          color: ColorStyles.red,
+        )),
         buttonStyle: TextButton.styleFrom(
           backgroundColor: ColorStyles.white,
         ),
@@ -196,10 +188,11 @@ class ProfileDetailsViewState extends BaseClassState {
         icon: Icons.attach_email,
         text: _myAccountProvider?.myAccountResponse?.data?.userData?.email,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.
-            copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+          textStyle: TextStyles.titleHeadline
+              ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+        ),
       ),
-    ),);
+    );
   }
 
   ///widget lastname
@@ -230,11 +223,8 @@ class ProfileDetailsViewState extends BaseClassState {
     );
   }
 
-
-
   void fetchTableCategoryData() {
     _myAccountProvider?.getMyAccount();
-
   }
 
   @override
@@ -243,8 +233,21 @@ class ProfileDetailsViewState extends BaseClassState {
 
     WidgetsBinding.instance!.addPostFrameCallback((_) {
       fetchTableCategoryData();
-
     });
+  }
 
+  getImage(profilePic) {
+    if(profilePic.toString().isEmpty){
+      return CircleAvatar(
+        // backgroundColor: ColorStyles.purple,
+          child: Image.network(profilePic),
+          radius: 70);
+    }else{
+      return CircleAvatar(
+        // backgroundColor: ColorStyles.purple,
+        backgroundImage: NetworkImage("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
+
+          radius: 70);
+    }
   }
 }

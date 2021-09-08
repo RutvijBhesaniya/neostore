@@ -22,7 +22,6 @@ class ResetPasswordProvider extends ChangeNotifier {
     var response = await _resetPasswordUseCase.callApi(
         oldPassword, password, confirmPassword);
 
-    print("resetPasswordResponse=>$response");
     _isLoading = false;
     notifyListeners();
     return response;

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/home/home_view.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 
@@ -35,7 +35,7 @@ class _StoreLocatorState extends BaseClassState {
   }
 
   ///widget app bar
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
       leading: GestureDetector(

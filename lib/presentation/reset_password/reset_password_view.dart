@@ -4,14 +4,14 @@ import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/reset_password_response.dart';
-import 'package:neostore/data/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
+import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
+import 'package:neostore/presentation/widget/neostore_textformfield.dart';
+import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/neoStore_constant_validation.dart';
-import 'package:neostore/data/widget/neostore_elevated_button.dart';
-import 'package:neostore/data/widget/neostore_textformfield.dart';
-import 'package:neostore/data/widget/neostore_title.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -46,11 +46,11 @@ class _ResetPasswordViewState extends BaseClassState
   }
 
   @override
-  NeoStoreAppBar getAppBar() {
+  Widget getAppBar() {
     return _appBar();
   }
 
-  NeoStoreAppBar _appBar() {
+  Widget _appBar() {
     return NeoStoreAppBar(
       elevation: 0.0,
       backgroundColour: ColorStyles.red,

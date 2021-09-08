@@ -33,10 +33,9 @@ class TableDetailProvider extends ChangeNotifier {
   RatingResponse? _ratingResponse;
   AddToCartResponse? _addToCartResponse;
 
-
   TableDetailResponse? get tableDetailResponse => _tableDetailResponse;
-  AddToCartResponse? get addToCartResponse => _addToCartResponse;
 
+  AddToCartResponse? get addToCartResponse => _addToCartResponse;
 
   bool _isLoading = true;
 
@@ -44,6 +43,7 @@ class TableDetailProvider extends ChangeNotifier {
 
   get ratingResponse => _ratingResponse;
 
+  ///get table detail method
   void getTableDetail(int? productId) async {
     _isLoading = true;
     var response = await _tableDetailUseCase.callApi(productId);
@@ -52,32 +52,21 @@ class TableDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///get rating method
   void getRating(int productId) async {
     _isLoading = true;
     var response = await _ratingUseCase.callApi(productId);
-    print("abcdef=>$response");
-
     _ratingResponse = RatingResponse.fromJson(jsonDecode(response));
     _isLoading = false;
-    // return response;
-
     notifyListeners();
   }
 
-
+  ///get add to cart method
   Future<dynamic> getAddToCart(int productId, int quantity) async {
     _isLoading = true;
-    print("loading=>$_isLoading");
     var response = await _addToCartUseCase.callApi(productId, quantity);
-    print("casrtResponse=>$response");
     _addToCartResponse = AddToCartResponse.fromJson(jsonDecode(response));
     _isLoading = false;
     return response;
-    // notifyListeners();
   }
-
 }
-
-
-
-
