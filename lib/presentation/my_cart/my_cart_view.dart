@@ -83,7 +83,7 @@ class MyCartViewState extends BaseClassState {
       physics: ScrollPhysics(),
       itemCount: listCartResponse.data!.length,
       itemBuilder: (context, index) {
-        return _buildListItemDetail(listCartResponse.data![index]);
+        return _buildListItemDetail(listCartResponse.data![index],index);
       },
     );
   }
@@ -167,7 +167,7 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///list view builder detail
-  Widget _buildListItemDetail(Data data) {
+  Widget _buildListItemDetail(Data data,int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -227,182 +227,21 @@ class MyCartViewState extends BaseClassState {
                         ///product category widget
                         _productCategoryType(data.product?.productCategory),
 
-                        ///alert pop box
-                        Container(
-                          width: MediaQuery.of(context).size.width / 6,
-                          child: GestureDetector(
-                            onTap: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    content: Container(
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              1.7,
-                                      child: Column(
-                                        children: [
-                                          NeoStoreTitle(
-                                            maxLine: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            text: data.product?.name,
-                                            style:
-                                                TextStyles.titlelabel?.copyWith(
-                                              color: ColorStyles.black,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 18),
-                                            child: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  3.7,
-                                              width: 350,
-                                              decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                  fit: BoxFit.fill,
-                                                  image: NetworkImage(
-                                                    data.product!.productImages
-                                                        .toString(),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-
-                                          ///enter qty title
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 15),
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              child: Center(
-                                                child: NeoStoreTitle(
-                                                  text: 'Enter Qty',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          Container(
-                                            width: MediaQuery.of(context)
-                                                    .size
-                                                    .width /
-                                                3,
-                                            child: Center(
-                                              child: NeoStoreTextFormField(
-                                                hintText: 'qty',
-                                                controller: _quantityController,
-                                              ),
-                                            ),
-                                          ),
-
-                                          ///submit button
-                                          Flexible(
-                                            child: Container(
-                                              width: MediaQuery.of(context)
-                                                  .size
-                                                  .width,
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  2,
-                                              child: Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5),
-                                                child: NeoStoreElevatedButton(
-                                                  text: ConstantStrings.submit,
-                                                  textStyle: TextStyles
-                                                      .titlelabel!
-                                                      .copyWith(
-                                                    color: ColorStyles.white,
-                                                  ),
-                                                  buttonStyle:
-                                                      TextButton.styleFrom(
-                                                    backgroundColor:
-                                                        ColorStyles.red,
-                                                  ),
-                                                  onPressed: () async {
-                                                    if (_quantityController
-                                                        .text.isEmpty) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                            content: NeoStoreTitle(
-                                                                text: ConstantStrings
-                                                                    .please_enter_quantity)),
-                                                      );
-                                                    } else if (int.parse(
-                                                            _quantityController
-                                                                .text) >=
-                                                        8) {
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        SnackBar(
-                                                          content: NeoStoreTitle(
-                                                              text: ConstantStrings
-                                                                  .enter_less_than_8),
-                                                        ),
-                                                      );
-                                                    } else {
-                                                      var response = await _listCartProvider
-                                                          ?.getEditCart(
-                                                              data.productId!
-                                                                  .toInt(),
-                                                              int.parse(
-                                                                  _quantityController
-                                                                      .text));
-
-                                                      EditCartResponse
-                                                          _editCartResponse =
-                                                          EditCartResponse
-                                                              .fromJson(
-                                                        jsonDecode(response),
-                                                      );
-
-                                                      if (_editCartResponse
-                                                              .status ==
-                                                          200) {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                MyCartView(),
-                                                          ),
-                                                        );
-                                                      } else {}
-                                                    }
-                                                  },
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                            child: Container(
-                              color: ColorStyles.light_grey,
-                              child: Padding(
-                                padding: const EdgeInsets.fromLTRB(4, 2, 4, 2),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    NeoStoreTitle(text: data.quantity),
-                                    Icon(Icons.arrow_drop_down)
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
+                        ///alert pop boxcart
+                        DropdownButton<String>(
+                          isExpanded: false,
+                          hint: Text("Quantity"),
+                          value: data.quantity.toString(),
+                          items: _listCartProvider?.items.map((String value) {
+                            return DropdownMenuItem<String>(
+                              child: Text(value),
+                              value: value,
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            _listCartProvider?.getEditCart(data.productId!, value.toString());
+                            _listCartProvider?.selected(index, value.toString());
+                          },
                         )
                       ],
                     ),

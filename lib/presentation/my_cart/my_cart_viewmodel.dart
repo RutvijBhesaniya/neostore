@@ -23,6 +23,7 @@ import 'package:neostore/domain/list_cart_use_case.dart';
 import 'package:neostore/domain/table_detail_use_case.dart';
 
 class MyCartProvider extends ChangeNotifier {
+  List<String> _items = ['1', '2', '3', '4', '5', '6', '7','8'];
   DeleteCartUseCase _deleteCartUseCase = DeleteCartUseCase(
     DeleteCartRepositoryImpl(
       DeleteCartApiImpl(),
@@ -75,6 +76,13 @@ class MyCartProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
+  List<String> get items => _items;
+
+  void selected(int index,String quantity) {
+    listCartResponse?.data?[index].quantity = int.parse(quantity);
+    notifyListeners();
+  }
+
   void getListCart() async {
     _isLoading = true;
     var response = await _listCartUseCase.callApi();
@@ -93,12 +101,18 @@ class MyCartProvider extends ChangeNotifier {
     return deleteResponse;
   }
 
-  Future<dynamic> getEditCart(int productId, int quantity) async {
+  void getEditCart(int productId, String quantity) async {
+
+
     _isLoading = true;
-    var editCartResponse = await _editCartUseCase.callApi(productId, quantity);
+    var editCartResponse = await _editCartUseCase.callApi(productId, int.parse(quantity));
     _editCartResponse = EditCartResponse.fromJson(jsonDecode(editCartResponse));
+
+
+    getListCart();
     _isLoading = false;
-    return editCartResponse;
+    notifyListeners();
+    // return editCartResponse;
   }
 
   void getTableDetail(int productId) async {
