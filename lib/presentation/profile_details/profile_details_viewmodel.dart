@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:neostore/data/model/response/my_account.dart';
+import 'package:neostore/data/request/my_account_api_request.dart';
 import 'package:neostore/data/web_service/api_impl/my_account_api/my_account_api_impl.dart';
 import 'package:neostore/data/web_service/repository/my_account_repository/my_account_repository_impl.dart';
 import 'package:neostore/domain/my_account_use_case.dart';
@@ -13,7 +14,7 @@ class ProfileDetailsProvider extends ChangeNotifier {
 
   MyAccountUseCase _myAccountUseCase = MyAccountUseCase(
     MyAccountRepositoryImpl(
-      MyAccountApiImpl(),
+      MyAccountApiImpl(MyAccountApiRequest()),
     ),
   );
 

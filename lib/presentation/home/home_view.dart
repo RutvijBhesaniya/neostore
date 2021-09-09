@@ -39,15 +39,24 @@ class _HomeScreen extends BaseClassState {
   late double? screenWidth = size.width;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _homeProvider = HomeProvider(myAccountUseCase: Provider.of(context));
+  }
+
+  @override
   Widget getBody() {
     // _drawerProvider = Provider.of<DrawerProvider>(context);
-    _homeProvider = Provider.of<HomeProvider>(context);
-
-    return _homeProvider?.isLoading
-        ? Center(
+    // _homeProvider = Provider.of<HomeProvider>(context);
+    return ChangeNotifierProvider<HomeProvider>(
+      create: (context) => _homeProvider!,
+      child: Consumer<HomeProvider>(
+        builder: (context, model, child){
+          return _homeProvider?.isLoading
+              ? Center(
             child: CircularProgressIndicator(),
           )
-        : Container(
+              : Container(
             height: MediaQuery.of(context).size.height,
             color: ColorStyles.dark_grey,
             child: Stack(
@@ -57,6 +66,9 @@ class _HomeScreen extends BaseClassState {
               ],
             ),
           );
+        },
+      )
+    );
   }
 
   Widget menu(context, ListCartResponse? listCartResponse) {

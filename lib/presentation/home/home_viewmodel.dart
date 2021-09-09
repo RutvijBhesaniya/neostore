@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/model/response/my_account.dart';
+import 'package:neostore/data/request/my_account_api_request.dart';
 import 'package:neostore/data/web_service/api_impl/list_cart_api/list_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/my_account_api/my_account_api_impl.dart';
 import 'package:neostore/data/web_service/repository/list_cart_repository/list_cart_repository_impl.dart';
@@ -12,19 +13,25 @@ import 'package:neostore/domain/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
 class HomeProvider extends ChangeNotifier {
-  ListCartUseCase _listCartUseCase = ListCartUseCase(
+
+
+  // ListCartUseCase? listCartUseCase;
+  //
+  HomeProvider({this.myAccountUseCase});
+  ListCartUseCase listCartUseCase = ListCartUseCase(
     ListCartRepositoryImpl(
       ListCartApiImpl(),
     ),
   );
 
 
-  MyAccountUseCase _myAccountUseCase = MyAccountUseCase(
-    MyAccountRepositoryImpl(
-      MyAccountApiImpl(),
-    ),
-  );
+  // MyAccountUseCase _myAccountUseCase = MyAccountUseCase(
+  //   MyAccountRepositoryImpl(
+  //     MyAccountApiImpl(MyAccountApiRequest()),
+  //   ),
+  // );
 
+  MyAccountUseCase? myAccountUseCase;
 
   ListCartResponse? _listCartResponse;
 
@@ -49,7 +56,7 @@ class HomeProvider extends ChangeNotifier {
 
   void getListCountCart() async {
     _isLoading = true;
-    var response = await _listCartUseCase.callApi();
+    var response = await listCartUseCase.callApi();
     _listCartResponse = ListCartResponse.fromJson(jsonDecode(response));
 
     _isLoading = false;
@@ -58,7 +65,7 @@ class HomeProvider extends ChangeNotifier {
 
   void getMyAccount() async {
     _isLoading = true;
-    var response = await _myAccountUseCase.callApi();
+    var response = await myAccountUseCase?.callApi();
     _myAccountResponse = MyAccountResponse.fromJson(jsonDecode(response));
     MemoryManagement.setFirstName(
         firstName: _myAccountResponse!.data!.userData!.firstName);
