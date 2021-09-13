@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/add_address_model.dart';
-import 'package:neostore/presentation/address_list/address_list_view.dart';
+import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_textformfield.dart';
@@ -97,7 +97,7 @@ class AddAddressViewState extends BaseClassState {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AddressListView(),
+              builder: (context) => OrderAddressListView(),
             ),
           );
         },

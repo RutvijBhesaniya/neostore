@@ -38,38 +38,50 @@ class _TableDetailViewState extends BaseClassState {
   _TableDetailViewState(this.tableProductDetailed);
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _tableDetailProvider = TableDetailProvider(Provider.of(context));
+  }
+
+  @override
   getAppBar() {
     return _appBar();
   }
 
   @override
   Widget getBody() {
-    _tableDetailProvider = Provider.of<TableDetailProvider>(context);
+    return ChangeNotifierProvider<TableDetailProvider>(
+      create: (context) => _tableDetailProvider!,
+      child: Consumer<TableDetailProvider>(
+        builder: (context, model, child) {
+          return Scaffold(
+            body: _tableDetailProvider?.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : SafeArea(
+                    child: SingleChildScrollView(
+                      child: Container(
+                        height: MediaQuery.of(context).size.height,
+                        child: Column(
+                          children: [
+                            ///top screen widget
+                            _topScreen(),
 
-    return Scaffold(
-      body: _tableDetailProvider?.isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : SafeArea(
-              child: SingleChildScrollView(
-                child: Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: Column(
-                    children: [
-                      ///top screen widget
-                      _topScreen(),
+                            ///between screen widget
+                            _betweenScreen(
+                                _tableDetailProvider?.tableDetailResponse),
 
-                      ///between screen widget
-                      _betweenScreen(_tableDetailProvider?.tableDetailResponse),
-
-                      ///bottom screen widget
-                      _bottomScreen(),
-                    ],
+                            ///bottom screen widget
+                            _bottomScreen(),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
+          );
+        },
+      ),
     );
   }
 

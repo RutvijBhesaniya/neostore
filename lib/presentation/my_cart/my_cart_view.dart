@@ -5,15 +5,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/response/delete_cart_response.dart';
-import 'package:neostore/data/model/response/edit_cart_response.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
-import 'package:neostore/presentation/address_list/address_list_view.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
+import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_divider.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
-import 'package:neostore/presentation/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
@@ -27,9 +25,15 @@ class MyCartView extends BaseClass {
 }
 
 class MyCartViewState extends BaseClassState {
-  MyCartProvider? _listCartProvider;
+  CartProvider? _listCartProvider;
 
-  TextEditingController _quantityController = new TextEditingController();
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _listCartProvider =
+        CartProvider(Provider.of(context), Provider.of(context));
+  }
 
   @override
   getAppBar() {
@@ -38,20 +42,26 @@ class MyCartViewState extends BaseClassState {
 
   @override
   Widget getBody() {
-    _listCartProvider = Provider.of<MyCartProvider>(context);
-    return _listCartProvider?.isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : _listCartProvider?.listCartResponse?.data != null
-            ? _buildListItem(
-                _listCartProvider?.listCartResponse,
-              )
-            : Center(
-                child: NeoStoreTitle(
-                  text: ConstantStrings.empty_cart,
-                ),
-              );
+    return ChangeNotifierProvider<CartProvider>(
+      create: (context) => _listCartProvider!,
+      child: Consumer<CartProvider>(
+        builder: (context, model, child) {
+          return _listCartProvider?.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : _listCartProvider?.listCartResponse?.data != null
+                  ? _buildListItem(
+                      _listCartProvider?.listCartResponse,
+                    )
+                  : Center(
+                      child: NeoStoreTitle(
+                        text: ConstantStrings.empty_cart,
+                      ),
+                    );
+        },
+      ),
+    );
   }
 
   Widget _buildListItem(
@@ -83,7 +93,7 @@ class MyCartViewState extends BaseClassState {
       physics: ScrollPhysics(),
       itemCount: listCartResponse.data!.length,
       itemBuilder: (context, index) {
-        return _buildListItemDetail(listCartResponse.data![index],index);
+        return _buildListItemDetail(listCartResponse.data![index], index);
       },
     );
   }
@@ -107,7 +117,7 @@ class MyCartViewState extends BaseClassState {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => AddressListView(),
+                  builder: (context) => OrderAddressListView(),
                 ),
               );
             }),
@@ -167,7 +177,7 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///list view builder detail
-  Widget _buildListItemDetail(Data data,int index) {
+  Widget _buildListItemDetail(Data data, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -239,8 +249,10 @@ class MyCartViewState extends BaseClassState {
                             );
                           }).toList(),
                           onChanged: (value) {
-                            _listCartProvider?.getEditCart(data.productId!, value.toString());
-                            _listCartProvider?.selected(index, value.toString());
+                            _listCartProvider?.getEditCart(
+                                data.productId!, value.toString());
+                            _listCartProvider?.selected(
+                                index, value.toString());
                           },
                         )
                       ],

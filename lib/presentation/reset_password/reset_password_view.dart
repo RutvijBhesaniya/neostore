@@ -11,7 +11,7 @@ import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/utils/neoStore_constant_validation.dart';
+import 'package:neostore/utils/neostore_constant_validation.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +46,12 @@ class _ResetPasswordViewState extends BaseClassState
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _resetPasswordProvider = ResetPasswordProvider(Provider.of(context));
+  }
+
+  @override
   Widget getAppBar() {
     return _appBar();
   }
@@ -73,36 +79,43 @@ class _ResetPasswordViewState extends BaseClassState
 
   @override
   Widget getBody() {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      color: ColorStyles.red,
-      child: SingleChildScrollView(
-        child: Container(
-          margin: EdgeInsets.fromLTRB(20, 50, 20, 0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                ///widget title
-                _title(),
+    return ChangeNotifierProvider<ResetPasswordProvider>(
+      create: (context) => _resetPasswordProvider,
+      child: Consumer<ResetPasswordProvider>(
+        builder: (context, model, child) {
+          return Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
+            color: ColorStyles.red,
+            child: SingleChildScrollView(
+              child: Container(
+                margin: EdgeInsets.fromLTRB(20, 50, 20, 0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      ///widget title
+                      _title(),
 
-                ///widget current password
-                _currentPassword(),
+                      ///widget current password
+                      _currentPassword(),
 
-                ///widget new password
-                _newPassword(),
+                      ///widget new password
+                      _newPassword(),
 
-                ///widget confirm password
-                _confirmPassword(),
+                      ///widget confirm password
+                      _confirmPassword(),
 
-                ///widget reset password button
-                _resetPasswordButton(context),
-              ],
+                      ///widget reset password button
+                      _resetPasswordButton(context),
+                    ],
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
@@ -114,7 +127,6 @@ class _ResetPasswordViewState extends BaseClassState
       margin: EdgeInsets.only(top: 20, bottom: 30),
       child: NeoStoreElevatedButton(
         onPressed: () async {
-
           if (_formKey.currentState!.validate()) {
             resetPasswordUser();
           }
@@ -171,7 +183,6 @@ class _ResetPasswordViewState extends BaseClassState
         maxLine: 1,
         controller: _confirmPasswordController,
         validation: validateName,
-
       ),
     );
   }
@@ -195,9 +206,7 @@ class _ResetPasswordViewState extends BaseClassState
         obscureText: true,
         maxLine: 1,
         controller: _newPasswordController,
-
         validation: validateName,
-
       ),
     );
   }
@@ -246,6 +255,4 @@ class _ResetPasswordViewState extends BaseClassState
       ),
     );
   }
-
-
 }

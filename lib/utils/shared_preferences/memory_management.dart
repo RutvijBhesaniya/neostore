@@ -1,6 +1,6 @@
 
 import 'package:meta/meta.dart';
-import 'package:neostore/utils/shared_preferences/SharedPrefsKeys.dart';
+import 'package:neostore/utils/shared_preferences/shared_prefs_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MemoryManagement {

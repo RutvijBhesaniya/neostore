@@ -24,18 +24,30 @@ class _TableCategoryView extends BaseClassState {
   TableCategoryProvider? _tableCategoryProvider;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _tableCategoryProvider = TableCategoryProvider(Provider.of(context));
+  }
+
+  @override
   getAppBar() {
     return _appBar();
   }
 
   @override
   Widget getBody() {
-    _tableCategoryProvider = Provider.of<TableCategoryProvider>(context);
-    return _tableCategoryProvider?.isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : _buildListItem(_tableCategoryProvider?.tableCategoryResponse);
+    return ChangeNotifierProvider<TableCategoryProvider>(
+      create: (context) => _tableCategoryProvider!,
+      child: Consumer<TableCategoryProvider>(
+        builder: (context, model, child) {
+          return _tableCategoryProvider?.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : _buildListItem(_tableCategoryProvider?.tableCategoryResponse);
+        },
+      ),
+    );
   }
 
   ///widget app bar

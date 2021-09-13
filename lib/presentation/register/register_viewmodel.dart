@@ -2,14 +2,15 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/model/response/register_response.dart';
-import 'package:neostore/data/web_service/api_impl/register_api/RegisterApi_impl.dart';
-import 'package:neostore/data/web_service/repository/register_repository/register_repository_impl.dart';
 import 'package:neostore/domain/register_use_case.dart';
 
-class RegisterViewProvider extends ChangeNotifier {
-  RegisterUseCase _registerUseCase =
-      RegisterUseCase(RegisterRepositoryImpl(RegisterApiImpl()));
+class RegisterProvider extends ChangeNotifier {
+
+  RegisterUseCase _registerUseCase;
+  RegisterProvider(this._registerUseCase);
+
   late RegisterResponse _registerResponse;
+
 
   get registerResponse => _registerResponse;
 

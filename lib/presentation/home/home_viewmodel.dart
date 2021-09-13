@@ -3,35 +3,15 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/model/response/my_account.dart';
-import 'package:neostore/data/request/my_account_api_request.dart';
-import 'package:neostore/data/web_service/api_impl/list_cart_api/list_cart_api_impl.dart';
-import 'package:neostore/data/web_service/api_impl/my_account_api/my_account_api_impl.dart';
-import 'package:neostore/data/web_service/repository/list_cart_repository/list_cart_repository_impl.dart';
-import 'package:neostore/data/web_service/repository/my_account_repository/my_account_repository_impl.dart';
-import 'package:neostore/domain/list_cart_use_case.dart';
+import 'package:neostore/domain/cart_use_case.dart';
 import 'package:neostore/domain/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
 class HomeProvider extends ChangeNotifier {
+  MyAccountUseCase _myAccountUseCase;
+  CartUseCase _listCartUseCase;
 
-
-  // ListCartUseCase? listCartUseCase;
-  //
-  HomeProvider({this.myAccountUseCase});
-  ListCartUseCase listCartUseCase = ListCartUseCase(
-    ListCartRepositoryImpl(
-      ListCartApiImpl(),
-    ),
-  );
-
-
-  // MyAccountUseCase _myAccountUseCase = MyAccountUseCase(
-  //   MyAccountRepositoryImpl(
-  //     MyAccountApiImpl(MyAccountApiRequest()),
-  //   ),
-  // );
-
-  MyAccountUseCase? myAccountUseCase;
+  HomeProvider(this._myAccountUseCase, this._listCartUseCase);
 
   ListCartResponse? _listCartResponse;
 
@@ -56,7 +36,7 @@ class HomeProvider extends ChangeNotifier {
 
   void getListCountCart() async {
     _isLoading = true;
-    var response = await listCartUseCase.callApi();
+    var response = await _listCartUseCase.callApi();
     _listCartResponse = ListCartResponse.fromJson(jsonDecode(response));
 
     _isLoading = false;
@@ -65,7 +45,7 @@ class HomeProvider extends ChangeNotifier {
 
   void getMyAccount() async {
     _isLoading = true;
-    var response = await myAccountUseCase?.callApi();
+    var response = await _myAccountUseCase.callApi();
     _myAccountResponse = MyAccountResponse.fromJson(jsonDecode(response));
     MemoryManagement.setFirstName(
         firstName: _myAccountResponse!.data!.userData!.firstName);
@@ -75,13 +55,11 @@ class HomeProvider extends ChangeNotifier {
     MemoryManagement.setPhoneNumber(
         phoneNumber: _myAccountResponse!.data!.userData!.phoneNo);
 
-
     _isLoading = false;
 
     // return response;
     notifyListeners();
   }
-
 }
 
 class CarouselSliderProvider extends ChangeNotifier {
@@ -94,8 +72,8 @@ class CarouselSliderProvider extends ChangeNotifier {
   ];
 
   CarouselSliderProvider() {
-    indexList = List.generate(imgList.length, (index){
-      if(index == 0){
+    indexList = List.generate(imgList.length, (index) {
+      if (index == 0) {
         return 1;
       } else {
         return 0;

@@ -29,25 +29,35 @@ class _OrderDetailViewState extends BaseClassState {
   int? id;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _orderDetailProvider = OrderDetailProvider(Provider.of(context));
+  }
+
+  @override
   getAppBar() {
     return _appBar();
   }
 
   @override
   getBody() {
-    _orderDetailProvider = Provider.of<OrderDetailProvider>(context);
-    return _orderDetailProvider?.isLoading
-        ? Center(
-            child: CircularProgressIndicator(),
-          )
-        : Column(
-            children: [
-              _listViewBuilder(),
+    return ChangeNotifierProvider<OrderDetailProvider>(
+      create: (context) => _orderDetailProvider!,
+      child: Consumer<OrderDetailProvider>(builder: (context, model, child) {
+        return _orderDetailProvider?.isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                children: [
+                  _listViewBuilder(),
 
-              ///title and cost widget
-              _totalTitleAndCost()
-            ],
-          );
+                  ///title and cost widget
+                  _totalTitleAndCost()
+                ],
+              );
+      }),
+    );
   }
 
   ///title and cost widget
@@ -59,7 +69,6 @@ class _OrderDetailViewState extends BaseClassState {
         children: [
           ///total title widget
           _totalTitle(),
-
 
           ///total cost widget
           _totalCost()
@@ -263,9 +272,7 @@ class _OrderDetailViewState extends BaseClassState {
       ),
       actions: [
         IconButton(
-          onPressed: () {
-
-          },
+          onPressed: () {},
           icon: Icon(Icons.search),
         )
       ],

@@ -41,34 +41,31 @@ class _HomeScreen extends BaseClassState {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _homeProvider = HomeProvider(myAccountUseCase: Provider.of(context));
+    _homeProvider = HomeProvider(Provider.of(context), Provider.of(context));
   }
 
   @override
   Widget getBody() {
-    // _drawerProvider = Provider.of<DrawerProvider>(context);
-    // _homeProvider = Provider.of<HomeProvider>(context);
     return ChangeNotifierProvider<HomeProvider>(
-      create: (context) => _homeProvider!,
-      child: Consumer<HomeProvider>(
-        builder: (context, model, child){
-          return _homeProvider?.isLoading
-              ? Center(
-            child: CircularProgressIndicator(),
-          )
-              : Container(
-            height: MediaQuery.of(context).size.height,
-            color: ColorStyles.dark_grey,
-            child: Stack(
-              children: [
-                menu(context, _homeProvider?.listCartResponse),
-                dashboard(context),
-              ],
-            ),
-          );
-        },
-      )
-    );
+        create: (context) => _homeProvider!,
+        child: Consumer<HomeProvider>(
+          builder: (context, model, child) {
+            return _homeProvider?.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
+                    height: MediaQuery.of(context).size.height,
+                    color: ColorStyles.dark_grey,
+                    child: Stack(
+                      children: [
+                        menu(context, _homeProvider?.listCartResponse),
+                        dashboard(context),
+                      ],
+                    ),
+                  );
+          },
+        ));
   }
 
   Widget menu(context, ListCartResponse? listCartResponse) {
@@ -434,22 +431,21 @@ class _HomeScreen extends BaseClassState {
   Widget _profilePic() {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
-      child: getImage(_homeProvider?.myAccountResponse?.data?.userData?.profilePic),
+      child: getImage(
+          _homeProvider?.myAccountResponse?.data?.userData?.profilePic),
     );
   }
 
   Widget getImage(profilePic) {
-    if(profilePic.toString().isEmpty){
+    if (profilePic.toString().isEmpty) {
+      return CircleAvatar(child: Image.network(profilePic), radius: 70);
+    } else {
       return CircleAvatar(
-          child: Image.network(profilePic),
-          radius: 70);
-    }else{
-      return CircleAvatar(
-          backgroundImage: NetworkImage("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
+          backgroundImage: NetworkImage(
+              "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
           radius: 70);
     }
   }
-
 
   Widget dashboard(context) {
     return AnimatedPositioned(

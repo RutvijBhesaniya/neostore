@@ -20,7 +20,13 @@ class ProfileDetailsView extends BaseClass {
 }
 
 class ProfileDetailsViewState extends BaseClassState {
-  ProfileDetailsProvider? _myAccountProvider;
+  ProfileDetailsProvider? _profileDetailsProvider;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _profileDetailsProvider = ProfileDetailsProvider(Provider.of(context));
+  }
 
   @override
   getAppBar() {
@@ -29,12 +35,16 @@ class ProfileDetailsViewState extends BaseClassState {
 
   @override
   Widget getBody() {
-    _myAccountProvider = Provider.of<ProfileDetailsProvider>(context);
-    return _myAccountProvider?.isLoading
-        ? Center(
+    // _myAccountProvider = Provider.of<ProfileDetailsProvider>(context);
+    return ChangeNotifierProvider<ProfileDetailsProvider>(
+      create: (context) => _profileDetailsProvider!,
+      child: Consumer<ProfileDetailsProvider>(
+        builder: (context,model,child){
+          return _profileDetailsProvider?.isLoading
+              ? Center(
             child: CircularProgressIndicator(),
           )
-        : Scaffold(
+              : Scaffold(
             body: Container(
               color: ColorStyles.red,
 
@@ -52,12 +62,16 @@ class ProfileDetailsViewState extends BaseClassState {
                             top: 20,
                             bottom: 20,
                           ),
-                          child: getImage(_myAccountProvider?.myAccountResponse?.data?.userData?.profilePic),
+                          child: getImage(_profileDetailsProvider
+                              ?.myAccountResponse
+                              ?.data
+                              ?.userData
+                              ?.profilePic),
                         ),
                       ),
 
                       ///widget first name
-                      _firstName(_myAccountProvider?.myAccountResponse),
+                      _firstName(_profileDetailsProvider?.myAccountResponse),
 
                       ///widget last name
                       _lastName(),
@@ -91,9 +105,13 @@ class ProfileDetailsViewState extends BaseClassState {
               textStyle: TextStyles.titleHeadline?.copyWith(
                   fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
               buttonStyle:
-                  TextButton.styleFrom(backgroundColor: ColorStyles.white),
+              TextButton.styleFrom(backgroundColor: ColorStyles.white),
             ),
           );
+        },
+
+      ),
+    );
   }
 
   ///widget app bar
@@ -172,7 +190,8 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.phone_android,
-        text: _myAccountProvider?.myAccountResponse?.data?.userData?.phoneNo,
+        text:
+            _profileDetailsProvider?.myAccountResponse?.data?.userData?.phoneNo,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -186,7 +205,7 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.attach_email,
-        text: _myAccountProvider?.myAccountResponse?.data?.userData?.email,
+        text: _profileDetailsProvider?.myAccountResponse?.data?.userData?.email,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline
               ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -201,7 +220,8 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
-        text: _myAccountProvider?.myAccountResponse?.data?.userData?.lastName,
+        text: _profileDetailsProvider
+            ?.myAccountResponse?.data?.userData?.lastName,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -215,7 +235,8 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
-        text: _myAccountProvider?.myAccountResponse?.data?.userData?.firstName,
+        text: _profileDetailsProvider
+            ?.myAccountResponse?.data?.userData?.firstName,
         style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline?.copyWith(
                 color: ColorStyles.white, fontWeight: FontWeight.w400)),
@@ -224,7 +245,7 @@ class ProfileDetailsViewState extends BaseClassState {
   }
 
   void fetchTableCategoryData() {
-    _myAccountProvider?.getMyAccount();
+    _profileDetailsProvider?.getMyAccount();
   }
 
   @override
@@ -237,16 +258,16 @@ class ProfileDetailsViewState extends BaseClassState {
   }
 
   getImage(profilePic) {
-    if(profilePic.toString().isEmpty){
+    if (profilePic.toString().isEmpty) {
       return CircleAvatar(
-        // backgroundColor: ColorStyles.purple,
+          // backgroundColor: ColorStyles.purple,
           child: Image.network(profilePic),
           radius: 70);
-    }else{
+    } else {
       return CircleAvatar(
-        // backgroundColor: ColorStyles.purple,
-        backgroundImage: NetworkImage("https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
-
+          // backgroundColor: ColorStyles.purple,
+          backgroundImage: NetworkImage(
+              "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
           radius: 70);
     }
   }

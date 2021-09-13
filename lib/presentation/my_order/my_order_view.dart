@@ -21,6 +21,15 @@ class MyOrderView extends BaseClass {
 class MyOrderViewState extends BaseClassState {
   MyOrderProvider? _myOrderProvider;
 
+
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _myOrderProvider = MyOrderProvider(Provider.of(context));
+  }
+
   @override
   getAppBar() {
     return _appBar();
@@ -37,22 +46,29 @@ class MyOrderViewState extends BaseClassState {
 
   @override
   getBody() {
-    _myOrderProvider = Provider.of<MyOrderProvider>(context);
-    return Container(
-      child: _myOrderProvider?.isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              physics: ScrollPhysics(),
-              itemCount: _myOrderProvider?.orderListResponse?.data?.length,
-              itemBuilder: (context, index) {
-                return _buildListItem(
-                    _myOrderProvider?.orderListResponse, index);
-              },
-            ),
+    return ChangeNotifierProvider<MyOrderProvider>(
+      create: (context) => _myOrderProvider!,
+      child: Consumer<MyOrderProvider>(
+        builder: (context, model, child) {
+          return Container(
+            child: _myOrderProvider?.isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : ListView.builder(
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    physics: ScrollPhysics(),
+                    itemCount:
+                        _myOrderProvider?.orderListResponse?.data?.length,
+                    itemBuilder: (context, index) {
+                      return _buildListItem(
+                          _myOrderProvider?.orderListResponse, index);
+                    },
+                  ),
+          );
+        },
+      ),
     );
   }
 

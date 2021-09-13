@@ -5,8 +5,8 @@ import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/model/add_address_model.dart';
 import 'package:neostore/data/model/response/order_address_response.dart';
 import 'package:neostore/presentation/add_address/add_address_view.dart';
-import 'package:neostore/presentation/address_list/address_list_view_model.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
+import 'package:neostore/presentation/order_address_list/order_address_list_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
@@ -15,16 +15,16 @@ import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
-class AddressListView extends BaseClass {
+class OrderAddressListView extends BaseClass {
   @override
   BaseClassState getState() {
-    return AddressListViewState();
+    return OrderAddressListViewState();
   }
 }
 
-class AddressListViewState extends BaseClassState {
+class OrderAddressListViewState extends BaseClassState {
   List<AddressList> addAddressList = [];
-  AddressListProvider? _addressListProvider;
+  OrderAddressListProvider? _orderAddressListProvider;
 
   @override
   void initState() {
@@ -35,94 +35,107 @@ class AddressListViewState extends BaseClassState {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _orderAddressListProvider = OrderAddressListProvider(Provider.of(context));
+  }
+
+  @override
   getAppBar() {
     return _appBar();
   }
 
   @override
   getBody() {
-    _addressListProvider = Provider.of<AddressListProvider>(context);
+    return ChangeNotifierProvider<OrderAddressListProvider>(
+      create: (context) => _orderAddressListProvider!,
+      child: Consumer<OrderAddressListProvider>(
+        builder: (context, model, child) {
+          return addAddressList.length > 0
+              ? Padding(
+                  padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ///shipping address title widget
+                      _shippingAddressTitle(),
 
-    return addAddressList.length > 0
-        ? Padding(
-            padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                ///shipping address title widget
-                _shippingAddressTitle(),
+                      ///radio button list tile
+                      _addressRadioButton(),
 
-                ///radio button list tile
-                _addressRadioButton(),
-
-                ///place order button widget
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  child: NeoStoreElevatedButton(
-                    onPressed: () async {
-                      if (_addressListProvider?.currentValue == null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: NeoStoreTitle(
-                              text: ConstantStrings.please_select_address,
-                            ),
-                          ),
-                        );
-                      } else {
-                        var response =
-                            await _addressListProvider?.getOrderAddress(
-                                _addressListProvider!.currentAddress!);
-                        OrderAddressResponse _orderAddressResponse =
-                            OrderAddressResponse.fromJson(jsonDecode(response));
-                        if (_orderAddressResponse.status == 200) {
+                      ///place order button widget
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: NeoStoreElevatedButton(
+                          onPressed: () async {
+                            if (_orderAddressListProvider?.currentValue ==
+                                null) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: NeoStoreTitle(
+                                    text: ConstantStrings.please_select_address,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              var response = await _orderAddressListProvider
+                                  ?.getOrderAddress(_orderAddressListProvider!
+                                      .currentAddress!);
+                              OrderAddressResponse _orderAddressResponse =
+                                  OrderAddressResponse.fromJson(
+                                      jsonDecode(response));
+                              if (_orderAddressResponse.status == 200) {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MyOrderView(),
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          text: ConstantStrings.placeOrder,
+                          buttonStyle: TextButton.styleFrom(
+                              backgroundColor: ColorStyles.red),
+                          textStyle: GoogleFonts.workSans(
+                              textStyle: TextStyles.titlelabel?.copyWith(
+                                  color: ColorStyles.white,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              : Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => MyOrderView(),
+                              builder: (context) => AddAddressView(),
                             ),
                           );
-                        }
-                      }
-                    },
-                    text: ConstantStrings.placeOrder,
-                    buttonStyle:
-                        TextButton.styleFrom(backgroundColor: ColorStyles.red),
-                    textStyle: GoogleFonts.workSans(
-                        textStyle: TextStyles.titlelabel?.copyWith(
-                            color: ColorStyles.white,
-                            fontWeight: FontWeight.w600)),
-                  ),
-                )
-              ],
-            ),
-          )
-        : Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddAddressView(),
+                        },
+                        child: Icon(Icons.add),
                       ),
-                    );
-                  },
-                  child: Icon(Icons.add),
-                ),
-                NeoStoreTitle(
-                  text: ConstantStrings.addAddress,
-                  style: GoogleFonts.workSans(
-                    textStyle: TextStyles.titleHeadline?.copyWith(
-                      fontWeight: FontWeight.w400,
-                      color: ColorStyles.dark_grey,
-                    ),
+                      NeoStoreTitle(
+                        text: ConstantStrings.addAddress,
+                        style: GoogleFonts.workSans(
+                          textStyle: TextStyles.titleHeadline?.copyWith(
+                            fontWeight: FontWeight.w400,
+                            color: ColorStyles.dark_grey,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          );
+                );
+        },
+      ),
+    );
   }
 
   ///radio button list tile
@@ -191,7 +204,7 @@ class AddressListViewState extends BaseClassState {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => AddressListView(),
+                        builder: (context) => OrderAddressListView(),
                       ),
                     );
                   },
@@ -208,9 +221,9 @@ class AddressListViewState extends BaseClassState {
           ),
         ),
       ),
-      groupValue: _addressListProvider?.currentValue,
+      groupValue: _orderAddressListProvider?.currentValue,
       onChanged: (value) {
-        _addressListProvider?.changeModel(value!, addressList.address!);
+        _orderAddressListProvider?.changeModel(value!, addressList.address!);
       },
     );
   }

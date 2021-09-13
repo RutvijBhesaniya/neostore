@@ -7,12 +7,9 @@ import 'package:neostore/data/web_service/repository/order_detail_repository/ord
 import 'package:neostore/domain/order_detail_use_case.dart';
 
 class OrderDetailProvider extends ChangeNotifier {
-  OrderDetailUseCase _orderDetailUseCase = OrderDetailUseCase(
-    OrderDetailRepositoryImpl(
-      OrderDetailApiImpl(),
-    ),
-  );
 
+  OrderDetailUseCase _orderDetailUseCase;
+  OrderDetailProvider(this._orderDetailUseCase);
   OrderDetailResponse? _orderDetailResponse;
   OrderDetailResponse? get orderDetailResponse => _orderDetailResponse;
 

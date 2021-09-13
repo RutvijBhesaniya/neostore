@@ -15,7 +15,7 @@ import 'package:neostore/presentation/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/presentation/widget/radio_button.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/utils/neoStore_constant_validation.dart';
+import 'package:neostore/utils/neostore_constant_validation.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
 
@@ -32,7 +32,7 @@ enum GenderTypes { Male, Female }
 
 class _RegisterViewState extends BaseClassState
     with NeoStoreConstantValidation {
-  late RegisterViewProvider _registerScreenProvider;
+  late RegisterProvider _registerScreenProvider;
   late ChangeGender _changeColorModel;
 
   final _formKey = GlobalKey<FormState>();
@@ -52,6 +52,12 @@ class _RegisterViewState extends BaseClassState
     } else if (_passwordController.value != _confirmPasswordController.value) {
       return "Password do not match";
     }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _registerScreenProvider = RegisterProvider(Provider.of(context));
   }
 
   @override
@@ -82,9 +88,15 @@ class _RegisterViewState extends BaseClassState
 
   @override
   Widget getBody() {
-    _registerScreenProvider = Provider.of<RegisterViewProvider>(context);
     _changeColorModel = Provider.of<ChangeGender>(context);
-    return _registerForm();
+    return ChangeNotifierProvider<RegisterProvider>(
+      create: (context) => _registerScreenProvider,
+      child: Consumer<RegisterProvider>(
+        builder: (context, model, child) {
+          return _registerForm();
+        },
+      ),
+    );
   }
 
   Widget _registerForm() {
@@ -174,8 +186,7 @@ class _RegisterViewState extends BaseClassState
   Widget _femaleRadioButton() {
     return Container(
       width: MediaQuery.of(context).size.width / 2.8,
-      child:
-      RadioListTile<GenderTypes>(
+      child: RadioListTile<GenderTypes>(
         dense: true,
         contentPadding: EdgeInsets.all(0.0),
         activeColor: ColorStyles.white,
@@ -273,7 +284,9 @@ class _RegisterViewState extends BaseClassState
             } else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
-                  content: NeoStoreTitle(text: ConstantStrings.please_accept_terms_and_conditions,),
+                  content: NeoStoreTitle(
+                    text: ConstantStrings.please_accept_terms_and_conditions,
+                  ),
                 ),
               );
             }
@@ -469,7 +482,9 @@ class _RegisterViewState extends BaseClassState
     if (response is ApiError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: NeoStoreTitle(text: ConstantStrings.email_id_already_exist,),
+          content: NeoStoreTitle(
+            text: ConstantStrings.email_id_already_exist,
+          ),
         ),
       );
     } else {
@@ -483,8 +498,7 @@ class _RegisterViewState extends BaseClassState
             builder: (context) => LoginScreenView(),
           ),
         );
-      } else {
-      }
+      } else {}
     }
   }
 }

@@ -13,7 +13,7 @@ import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/utils/neoStore_constant_validation.dart';
+import 'package:neostore/utils/neostore_constant_validation.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -45,6 +45,12 @@ class EditProfileViewState extends BaseClassState
     return _appBar();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _editProfileProvider = EditProfileProvider(Provider.of(context));
+  }
+
   ///appbar widget
   Widget _appBar() {
     return NeoStoreAppBar(
@@ -69,45 +75,50 @@ class EditProfileViewState extends BaseClassState
 
   @override
   Widget getBody() {
-    _editProfileProvider =
-        Provider.of<EditProfileProvider>(context, listen: false);
-    return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Container(
-          ///widget background image
-          color: ColorStyles.red,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ///image picker widget
-                  _imagePicker(),
+    return ChangeNotifierProvider<EditProfileProvider>(
+      create: (context) => _editProfileProvider,
+      child: Consumer<EditProfileProvider>(
+        builder: (context, model, child) {
+          return Scaffold(
+            body: Form(
+              key: _formKey,
+              child: Container(
+                ///widget background image
+                color: ColorStyles.red,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ///image picker widget
+                        _imagePicker(),
 
-                  ///widget first name
-                  _firstName(),
+                        ///widget first name
+                        _firstName(),
 
-                  ///widget last name
-                  _lastName(),
+                        ///widget last name
+                        _lastName(),
 
-                  ///widget email
-                  _email(),
+                        ///widget email
+                        _email(),
 
-                  ///widget phone number
-                  _phoneNumber(),
+                        ///widget phone number
+                        _phoneNumber(),
 
-                  ///widget date of birth
-                  _dateOfBirth(),
+                        ///widget date of birth
+                        _dateOfBirth(),
 
-                  ///widget edit profile button
-                  _editProfileButton(context),
-                ],
+                        ///widget edit profile button
+                        _editProfileButton(context),
+                      ],
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:neostore/data/model/response/add_to_cart_response.dart';
 import 'package:neostore/data/model/response/delete_cart_response.dart';
@@ -9,36 +8,34 @@ import 'package:neostore/data/model/response/table_detail_response.dart';
 import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/delete_cart_api/delete_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/edit_cart_api/edit_cart_api_impl.dart';
-import 'package:neostore/data/web_service/api_impl/list_cart_api/list_cart_api_impl.dart';
-import 'package:neostore/data/web_service/api_impl/table_detail_api/table_detail_api_impl.dart';
 import 'package:neostore/data/web_service/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
 import 'package:neostore/data/web_service/repository/delete_cart_repository/delete_cart_repository_impl.dart';
 import 'package:neostore/data/web_service/repository/edit_cart_repository/edit_cart_repository_impl.dart';
-import 'package:neostore/data/web_service/repository/list_cart_repository/list_cart_repository_impl.dart';
-import 'package:neostore/data/web_service/repository/table_detail_repository/table_detail_repository_impl.dart';
 import 'package:neostore/domain/add_to_cart_use_case.dart';
 import 'package:neostore/domain/delete_cart_use_case.dart';
 import 'package:neostore/domain/edit_cart_use_case.dart';
-import 'package:neostore/domain/list_cart_use_case.dart';
+import 'package:neostore/domain/cart_use_case.dart';
 import 'package:neostore/domain/table_detail_use_case.dart';
 
-class MyCartProvider extends ChangeNotifier {
-  List<String> _items = ['1', '2', '3', '4', '5', '6', '7','8'];
+class CartProvider extends ChangeNotifier {
+  List<String> _items = ['1', '2', '3', '4', '5', '6', '7', '8'];
+
+  CartUseCase _listCartUseCase;
+  TableDetailUseCase _tableDetailUseCase;
+
+  CartProvider(this._listCartUseCase, this._tableDetailUseCase);
+
   DeleteCartUseCase _deleteCartUseCase = DeleteCartUseCase(
     DeleteCartRepositoryImpl(
       DeleteCartApiImpl(),
     ),
   );
 
-  ListCartUseCase _listCartUseCase = ListCartUseCase(
-    ListCartRepositoryImpl(
-      ListCartApiImpl(),
-    ),
-  );
-
-  TableDetailUseCase _tableDetailUseCase = TableDetailUseCase(
-    TableDetailRepositoryImpl(TableDetailApiImpl()),
-  );
+  // ListCartUseCase _listCartUseCase = ListCartUseCase(
+  //   ListCartRepositoryImpl(
+  //     ListCartApiImpl(),
+  //   ),
+  // );
 
   AddToCartUseCase _addToCartUseCase = AddToCartUseCase(
     AddToCartRepositoryImpl(
@@ -78,7 +75,7 @@ class MyCartProvider extends ChangeNotifier {
 
   List<String> get items => _items;
 
-  void selected(int index,String quantity) {
+  void selected(int index, String quantity) {
     listCartResponse?.data?[index].quantity = int.parse(quantity);
     notifyListeners();
   }
@@ -102,12 +99,10 @@ class MyCartProvider extends ChangeNotifier {
   }
 
   void getEditCart(int productId, String quantity) async {
-
-
     _isLoading = true;
-    var editCartResponse = await _editCartUseCase.callApi(productId, int.parse(quantity));
+    var editCartResponse =
+        await _editCartUseCase.callApi(productId, int.parse(quantity));
     _editCartResponse = EditCartResponse.fromJson(jsonDecode(editCartResponse));
-
 
     getListCart();
     _isLoading = false;

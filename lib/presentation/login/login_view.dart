@@ -12,7 +12,7 @@ import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
-import 'package:neostore/utils/neoStore_constant_validation.dart';
+import 'package:neostore/utils/neostore_constant_validation.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 import 'package:neostore/utils/style.dart';
 import 'package:provider/provider.dart';
@@ -32,51 +32,62 @@ class _LoginScreenViewState extends BaseClassState
   TextEditingController _passwordController = new TextEditingController();
   final _formKey = GlobalKey<FormState>();
   LoginScreenProvider? _loginScreenProvider;
+
   // ForgotProvider? _forgotProvider;
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _loginScreenProvider = LoginScreenProvider(Provider.of(context));
+  }
+
+  @override
   Widget getBody() {
-    _loginScreenProvider = Provider.of<LoginScreenProvider>(context);
-    // _forgotProvider = Provider.of<ForgotProvider>(context, listen: false);
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: double.infinity,
-      color: ColorStyles.red,
-      child: Stack(
-        children: [
-          Form(
-            key: _formKey,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ///widget neoStore title
-                  _title(),
+    return ChangeNotifierProvider<LoginScreenProvider>(
+      create: (context) => _loginScreenProvider!,
+      child: Consumer<LoginScreenProvider>(
+        builder: (context, model, child) {
+          return Container(
+            height: MediaQuery.of(context).size.height,
+            width: double.infinity,
+            color: ColorStyles.red,
+            child: Stack(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ///widget neoStore title
+                        _title(),
 
-                  ///widget username
-                  _username(),
+                        ///widget username
+                        _username(),
 
-                  ///widget password
-                  _password(),
+                        ///widget password
+                        _password(),
 
-                  /// widget login
-                  _loginButton(context),
+                        /// widget login
+                        _loginButton(context),
 
-                  /// widget forgotPassword
-                  _forgotPassword(),
-                ],
-              ),
+                        /// widget forgotPassword
+                        _forgotPassword(),
+                      ],
+                    ),
+                  ),
+                ),
+
+                ///widget don't have account
+                _dontHaveAccount(),
+              ],
             ),
-          ),
-
-          ///widget don't have account
-          _dontHaveAccount(),
-        ],
+          );
+        },
       ),
     );
   }
-
 
   ///widget don't have an account
   Widget _dontHaveAccount() {
@@ -112,14 +123,17 @@ class _LoginScreenViewState extends BaseClassState
           if (_emailController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: NeoStoreTitle(text:ConstantStrings.please_enter_email_address,),
+                content: NeoStoreTitle(
+                  text: ConstantStrings.please_enter_email_address,
+                ),
               ),
             );
           } else {
             _loginScreenProvider?.getForgotPassword(_emailController.text);
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: NeoStoreTitle(text: ConstantStrings.new_password_sent_successfully),
+                content: NeoStoreTitle(
+                    text: ConstantStrings.new_password_sent_successfully),
               ),
             );
           }
@@ -225,7 +239,8 @@ class _LoginScreenViewState extends BaseClassState
     if (response is ApiError) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: NeoStoreTitle(text: ConstantStrings.username_or_password_is_wrong),
+          content: NeoStoreTitle(
+              text: ConstantStrings.username_or_password_is_wrong),
         ),
       );
     } else {

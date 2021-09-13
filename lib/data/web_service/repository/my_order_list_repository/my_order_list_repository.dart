@@ -1,3 +1,3 @@
-abstract class OrderListRepository {
+abstract class MyOrderListRepository {
   Future<dynamic> getOrderListRepository();
 }

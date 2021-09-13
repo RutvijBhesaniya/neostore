@@ -4,18 +4,16 @@ import 'package:neostore/data/web_service/api_impl/order_address_api/order_addre
 import 'package:neostore/data/web_service/repository/order_address_repository/order_address_repository_impl.dart';
 import 'package:neostore/domain/order_address_use_case.dart';
 
-class AddressListProvider extends ChangeNotifier {
+class OrderAddressListProvider extends ChangeNotifier {
   int? _value;
   String? address;
+
+  OrderAddressUseCase _orderAddressUseCase;
+  OrderAddressListProvider(this._orderAddressUseCase);
 
   int? get currentValue => _value;
 
   String? get currentAddress => address;
-  OrderAddressUseCase _orderAddressUseCase = OrderAddressUseCase(
-    OrderAddressRepositoryImpl(
-      OrderAddressApiImpl(),
-    ),
-  );
 
   OrderAddressResponse? _orderAddressResponse;
 

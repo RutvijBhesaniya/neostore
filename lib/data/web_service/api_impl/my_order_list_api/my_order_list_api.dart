@@ -1,3 +1,3 @@
-abstract class OrderListApi {
+abstract class MyOrderListApi {
   Future<dynamic> getOrderListApi();
 }

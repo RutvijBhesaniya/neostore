@@ -1,4 +1,4 @@
-import 'package:neostore/base/Base_use_case.dart';
+import 'package:neostore/base/base_use_case.dart';
 import 'package:neostore/data/web_service/repository/reset_password_repository/reset_password_api_impl.dart';
 
 class ResetPasswordUseCase extends BaseUseCase<dynamic> {
