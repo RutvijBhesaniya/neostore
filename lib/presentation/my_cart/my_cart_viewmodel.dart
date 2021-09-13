@@ -8,14 +8,14 @@ import 'package:neostore/data/model/response/table_detail_response.dart';
 import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/delete_cart_api/delete_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/edit_cart_api/edit_cart_api_impl.dart';
-import 'package:neostore/data/web_service/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
-import 'package:neostore/data/web_service/repository/delete_cart_repository/delete_cart_repository_impl.dart';
-import 'package:neostore/data/web_service/repository/edit_cart_repository/edit_cart_repository_impl.dart';
-import 'package:neostore/domain/add_to_cart_use_case.dart';
-import 'package:neostore/domain/delete_cart_use_case.dart';
-import 'package:neostore/domain/edit_cart_use_case.dart';
-import 'package:neostore/domain/cart_use_case.dart';
-import 'package:neostore/domain/table_detail_use_case.dart';
+import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
+import 'package:neostore/domain/repository/delete_cart_repository/delete_cart_repository_impl.dart';
+import 'package:neostore/domain/repository/edit_cart_repository/edit_cart_repository_impl.dart';
+import 'package:neostore/domain/use_case/add_to_cart_use_case.dart';
+import 'package:neostore/domain/use_case/delete_cart_use_case.dart';
+import 'package:neostore/domain/use_case/edit_cart_use_case.dart';
+import 'package:neostore/domain/use_case/cart_use_case.dart';
+import 'package:neostore/domain/use_case/table_detail_use_case.dart';
 
 class CartProvider extends ChangeNotifier {
   List<String> _items = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -31,11 +31,7 @@ class CartProvider extends ChangeNotifier {
     ),
   );
 
-  // ListCartUseCase _listCartUseCase = ListCartUseCase(
-  //   ListCartRepositoryImpl(
-  //     ListCartApiImpl(),
-  //   ),
-  // );
+
 
   AddToCartUseCase _addToCartUseCase = AddToCartUseCase(
     AddToCartRepositoryImpl(

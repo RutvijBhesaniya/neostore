@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:neostore/data/model/response/reset_password_response.dart';
-import 'package:neostore/domain/reset_password_use_case.dart';
+import 'package:neostore/domain/use_case/reset_password_use_case.dart';
 
 class ResetPasswordProvider extends ChangeNotifier {
   ResetPasswordUseCase _resetPasswordUseCase;

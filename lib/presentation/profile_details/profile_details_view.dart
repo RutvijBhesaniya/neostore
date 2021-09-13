@@ -39,77 +39,78 @@ class ProfileDetailsViewState extends BaseClassState {
     return ChangeNotifierProvider<ProfileDetailsProvider>(
       create: (context) => _profileDetailsProvider!,
       child: Consumer<ProfileDetailsProvider>(
-        builder: (context,model,child){
+        builder: (context, model, child) {
           return _profileDetailsProvider?.isLoading
               ? Center(
-            child: CircularProgressIndicator(),
-          )
+                  child: CircularProgressIndicator(),
+                )
               : Scaffold(
-            body: Container(
-              color: ColorStyles.red,
+                  body: Container(
+                    color: ColorStyles.red,
 
-              ///widget background image
+                    ///widget background image
 
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Center(
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            top: 20,
-                            bottom: 20,
-                          ),
-                          child: getImage(_profileDetailsProvider
-                              ?.myAccountResponse
-                              ?.data
-                              ?.userData
-                              ?.profilePic),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Center(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  top: 20,
+                                  bottom: 20,
+                                ),
+                                child: getImage(_profileDetailsProvider
+                                    ?.myAccountResponse
+                                    ?.data
+                                    ?.userData
+                                    ?.profilePic),
+                              ),
+                            ),
+
+                            ///widget first name
+                            _firstName(
+                                _profileDetailsProvider?.myAccountResponse),
+
+                            ///widget last name
+                            _lastName(),
+
+                            ///widget email
+                            _email(),
+
+                            ///widget phone number
+                            _phoneNumber(),
+
+                            ///widget date of birth
+                            _dateOfBirth(),
+
+                            ///widget edit profile button
+                            _editProfileButton(context),
+                          ],
                         ),
                       ),
-
-                      ///widget first name
-                      _firstName(_profileDetailsProvider?.myAccountResponse),
-
-                      ///widget last name
-                      _lastName(),
-
-                      ///widget email
-                      _email(),
-
-                      ///widget phone number
-                      _phoneNumber(),
-
-                      ///widget date of birth
-                      _dateOfBirth(),
-
-                      ///widget edit profile button
-                      _editProfileButton(context),
-                    ],
+                    ),
                   ),
-                ),
-              ),
-            ),
-            bottomNavigationBar: NeoStoreElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ResetPasswordView(),
+                  bottomNavigationBar: NeoStoreElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResetPasswordView(),
+                        ),
+                      );
+                    },
+                    text: 'RESET PASSWORD',
+                    textStyle: TextStyles.titleHeadline?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: ColorStyles.dark_grey),
+                    buttonStyle: TextButton.styleFrom(
+                        backgroundColor: ColorStyles.white),
                   ),
                 );
-              },
-              text: 'RESET PASSWORD',
-              textStyle: TextStyles.titleHeadline?.copyWith(
-                  fontWeight: FontWeight.bold, color: ColorStyles.dark_grey),
-              buttonStyle:
-              TextButton.styleFrom(backgroundColor: ColorStyles.white),
-            ),
-          );
         },
-
       ),
     );
   }
@@ -259,16 +260,13 @@ class ProfileDetailsViewState extends BaseClassState {
 
   getImage(profilePic) {
     if (profilePic.toString().isEmpty) {
-      return CircleAvatar(
-          // backgroundColor: ColorStyles.purple,
-          child: Image.network(profilePic),
-          radius: 70);
+      return CircleAvatar(child: Image.network(profilePic), radius: 70);
     } else {
       return CircleAvatar(
-          // backgroundColor: ColorStyles.purple,
-          backgroundImage: NetworkImage(
-              "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
-          radius: 70);
+        backgroundImage: NetworkImage(
+            "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjM3Njd9&auto=format&fit=crop&w=750&q=80"),
+        radius: 70,
+      );
     }
   }
 }

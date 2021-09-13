@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/response/list_cart_response.dart';
 import 'package:neostore/data/model/response/my_account.dart';
-import 'package:neostore/domain/cart_use_case.dart';
-import 'package:neostore/domain/my_account_use_case.dart';
+import 'package:neostore/domain/use_case/cart_use_case.dart';
+import 'package:neostore/domain/use_case/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
 class HomeProvider extends ChangeNotifier {

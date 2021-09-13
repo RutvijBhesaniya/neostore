@@ -5,9 +5,9 @@ import 'package:neostore/data/model/request/login_request.dart';
 import 'package:neostore/data/model/response/forgot_password_response.dart';
 import 'package:neostore/data/model/response/login_response.dart';
 import 'package:neostore/data/web_service/api_impl/forgot_password_api/forgot_password_api_impl.dart';
-import 'package:neostore/data/web_service/repository/forgot_repository/forgot_repository_impl.dart';
-import 'package:neostore/domain/forgot_use_case.dart';
-import 'package:neostore/domain/login_use_case.dart';
+import 'package:neostore/domain/repository/forgot_repository/forgot_repository_impl.dart';
+import 'package:neostore/domain/use_case/forgot_use_case.dart';
+import 'package:neostore/domain/use_case/login_use_case.dart';
 
 class LoginScreenProvider extends ChangeNotifier {
   LoginUseCase _loginUseCase;

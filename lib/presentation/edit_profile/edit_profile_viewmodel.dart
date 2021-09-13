@@ -3,7 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/response/edit_profile_response.dart';
-import 'package:neostore/domain/edit_profile_use_case.dart';
+import 'package:neostore/domain/use_case/edit_profile_use_case.dart';
 
 class EditProfileProvider extends ChangeNotifier {
   var image;

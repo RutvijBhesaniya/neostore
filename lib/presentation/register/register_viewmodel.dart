@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:neostore/data/model/request/register_request.dart';
 import 'package:neostore/data/model/response/register_response.dart';
-import 'package:neostore/domain/register_use_case.dart';
+import 'package:neostore/domain/use_case/register_use_case.dart';
 
 class RegisterProvider extends ChangeNotifier {
 
