@@ -1,6 +1,6 @@
 class RatingResponse {
   int? status;
-  Data? data;
+  Datas? data;
   String? message;
   String? userMsg;
 
@@ -12,7 +12,7 @@ class RatingResponse {
 
   RatingResponse.fromJson(dynamic json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    data = json['data'] != null ? Datas.fromJson(json['data']) : null;
     message = json['message'];
     userMsg = json['user_msg'];
   }
@@ -30,7 +30,7 @@ class RatingResponse {
 
 }
 
-class Data {
+class Datas {
   int? id;
   int? productCategoryId;
   String? name;
@@ -42,7 +42,7 @@ class Data {
   String? created;
   String? modified;
 
-  Data({
+  Datas({
       this.id, 
       this.productCategoryId, 
       this.name, 
@@ -54,7 +54,7 @@ class Data {
       this.created, 
       this.modified});
 
-  Data.fromJson(dynamic json) {
+  Datas.fromJson(dynamic json) {
     id = json['id'];
     productCategoryId = json['product_category_id'];
     name = json['name'];

@@ -47,27 +47,32 @@ class _HomeScreen extends BaseClassState {
   @override
   Widget getBody() {
     return ChangeNotifierProvider<HomeProvider>(
-        create: (context) => _homeProvider!,
-        child: Consumer<HomeProvider>(
-          builder: (context, model, child) {
-            return _homeProvider?.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : Container(
-                    height: MediaQuery.of(context).size.height,
-                    color: ColorStyles.dark_grey,
-                    child: Stack(
-                      children: [
-                        menu(context, _homeProvider?.listCartResponse),
-                        dashboard(context),
-                      ],
-                    ),
-                  );
-          },
-        ));
+      create: (context) => _homeProvider!,
+      child: Consumer<HomeProvider>(
+        builder: (context, model, child) {
+          return _homeProvider?.isLoading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Container(
+                  height: MediaQuery.of(context).size.height,
+                  color: ColorStyles.dark_grey,
+                  child: Stack(
+                    children: [
+                      ///drawer screen
+                      menu(context, _homeProvider?.listCartResponse),
+
+                      ///dashboard screen
+                      dashboard(context),
+                    ],
+                  ),
+                );
+        },
+      ),
+    );
   }
 
+  ///drawer screen
   Widget menu(context, ListCartResponse? listCartResponse) {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
@@ -447,6 +452,7 @@ class _HomeScreen extends BaseClassState {
     }
   }
 
+  ///dashboard screen
   Widget dashboard(context) {
     return AnimatedPositioned(
       duration: duration,
@@ -454,171 +460,177 @@ class _HomeScreen extends BaseClassState {
       bottom: !_homeProvider!.getCurrentDrawer ? 0 : 0.2 * screenWidth!,
       left: !_homeProvider!.getCurrentDrawer ? 0 : 0.7 * screenWidth!,
       right: !_homeProvider!.getCurrentDrawer ? 0 : -0.4 * screenWidth!,
-      child: SafeArea(
-        child: Material(
-          elevation: 8,
-          child: ListView(
-            children: [
-              Container(
-                color: ColorStyles.red,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: InkWell(
-                        onTap: () {
-                          var value = _homeProvider?.getCurrentDrawer;
-                          _homeProvider?.setCurrentDrawer(!value!);
-                          // print("current=>${_drawerProvider.getCurrentDrawer}");
-                        },
-                        child: Icon(
-                          _homeProvider!.getCurrentDrawer
-                              ? Icons.arrow_back
-                              : Icons.menu,
-                          color: ColorStyles.white,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: NeoStoreTitle(
-                        text: ConstantStrings.neoStore,
-                        style: TextStyles.titleHeadline?.copyWith(
-                          color: ColorStyles.white,
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
+      child: Material(
+        elevation: 8,
+        child: ListView(
+          children: [
+            Container(
+              color: ColorStyles.red,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+
+                  ///appbar drawer icon
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 15, bottom: 5),
+                    child: InkWell(
+                      onTap: () {
+                        var value = _homeProvider?.getCurrentDrawer;
+                        _homeProvider?.setCurrentDrawer(!value!);
+                      },
                       child: Icon(
-                        Icons.search,
+                        _homeProvider!.getCurrentDrawer
+                            ? Icons.arrow_back
+                            : Icons.menu,
                         color: ColorStyles.white,
                       ),
                     ),
-                  ],
-                ),
-              ),
-              Container(
-                height: MediaQuery.of(context).size.height / 3,
-                width: MediaQuery.of(context).size.width,
-                child: CarouselSliderScreen(),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
-                child: Row(
-                  children: [
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => TableCategoryView(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'assets/images/table_image.png',
-                                  ),
-                                ),
-                              ),
-                              height: MediaQuery.of(context).size.height / 4,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ChairCategoryView(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'assets/images/chairs_image.png',
-                                  ),
-                                ),
-                              ),
-                              height: MediaQuery.of(context).size.height / 4,
-                            ),
-                          )
-                        ],
+                  ),
+
+                  /// appbar title
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 15, bottom: 5),
+                    child: NeoStoreTitle(
+                      text: ConstantStrings.neoStore,
+                      style: TextStyles.titleHeadline?.copyWith(
+                        color: ColorStyles.white,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
+                  ),
+
+                  ///appbar search icon
+                  Padding(
+                    padding:
+                        const EdgeInsets.only(top: 20, left: 15, bottom: 5),
+                    child: Icon(
+                      Icons.search,
+                      color: ColorStyles.white,
                     ),
-                    Flexible(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => SofaCategoryView(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'assets/images/sofa_image.png',
-                                  ),
-                                ),
-                              ),
-                              height: MediaQuery.of(context).size.height / 4,
-                            ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CupboardCategoryView(),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                  fit: BoxFit.fill,
-                                  image: AssetImage(
-                                    'assets/images/cupboard_image.png',
-                                  ),
-                                ),
-                              ),
-                              height: MediaQuery.of(context).size.height / 4,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height / 3,
+              width: MediaQuery.of(context).size.width,
+              child: CarouselSliderScreen(),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 15, 10, 0),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => TableCategoryView(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage(
+                                  'assets/images/table_image.png',
+                                ),
+                              ),
+                            ),
+                            height: MediaQuery.of(context).size.height / 4,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ChairCategoryView(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage(
+                                  'assets/images/chairs_image.png',
+                                ),
+                              ),
+                            ),
+                            height: MediaQuery.of(context).size.height / 4,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SofaCategoryView(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage(
+                                  'assets/images/sofa_image.png',
+                                ),
+                              ),
+                            ),
+                            height: MediaQuery.of(context).size.height / 4,
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CupboardCategoryView(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.fill,
+                                image: AssetImage(
+                                  'assets/images/cupboard_image.png',
+                                ),
+                              ),
+                            ),
+                            height: MediaQuery.of(context).size.height / 4,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -32,48 +32,45 @@ class NeoStoreTextFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: MediaQuery.of(context).size.height /12,
-      child: TextFormField(
-        style: textStyle,
-        inputFormatters: inputFormatters,
-        controller: controller,
-        validator: validation,
-        obscureText: obscureText,
-        maxLines: maxLine,
-        decoration: new InputDecoration(
-          filled: true,
-          fillColor: fillColor,
-          errorStyle: errorStyle,
-          errorBorder: new OutlineInputBorder(
-            borderSide: new BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
+    return TextFormField(
+      style: textStyle,
+      inputFormatters: inputFormatters,
+      controller: controller,
+      validator: validation,
+      obscureText: obscureText,
+      maxLines: maxLine,
+      decoration: new InputDecoration(
+        filled: true,
+        fillColor: fillColor,
+        errorStyle: errorStyle,
+        errorBorder: new OutlineInputBorder(
+          borderSide: new BorderSide(
+            color: Colors.white,
+            width: 1,
           ),
-          focusedErrorBorder: new OutlineInputBorder(
-            borderSide: new BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
-          ),
-          enabledBorder: new OutlineInputBorder(
-            borderSide: new BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
-          ),
-          focusedBorder: new OutlineInputBorder(
-            borderSide: new BorderSide(
-              color: Colors.white,
-              width: 1,
-            ),
-          ),
-          hintStyle: hintStyle,
-          hintText: hintText,
-          prefixIcon: prefixIcon,
-          suffixIcon: suffixIcon,
         ),
+        focusedErrorBorder: new OutlineInputBorder(
+          borderSide: new BorderSide(
+            color: Colors.white,
+            width: 1,
+          ),
+        ),
+        enabledBorder: new OutlineInputBorder(
+          borderSide: new BorderSide(
+            color: Colors.white,
+            width: 1,
+          ),
+        ),
+        focusedBorder: new OutlineInputBorder(
+          borderSide: new BorderSide(
+            color: Colors.white,
+            width: 1,
+          ),
+        ),
+        hintStyle: hintStyle,
+        hintText: hintText,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
       ),
     );
   }

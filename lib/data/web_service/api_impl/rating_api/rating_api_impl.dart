@@ -14,17 +14,13 @@ class RatingApiImpl extends RatingApi {
     Completer<dynamic> completer = new Completer<dynamic>();
     FormData formData = new FormData.fromMap(map);
 
-    // print("sssss=>${"${APIs.ratingBar}?product_id=$ratingRequest"}");
     var response = await APIHandler.post(
-      // url: "${APIs.ratingBar}?product_id=$productId",
       url: "${APIs.ratingBar}",
       requestBody: formData
 
-      // requestBody: {"product_id ": productId},
-      // context: context,
+
     );
 
-    print('gotResponseeeee=>${response.runtimeType}');
     if (response is ApiError) {
       completer.complete(response);
       return completer.future;

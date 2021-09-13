@@ -29,7 +29,7 @@ class Data {
   String? producer;
   String? description;
   int? cost;
-  int? rating;
+  var rating;
   int? viewCount;
   String? created;
   String? modified;

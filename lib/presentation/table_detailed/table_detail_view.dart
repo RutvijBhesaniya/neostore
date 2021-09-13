@@ -10,6 +10,7 @@ import 'package:neostore/data/model/response/table_detail_response.dart';
 import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
+import 'package:neostore/presentation/widget/neostore_divider.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_textformfield.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
@@ -44,8 +45,8 @@ class _TableDetailViewState extends BaseClassState {
   }
 
   @override
-  getAppBar() {
-    return _appBar();
+  Widget getAppBar() {
+    return _appBar(_tableDetailProvider?.tableDetailResponse);
   }
 
   @override
@@ -66,7 +67,8 @@ class _TableDetailViewState extends BaseClassState {
                         child: Column(
                           children: [
                             ///top screen widget
-                            _topScreen(),
+                            _topScreen(
+                                _tableDetailProvider?.tableDetailResponse),
 
                             ///between screen widget
                             _betweenScreen(
@@ -86,29 +88,34 @@ class _TableDetailViewState extends BaseClassState {
   }
 
   ///widget app bar
-  Widget _appBar() {
-    return NeoStoreAppBar(
-      backgroundColour: ColorStyles.red,
-      leading: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        child: Icon(
-          Icons.arrow_back_ios,
-          color: ColorStyles.white,
-          size: 20,
+  Widget _appBar(TableDetailResponse? tableDetailResponse) {
+    return Center(
+      child: NeoStoreAppBar(
+        backgroundColour: ColorStyles.red,
+        leading: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: ColorStyles.white,
+            size: 20,
+          ),
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+          )
+        ],
+        text: tableDetailResponse?.data?.name ?? ' ',
+        style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.search),
-        )
-      ],
-      text: _tableDetailProvider?.tableDetailResponse?.data?.name ?? ' ',
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
@@ -141,7 +148,7 @@ class _TableDetailViewState extends BaseClassState {
         child: NeoStoreElevatedButton(
           text: ConstantStrings.rate,
           buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.grey),
-          textStyle: TextStyles.titlelabel!.copyWith(
+          textStyle: TextStyles.titlelabel?.copyWith(
             color: ColorStyles.liver_grey,
           ),
           onPressed: () {
@@ -382,7 +389,7 @@ class _TableDetailViewState extends BaseClassState {
   }
 
   ///top screen widget
-  Widget _topScreen() {
+  Widget _topScreen(TableDetailResponse? tableDetailResponse) {
     return Container(
       color: ColorStyles.grey,
       width: MediaQuery.of(context).size.width,
@@ -396,13 +403,13 @@ class _TableDetailViewState extends BaseClassState {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ///product name widget
-              _productName(_tableDetailProvider?.tableDetailResponse),
+              _productName(tableDetailResponse),
 
               ///category name widget
               _categoryName(),
 
               ///product and rating widget
-              _producerAndRating(_tableDetailProvider?.tableDetailResponse)
+              _producerAndRating(tableDetailResponse)
             ],
           ),
         ),
@@ -426,8 +433,10 @@ class _TableDetailViewState extends BaseClassState {
 
               ///image widget
               _centerImage(tableDetailResponse),
-              Divider(
-                color: ColorStyles.dark_grey,
+
+              ///divider
+              NeoStoreDivider(
+                color: ColorStyles.liver_grey,
               ),
 
               ///description title
@@ -471,7 +480,7 @@ class _TableDetailViewState extends BaseClassState {
             image: DecorationImage(
               fit: BoxFit.fill,
               image: NetworkImage(
-                tableDetailResponse!.data!.productImages!.first.image!,
+                tableDetailResponse?.data?.productImages?.first.image ?? ' ',
               ),
             ),
           ),
@@ -532,14 +541,14 @@ class _TableDetailViewState extends BaseClassState {
           _producerName(tableDetailResponse),
 
           ///rating bar widget
-          _ratingBarIndicator(tableDetailResponse?.data?.rating)
+          _ratingBarIndicator(tableDetailResponse)
         ],
       ),
     );
   }
 
   ///rating bar widget
-  Widget _ratingBarIndicator(int? rating) {
+  Widget _ratingBarIndicator(TableDetailResponse? tableDetailResponse) {
     return RatingBarIndicator(
       itemBuilder: (context, index) {
         return Icon(
@@ -547,7 +556,9 @@ class _TableDetailViewState extends BaseClassState {
           color: ColorStyles.yellow,
         );
       },
-      rating: rating!.toDouble(),
+      rating: tableDetailResponse != null
+          ? tableDetailResponse.data?.rating.toDouble()
+          : 0.0,
       itemCount: 5,
       itemSize: 15,
       direction: Axis.horizontal,
@@ -588,8 +599,7 @@ class _TableDetailViewState extends BaseClassState {
   @override
   void initState() {
     super.initState();
-
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance?.addPostFrameCallback((_) {
       fetchTableDetail(tableProductDetailed);
     });
   }

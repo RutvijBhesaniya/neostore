@@ -35,7 +35,6 @@ class ProfileDetailsViewState extends BaseClassState {
 
   @override
   Widget getBody() {
-    // _myAccountProvider = Provider.of<ProfileDetailsProvider>(context);
     return ChangeNotifierProvider<ProfileDetailsProvider>(
       create: (context) => _profileDetailsProvider!,
       child: Consumer<ProfileDetailsProvider>(
@@ -122,8 +121,6 @@ class ProfileDetailsViewState extends BaseClassState {
       backgroundColour: ColorStyles.red,
       leading: InkWell(
         onTap: () {
-          // Navigator.pop(context);
-
           Navigator.push(
             context,
             MaterialPageRoute(

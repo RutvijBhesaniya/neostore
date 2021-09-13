@@ -12,7 +12,7 @@ class NeoStoreAppBar extends StatefulWidget {
   });
 
   final backgroundColour;
-  final String? text;
+  final text;
   final elevation;
   final leading;
   final suffixIcon;
@@ -35,7 +35,7 @@ class _NeoStoreAppBarState extends State<NeoStoreAppBar> {
       leading: widget.leading,
       title: Center(
         child: Text(
-          widget.text!,
+          widget.text,
           style: widget.style,
         ),
       ),

@@ -16,6 +16,8 @@ class TableDetailProvider extends ChangeNotifier {
 
   TableDetailProvider(this._tableDetailUseCase);
 
+
+
   RatingUseCase _ratingUseCase = RatingUseCase(
     RatingRepositoryImpl(
       RatingApiImpl(),
@@ -29,6 +31,7 @@ class TableDetailProvider extends ChangeNotifier {
 
   TableDetailResponse? _tableDetailResponse;
   RatingResponse? _ratingResponse;
+
   AddToCartResponse? _addToCartResponse;
 
   TableDetailResponse? get tableDetailResponse => _tableDetailResponse;

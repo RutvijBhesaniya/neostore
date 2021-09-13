@@ -52,33 +52,35 @@ class _TableCategoryView extends BaseClassState {
 
   ///widget app bar
   Widget _appBar() {
-    return NeoStoreAppBar(
-      backgroundColour: ColorStyles.red,
-      leading: InkWell(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => HomeScreen(),
-            ),
-          );
-        },
-        child: Icon(
-          Icons.arrow_back_ios,
-          color: ColorStyles.white,
-          size: 20,
+    return Center(
+      child: NeoStoreAppBar(
+        backgroundColour: ColorStyles.red,
+        leading: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(),
+              ),
+            );
+          },
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: ColorStyles.white,
+            size: 20,
+          ),
         ),
+        text: ConstantStrings.tables,
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(Icons.search),
+          )
+        ],
+        style: GoogleFonts.workSans(
+            textStyle: TextStyles.titleHeadline!
+                .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
-      text: ConstantStrings.tables,
-      actions: [
-        IconButton(
-          onPressed: () {},
-          icon: Icon(Icons.search),
-        )
-      ],
-      style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 
