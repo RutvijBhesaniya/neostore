@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/table_category_response.dart';
+import 'package:neostore/data/api/response/table_category_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_view.dart';
@@ -52,35 +52,33 @@ class _TableCategoryView extends BaseClassState {
 
   ///widget app bar
   Widget _appBar() {
-    return Center(
-      child: NeoStoreAppBar(
-        backgroundColour: ColorStyles.red,
-        leading: InkWell(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomeScreen(),
-              ),
-            );
-          },
-          child: Icon(
-            Icons.arrow_back_ios,
-            color: ColorStyles.white,
-            size: 20,
-          ),
+    return NeoStoreAppBar(
+      backgroundColour: ColorStyles.red,
+      leading: InkWell(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => HomeScreen(),
+            ),
+          );
+        },
+        child: Icon(
+          Icons.arrow_back_ios,
+          color: ColorStyles.white,
+          size: 20,
         ),
-        text: ConstantStrings.tables,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.search),
-          )
-        ],
-        style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!
-                .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
       ),
+      text: ConstantStrings.tables,
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(Icons.search),
+        )
+      ],
+      style: GoogleFonts.workSans(
+          textStyle: TextStyles.titleHeadline!
+              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
     );
   }
 

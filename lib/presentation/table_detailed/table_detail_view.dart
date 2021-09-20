@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/add_to_cart_response.dart';
-import 'package:neostore/data/model/response/rating_response.dart';
-import 'package:neostore/data/model/response/table_detail_response.dart';
+import 'package:neostore/data/api/response/add_to_cart_entity.dart';
+import 'package:neostore/data/api/response/rating_response.dart';
+import 'package:neostore/data/api/response/table_detail_response.dart';
 import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -316,8 +316,8 @@ class _TableDetailViewState extends BaseClassState {
                                               .toString()),
                                           int.parse(_quantityController.text),
                                         );
-                                        AddToCartResponse? _addToCartResponse =
-                                            AddToCartResponse.fromJson(
+                                        AddToCartEntity? _addToCartResponse =
+                                            AddToCartEntity.fromJson(
                                           jsonDecode(response),
                                         );
 

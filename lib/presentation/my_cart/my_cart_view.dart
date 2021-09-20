@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/delete_cart_response.dart';
-import 'package:neostore/data/model/response/list_cart_response.dart';
+import 'package:neostore/data/api/response/delete_cart_response.dart';
+import 'package:neostore/data/api/response/list_cart_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
@@ -26,7 +26,6 @@ class MyCartView extends BaseClass {
 
 class MyCartViewState extends BaseClassState {
   CartProvider? _listCartProvider;
-
 
   @override
   void didChangeDependencies() {
@@ -149,8 +148,10 @@ class MyCartViewState extends BaseClassState {
     return NeoStoreTitle(
       text: _listCartProvider?.listCartResponse?.total.toString(),
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline
-            ?.copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
+        textStyle: TextStyles.titleHeadline?.copyWith(
+          color: ColorStyles.black,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
@@ -170,8 +171,10 @@ class MyCartViewState extends BaseClassState {
     return NeoStoreTitle(
       text: ConstantStrings.total,
       style: GoogleFonts.workSans(
-        textStyle: TextStyles.titleHeadline
-            ?.copyWith(color: ColorStyles.black, fontWeight: FontWeight.w400),
+        textStyle: TextStyles.titleHeadline?.copyWith(
+          color: ColorStyles.black,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
@@ -303,7 +306,9 @@ class MyCartViewState extends BaseClassState {
       overflow: TextOverflow.ellipsis,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline?.copyWith(
-            color: ColorStyles.liver_grey, fontWeight: FontWeight.w400),
+          color: ColorStyles.liver_grey,
+          fontWeight: FontWeight.w400,
+        ),
       ),
     );
   }
@@ -357,6 +362,7 @@ class MyCartViewState extends BaseClassState {
     );
   }
 
+  ///fetch cart method
   void fetchMyCartData() {
     _listCartProvider?.getListCart();
   }
@@ -366,6 +372,8 @@ class MyCartViewState extends BaseClassState {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) {
+
+        ///fetch cart method
         fetchMyCartData();
       },
     );

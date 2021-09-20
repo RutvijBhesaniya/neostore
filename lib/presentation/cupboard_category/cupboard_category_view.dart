@@ -7,22 +7,28 @@ import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 
-class CupboardCategoryView extends BaseClass{
+class CupboardCategoryView extends BaseClass {
   @override
   BaseClassState getState() {
     return _CupboardCategoryView();
   }
-
 }
-class _CupboardCategoryView extends BaseClassState{
+
+class _CupboardCategoryView extends BaseClassState {
   @override
   getAppBar() {
     return _appBar();
   }
+
   @override
   Widget getBody() {
-    return Center(child: NeoStoreTitle(text: 'Work in Progress'));
+    return Center(
+      child: NeoStoreTitle(
+        text: ConstantStrings.dataNotFound,
+      ),
+    );
   }
+
   Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,
@@ -43,8 +49,11 @@ class _CupboardCategoryView extends BaseClassState{
       ),
       text: ConstantStrings.cupboards,
       style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
     );
   }
 }

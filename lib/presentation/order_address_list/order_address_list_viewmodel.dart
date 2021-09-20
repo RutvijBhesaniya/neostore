@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/response/order_address_response.dart';
+import 'package:neostore/data/api/response/order_address_response.dart';
 import 'package:neostore/domain/use_case/order_address_use_case.dart';
 
 class OrderAddressListProvider extends ChangeNotifier {

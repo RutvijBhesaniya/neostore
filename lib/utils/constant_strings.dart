@@ -9,6 +9,8 @@ class ConstantStrings {
   static const editProfile = 'EDIT PROFILE';
   static const phoneNumber = 'Phone Number';
   static const email = 'Email';
+  static const male = 'Male';
+  static const female = 'Female';
   static const resetPassword = 'Reset Password';
   static const iAgreeThe = 'I Agree the ';
   static const termsCondition = 'Terms & Condition';
@@ -32,7 +34,9 @@ class ConstantStrings {
   static const galary = 'Galary';
   static const dob = 'DOB';
   static const empty_cart = 'Empty Cart';
+  static const please_enter_address = 'Please Enter Address';
   static const choose_profile_photo = 'Choose Profile photo';
+
 
   ///drawer menu
   static const myCart = 'My Cart';
@@ -61,4 +65,6 @@ class ConstantStrings {
   static const username_or_password_is_wrong = 'UserName or Password is wrong';
   static const please_enter_quantity = 'Please enter quantity';
   static const enter_less_than_8 = 'Enter less than 8';
+  static const please_enter_re_password ='Please enter re-password';
+  static const password_do_not_match ='Password do not match';
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/order_list_response.dart';
+import 'package:neostore/data/api/response/order_list_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/my_order/my_order_viewmodel.dart';
 import 'package:neostore/presentation/order_detail/order_detail_view.dart';
@@ -20,9 +20,6 @@ class MyOrderView extends BaseClass {
 
 class MyOrderViewState extends BaseClassState {
   MyOrderProvider? _myOrderProvider;
-
-
-
 
   @override
   void didChangeDependencies() {
@@ -168,6 +165,7 @@ class MyOrderViewState extends BaseClassState {
   }
 
   void fetchOrderListData() {
+    ///order list method
     _myOrderProvider?.getOrderList();
   }
 }

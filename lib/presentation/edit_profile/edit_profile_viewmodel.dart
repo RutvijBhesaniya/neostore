@@ -2,28 +2,26 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/response/edit_profile_response.dart';
+import 'package:neostore/data/api/response/edit_profile_response.dart';
 import 'package:neostore/domain/use_case/edit_profile_use_case.dart';
 
 class EditProfileProvider extends ChangeNotifier {
-  var image;
   File? _imageFile;
 
   EditProfileUseCase _editProfileUseCase;
+
   EditProfileProvider(this._editProfileUseCase);
 
+  File? get imageFile => _imageFile;
 
-  get imageFile => _imageFile;
-
-  Future setImage(var file) async {
-    this.image = file;
-    this.notifyListeners();
+  void setImage(File? file) {
+    _imageFile = file;
+    notifyListeners();
   }
 
   EditProfileResponse? _editProfileResponse;
 
   EditProfileResponse? get editProfileResponse => _editProfileResponse;
-
 
   bool _isLoading = true;
 
@@ -42,10 +40,5 @@ class EditProfileProvider extends ChangeNotifier {
 
     _isLoading = false;
     return response;
-  }
-
-  void updateFieldValue(BuildContext context, bool loadingValue, File file) {
-    _imageFile = file;
-    notifyListeners();
   }
 }

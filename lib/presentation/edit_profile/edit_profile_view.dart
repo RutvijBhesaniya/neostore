@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/edit_profile_response.dart';
+import 'package:neostore/data/api/response/edit_profile_response.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/presentation/profile_details/profile_details_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -36,8 +36,6 @@ class EditProfileViewState extends BaseClassState
   TextEditingController _dobController = new TextEditingController();
   final ImagePicker _picker = ImagePicker();
 
-  // PickedFile? _imageFile;
-
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -46,9 +44,11 @@ class EditProfileViewState extends BaseClassState
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _editProfileProvider = EditProfileProvider(Provider.of(context));
+  void initState() {
+    super.initState();
+    _editProfileProvider = EditProfileProvider(
+      Provider.of(context, listen: false),
+    );
   }
 
   ///appbar widget
@@ -133,14 +133,20 @@ class EditProfileViewState extends BaseClassState
         ),
         child: Stack(
           children: [
-            CircleAvatar(
-              radius: 80,
-              child: _editProfileProvider.imageFile == null
-                  ? Image.asset("assets/images/profile_pic.jpg")
-                  : Image.file(_editProfileProvider.imageFile!),
-              // backgroundImage: _editProfileProvider.imageFile == null
-              //     ? AssetImage("assets/images/profile_pic.jpg")
-              //     : Image.file(_editProfileProvider.imageFile!)),
+            new Container(
+              width: 115.0,
+              height: 115.0,
+              child: ClipOval(
+                child: _editProfileProvider.imageFile == null
+                    ? Image.asset(
+                        "assets/images/profile_pic.jpg",
+                        fit: BoxFit.fill,
+                      )
+                    : Image.file(
+                        _editProfileProvider.imageFile!,
+                        fit: BoxFit.fill,
+                      ),
+              ),
             ),
             Positioned(
               bottom: 10,
@@ -148,7 +154,9 @@ class EditProfileViewState extends BaseClassState
               child: InkWell(
                 onTap: () {
                   showModalBottomSheet(
-                      context: context, builder: ((builder) => bottomSheet()));
+                    context: context,
+                    builder: ((builder) => bottomSheet()),
+                  );
                 },
                 child: Icon(Icons.camera_alt_outlined),
               ),
@@ -193,11 +201,17 @@ class EditProfileViewState extends BaseClassState
           color: ColorStyles.white,
         ),
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Icon(
           Icons.date_range,
           color: ColorStyles.white,
@@ -220,11 +234,17 @@ class EditProfileViewState extends BaseClassState
           color: ColorStyles.white,
         ),
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Icon(
           Icons.phone_android,
           color: ColorStyles.white,
@@ -246,11 +266,17 @@ class EditProfileViewState extends BaseClassState
           color: ColorStyles.white,
         ),
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Icon(
           Icons.email,
           color: ColorStyles.white,
@@ -272,11 +298,17 @@ class EditProfileViewState extends BaseClassState
           color: ColorStyles.white,
         ),
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
       ),
     );
@@ -293,11 +325,17 @@ class EditProfileViewState extends BaseClassState
         color: ColorStyles.white,
       ),
       textStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
       hintStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline?.copyWith(
-              color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        textStyle: TextStyles.titleHeadline?.copyWith(
+          color: ColorStyles.white,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
     );
   }
@@ -327,6 +365,8 @@ class EditProfileViewState extends BaseClassState
                   primary: Colors.red,
                 ),
                 onPressed: () {
+                  // Navigator.pop(context);
+
                   _onImageButtonPressed(ImageSource.camera, context);
                   // takePhoto(ImageSource.camera);
                 },
@@ -338,6 +378,7 @@ class EditProfileViewState extends BaseClassState
                   primary: Colors.red,
                 ),
                 onPressed: () {
+                  // Navigator.pop(context);
                   _onImageButtonPressed(ImageSource.gallery, context);
                   // takePhoto(ImageSource.gallery);
                 },
@@ -351,32 +392,20 @@ class EditProfileViewState extends BaseClassState
     );
   }
 
-  ///take photo method
-  // void takePhoto(ImageSource source) async {
-  //   final pickedFile = await _picker.pickImage(
-  //       source: source, imageQuality: 20, maxHeight: 100, maxWidth: 100);
-  //   setState(() {
-  //     _imageFile = pickedFile! as PickedFile?;
-  //   });
-  // }
-
   void _onImageButtonPressed(ImageSource source, BuildContext context) async {
     XFile? pickedFile = await _picker.pickImage(
       source: source,
-      // maxWidth: _maxWidth,
-      // maxHeight: _maxHeight,
-      imageQuality: 100,
+      imageQuality: 0,
     );
     if (pickedFile != null) {
       final File file = File(pickedFile.path);
-      _editProfileProvider.updateFieldValue(context, false, file);
+      _editProfileProvider.setImage(file);
     }
   }
 
   void editProfileUser(BuildContext context) async {
     File file = File(_editProfileProvider.imageFile!.path);
     Uint8List bytes = file.readAsBytesSync();
-    print("sizepic=>${bytes.length}");
 
     var response = await _editProfileProvider.getEditProfile(
         _emailController.text,
@@ -385,8 +414,6 @@ class EditProfileViewState extends BaseClassState
         bytes,
         _firstController.text,
         _lastController.text);
-
-    print('zzzzzz=>$response');
 
     EditProfileResponse _editProfileResponse = EditProfileResponse.fromJson(
       json.decode(response),
@@ -403,7 +430,6 @@ class EditProfileViewState extends BaseClassState
       MemoryManagement.setDob(dob: _editProfileResponse.data?.dob);
       MemoryManagement.setProfilePic(
           profilepic: _editProfileResponse.data?.profilePic);
-      print("editmemory=>${MemoryManagement.getFirstName()}");
 
       Navigator.of(context).push(
         MaterialPageRoute(

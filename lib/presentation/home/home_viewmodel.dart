@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/response/list_cart_response.dart';
-import 'package:neostore/data/model/response/my_account.dart';
+import 'package:neostore/data/api/response/list_cart_response.dart';
+import 'package:neostore/data/api/response/my_account.dart';
 import 'package:neostore/domain/use_case/cart_use_case.dart';
 import 'package:neostore/domain/use_case/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
@@ -34,6 +34,8 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  ///list count method
   void getListCountCart() async {
     _isLoading = true;
     var response = await _listCartUseCase.callApi();
@@ -43,6 +45,8 @@ class HomeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+
+  ///get account details method
   void getMyAccount() async {
     _isLoading = true;
     var response = await _myAccountUseCase.callApi();

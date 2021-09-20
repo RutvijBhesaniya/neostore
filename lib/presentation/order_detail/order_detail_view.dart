@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/order_detail_response.dart';
+import 'package:neostore/data/api/response/order_detail_response.dart';
 import 'package:neostore/presentation/order_detail/order_detail_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
@@ -279,12 +279,16 @@ class _OrderDetailViewState extends BaseClassState {
       text:
           'Order Id: ${_orderDetailProvider?.orderDetailResponse?.data?.id.toString() ?? ' '}',
       style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+        color: ColorStyles.white,
+        fontWeight: FontWeight.w400,
+      )),
     );
   }
 
   void fetchOrderDetail(int orderId) {
+
+    ///order detail method
     _orderDetailProvider?.getOrderDetail(orderId);
   }
 

@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/add_address_model.dart';
+import 'package:neostore/data/api/add_address_model.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
@@ -66,31 +66,29 @@ class AddAddressViewState extends BaseClassState {
       child: NeoStoreElevatedButton(
         onPressed: () {
           if (MemoryManagement.getAddress() != null) {
-            print("address=>${MemoryManagement.getAddress().toString()}");
             AddAddressModel addAddressModel = AddAddressModel.fromJson(
               jsonDecode(MemoryManagement.getAddress()!),
             );
 
             List<AddressList> addAddressList = [];
 
-            addAddressList.addAll(addAddressModel.addresslist!);
+            addAddressList.addAll(addAddressModel.addressList!);
 
             AddressList addressList = AddressList();
             addressList.address = _addAddressController.text;
             addAddressList.add(addressList);
 
             AddAddressModel addAddressModels =
-                AddAddressModel(addresslist: addAddressList);
+                AddAddressModel(addressList: addAddressList);
             String addressValue = json.encode(addAddressModels);
             MemoryManagement.setAddress(address: addressValue);
           } else {
-            print("notaddress");
             List<AddressList> addressList = <AddressList>[];
             AddressList addressModel = AddressList();
             addressModel.address = _addAddressController.text;
             addressList.add(addressModel);
             AddAddressModel addAddressModel =
-                AddAddressModel(addresslist: addressList);
+                AddAddressModel(addressList: addressList);
             var addressValue = json.encode(addAddressModel);
             MemoryManagement.setAddress(address: addressValue);
           }
@@ -120,7 +118,7 @@ class AddAddressViewState extends BaseClassState {
       child: Container(
         height: MediaQuery.of(context).size.height /5,
         child: NeoStoreTextFormField(
-          hintText: ConstantStrings.address,
+          hintText: ConstantStrings.please_enter_address,
           hintStyle: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
               color: ColorStyles.black,

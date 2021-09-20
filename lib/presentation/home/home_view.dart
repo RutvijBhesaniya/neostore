@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/response/list_cart_response.dart';
+import 'package:neostore/data/api/response/list_cart_response.dart';
 import 'package:neostore/presentation/chair_category/chair_category_view.dart';
 import 'package:neostore/presentation/cupboard_category/cupboard_category_view.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
@@ -192,7 +192,6 @@ class _HomeScreen extends BaseClassState {
   Widget _logout(context) {
     return GestureDetector(
       onTap: () async {
-        print('logout${MemoryManagement.clearMemory()}');
         MemoryManagement.setRemove(remove: 'email');
 
         Navigator.pushAndRemoveUntil(
@@ -437,7 +436,8 @@ class _HomeScreen extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: getImage(
-          _homeProvider?.myAccountResponse?.data?.userData?.profilePic),
+        _homeProvider?.myAccountResponse?.data?.userData?.profilePic,
+      ),
     );
   }
 
@@ -469,7 +469,6 @@ class _HomeScreen extends BaseClassState {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-
                   ///appbar drawer icon
                   Padding(
                     padding:
@@ -636,8 +635,12 @@ class _HomeScreen extends BaseClassState {
     );
   }
 
+  ///fetch cart data method
   void fetchMyCartData() {
+    ///count method
     _homeProvider?.getListCountCart();
+
+    ///get account details method
     _homeProvider?.getMyAccount();
   }
 
@@ -645,6 +648,7 @@ class _HomeScreen extends BaseClassState {
   void initState() {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback((_) {
+      ///fetch cart data
       fetchMyCartData();
       _homeProvider?.setCurrentDrawer(false);
     });

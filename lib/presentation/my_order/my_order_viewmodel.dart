@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/response/order_list_response.dart';
+import 'package:neostore/data/api/response/order_list_response.dart';
 import 'package:neostore/domain/use_case/order_list_use_case.dart';
 
 class MyOrderProvider extends ChangeNotifier {
@@ -16,6 +16,8 @@ class MyOrderProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
+
+ ///order list method
   Future<dynamic> getOrderList() async {
     _isLoading = true;
 

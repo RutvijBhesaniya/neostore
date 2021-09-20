@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:neostore/data/model/response/add_to_cart_response.dart';
-import 'package:neostore/data/model/response/delete_cart_response.dart';
-import 'package:neostore/data/model/response/edit_cart_response.dart';
-import 'package:neostore/data/model/response/list_cart_response.dart';
-import 'package:neostore/data/model/response/table_detail_response.dart';
+import 'package:neostore/data/api/response/add_to_cart_entity.dart';
+import 'package:neostore/data/api/response/delete_cart_response.dart';
+import 'package:neostore/data/api/response/edit_cart_response.dart';
+import 'package:neostore/data/api/response/list_cart_response.dart';
+import 'package:neostore/data/api/response/table_detail_response.dart';
 import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/delete_cart_api/delete_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/edit_cart_api/edit_cart_api_impl.dart';
@@ -31,8 +31,6 @@ class CartProvider extends ChangeNotifier {
     ),
   );
 
-
-
   AddToCartUseCase _addToCartUseCase = AddToCartUseCase(
     AddToCartRepositoryImpl(
       AddToCartApiImpl(),
@@ -57,9 +55,9 @@ class CartProvider extends ChangeNotifier {
 
   TableDetailResponse? get tableDetailResponse => _tableDetailResponse;
 
-  AddToCartResponse? _addToCartResponse;
+  AddToCartEntity? _addToCartResponse;
 
-  AddToCartResponse? get addToCartResponse => _addToCartResponse;
+  AddToCartEntity? get addToCartResponse => _addToCartResponse;
 
   EditCartResponse? _editCartResponse;
 
@@ -76,6 +74,7 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///list cart method
   void getListCart() async {
     _isLoading = true;
     var response = await _listCartUseCase.callApi();
@@ -85,6 +84,7 @@ class CartProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  ///delete cart method
   Future<dynamic> getDeleteCart(int productId) async {
     _isLoading = true;
     var deleteResponse = await _deleteCartUseCase.callApi(productId);
@@ -94,6 +94,7 @@ class CartProvider extends ChangeNotifier {
     return deleteResponse;
   }
 
+  ///edit cart method
   void getEditCart(int productId, String quantity) async {
     _isLoading = true;
     var editCartResponse =
@@ -106,6 +107,7 @@ class CartProvider extends ChangeNotifier {
     // return editCartResponse;
   }
 
+  ///table detail method
   void getTableDetail(int productId) async {
     _isLoading = true;
     var response = await _tableDetailUseCase.callApi(productId);
@@ -114,10 +116,11 @@ class CartProvider extends ChangeNotifier {
     return response;
   }
 
+  ///add to cart method
   Future<dynamic> getAddToCart(int productId, int quantity) async {
     _isLoading = true;
     var response = await _addToCartUseCase.callApi(productId, quantity);
-    _addToCartResponse = AddToCartResponse.fromJson(jsonDecode(response));
+    _addToCartResponse = AddToCartEntity.fromJson(jsonDecode(response));
     _isLoading = false;
     return response;
   }

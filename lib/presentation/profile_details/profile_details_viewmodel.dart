@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:neostore/data/model/response/my_account.dart';
+import 'package:neostore/data/api/response/my_account.dart';
 import 'package:neostore/domain/use_case/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
@@ -17,6 +17,8 @@ class ProfileDetailsProvider extends ChangeNotifier {
 
   get isLoading => _isLoading;
 
+
+  ///my account detail method
   void getMyAccount() async {
     _isLoading = true;
     var response = await _myAccountUseCase.callApi();

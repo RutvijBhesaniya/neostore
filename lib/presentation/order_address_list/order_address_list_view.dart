@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/model/add_address_model.dart';
-import 'package:neostore/data/model/response/order_address_response.dart';
+import 'package:neostore/data/api/add_address_model.dart';
+import 'package:neostore/data/api/response/order_address_response.dart';
 import 'package:neostore/presentation/add_address/add_address_view.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_viewmodel.dart';
@@ -198,9 +198,9 @@ class OrderAddressListViewState extends BaseClassState {
                     String? response = MemoryManagement.getAddress();
                     AddAddressModel result =
                         AddAddressModel.fromJson(json.decode(response!));
-                    result.addresslist!.removeAt(index);
-                    String addr = json.encode(result);
-                    MemoryManagement.setAddress(address: addr);
+                    result.addressList!.removeAt(index);
+                    String address = json.encode(result);
+                    MemoryManagement.setAddress(address: address);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -269,7 +269,7 @@ class OrderAddressListViewState extends BaseClassState {
         jsonDecode(MemoryManagement.getAddress()!),
       );
 
-      addAddressList.addAll(addAddressModel.addresslist!);
+      addAddressList.addAll(addAddressModel.addressList!);
     }
   }
 }

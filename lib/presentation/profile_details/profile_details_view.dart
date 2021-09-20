@@ -101,7 +101,7 @@ class ProfileDetailsViewState extends BaseClassState {
                         ),
                       );
                     },
-                    text: 'RESET PASSWORD',
+                    text: ConstantStrings.resetPassword,
                     textStyle: TextStyles.titleHeadline?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: ColorStyles.dark_grey),
@@ -176,8 +176,11 @@ class ProfileDetailsViewState extends BaseClassState {
         icon: Icons.date_range,
         text: '01-11-2012',
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
     );
   }
@@ -191,8 +194,11 @@ class ProfileDetailsViewState extends BaseClassState {
         text:
             _profileDetailsProvider?.myAccountResponse?.data?.userData?.phoneNo,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
     );
   }
@@ -205,8 +211,10 @@ class ProfileDetailsViewState extends BaseClassState {
         icon: Icons.attach_email,
         text: _profileDetailsProvider?.myAccountResponse?.data?.userData?.email,
         style: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline
-              ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
         ),
       ),
     );
@@ -221,8 +229,11 @@ class ProfileDetailsViewState extends BaseClassState {
         text: _profileDetailsProvider
             ?.myAccountResponse?.data?.userData?.lastName,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
     );
   }
@@ -236,13 +247,18 @@ class ProfileDetailsViewState extends BaseClassState {
         text: _profileDetailsProvider
             ?.myAccountResponse?.data?.userData?.firstName,
         style: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline?.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline?.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
       ),
     );
   }
 
+  ///table category data method
   void fetchTableCategoryData() {
+    ///my account detail method
     _profileDetailsProvider?.getMyAccount();
   }
 
@@ -255,9 +271,13 @@ class ProfileDetailsViewState extends BaseClassState {
     });
   }
 
-  getImage(profilePic) {
+  ///get image widget
+  Widget getImage(profilePic) {
     if (profilePic.toString().isEmpty) {
-      return CircleAvatar(child: Image.network(profilePic), radius: 70);
+      return CircleAvatar(
+        child: Image.network(profilePic),
+        radius: 70,
+      );
     } else {
       return CircleAvatar(
         backgroundImage: NetworkImage(

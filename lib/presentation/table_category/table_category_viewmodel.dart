@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/response/table_category_response.dart';
+import 'package:neostore/data/api/response/table_category_response.dart';
 import 'package:neostore/domain/use_case/table_category_use_case.dart';
 
 class TableCategoryProvider extends ChangeNotifier {

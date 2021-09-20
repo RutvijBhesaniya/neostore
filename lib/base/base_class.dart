@@ -23,6 +23,7 @@ abstract class BaseClassState extends State<BaseClass> {
     );
   }
 
+
   Widget? getAppBar() {
     return null;
   }

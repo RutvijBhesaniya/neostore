@@ -7,23 +7,29 @@ import 'package:neostore/presentation/widget/neostore_title.dart';
 import 'package:neostore/utils/constant_strings.dart';
 import 'package:neostore/utils/style.dart';
 
-class SofaCategoryView extends BaseClass{
+class SofaCategoryView extends BaseClass {
   @override
   BaseClassState getState() {
     return _SofaCategoryView();
   }
-
 }
-class _SofaCategoryView extends BaseClassState{
+
+class _SofaCategoryView extends BaseClassState {
   @override
   getAppBar() {
     return _appBar();
   }
+
   @override
   Widget getBody() {
-    return Center(child: NeoStoreTitle(text: 'Work in Progress'));
+    return Center(
+      child: NeoStoreTitle(
+        text: ConstantStrings.dataNotFound,
+      ),
+    );
   }
 
+  ///appbar widget
   Widget _appBar() {
     return NeoStoreAppBar(
       backgroundColour: ColorStyles.red,

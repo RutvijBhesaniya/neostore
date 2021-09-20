@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/base/network_model/api_error.dart';
-import 'package:neostore/data/model/request/register_request.dart';
-import 'package:neostore/data/model/response/register_response.dart';
+import 'package:neostore/data/api/request/register_request.dart';
+import 'package:neostore/data/api/response/register_response.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -78,6 +78,15 @@ class _RegisterViewState extends BaseClassState
           size: 20,
         ),
       ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.search,
+            color: ColorStyles.transparent,
+          ),
+        )
+      ],
       text: ConstantStrings.register,
       style: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
@@ -168,7 +177,7 @@ class _RegisterViewState extends BaseClassState
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: Container(
-        width: MediaQuery.of(context).size.width / 5.8,
+        // width: MediaQuery.of(context).size.width / 5.8,
         child: NeoStoreTitle(
           text: 'Gender',
           style: GoogleFonts.workSans(
@@ -191,10 +200,12 @@ class _RegisterViewState extends BaseClassState
         activeColor: ColorStyles.white,
         value: GenderTypes.Female,
         title: Text(
-          'Female',
+          ConstantStrings.female,
           style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400),
+              color: ColorStyles.white,
+              fontWeight: FontWeight.w400,
+            ),
           ),
           maxLines: 1,
         ),
@@ -209,17 +220,19 @@ class _RegisterViewState extends BaseClassState
   ///male radio button
   Widget _maleRadioButton() {
     return Container(
-      width: MediaQuery.of(context).size.width / 2.8,
+      width: MediaQuery.of(context).size.width / 3.5,
       child: RadioListTile<GenderTypes>(
         dense: true,
         contentPadding: EdgeInsets.all(0.0),
         activeColor: ColorStyles.white,
         value: GenderTypes.Male,
         title: Text(
-          'Male',
+          ConstantStrings.male,
           style: GoogleFonts.workSans(
             textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400),
+              color: ColorStyles.white,
+              fontWeight: FontWeight.w400,
+            ),
           ),
         ),
         groupValue: _changeColorModel.currentValue,
@@ -298,7 +311,9 @@ class _RegisterViewState extends BaseClassState
             color: ColorStyles.red,
           ),
         ),
-        buttonStyle: TextButton.styleFrom(backgroundColor: ColorStyles.white),
+        buttonStyle: TextButton.styleFrom(
+          backgroundColor: ColorStyles.white,
+        ),
       ),
     );
   }
@@ -336,14 +351,20 @@ class _RegisterViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.confirmPassword,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -361,14 +382,20 @@ class _RegisterViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.password,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Image.asset('assets/images/password_icon.png'),
         obscureText: true,
         maxLine: 1,
@@ -385,14 +412,20 @@ class _RegisterViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.email,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Icon(
           Icons.email,
           color: ColorStyles.white,
@@ -411,14 +444,20 @@ class _RegisterViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.lastName,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         prefixIcon: Image.asset('assets/images/username_icon.png'),
         validation: validateName,
         maxLine: 1,
@@ -432,14 +471,20 @@ class _RegisterViewState extends BaseClassState
     return NeoStoreTextFormField(
       hintText: ConstantStrings.firstName,
       textStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
       errorStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,
       ),
       hintStyle: GoogleFonts.workSans(
-          textStyle: TextStyles.titleHeadline!
-              .copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400)),
+        textStyle: TextStyles.titleHeadline!.copyWith(
+          color: ColorStyles.white,
+          fontWeight: FontWeight.w400,
+        ),
+      ),
       prefixIcon: Image.asset('assets/images/username_icon.png'),
       maxLine: 1,
       validation: validateName,

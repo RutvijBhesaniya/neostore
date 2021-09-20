@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/model/response/add_to_cart_response.dart';
-import 'package:neostore/data/model/response/rating_response.dart';
-import 'package:neostore/data/model/response/table_detail_response.dart';
+import 'package:neostore/data/api/response/add_to_cart_entity.dart';
+import 'package:neostore/data/api/response/rating_response.dart';
+import 'package:neostore/data/api/response/table_detail_response.dart';
 import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/rating_api/rating_api_impl.dart';
 import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
@@ -32,11 +32,11 @@ class TableDetailProvider extends ChangeNotifier {
   TableDetailResponse? _tableDetailResponse;
   RatingResponse? _ratingResponse;
 
-  AddToCartResponse? _addToCartResponse;
+  AddToCartEntity? _addToCartResponse;
 
   TableDetailResponse? get tableDetailResponse => _tableDetailResponse;
 
-  AddToCartResponse? get addToCartResponse => _addToCartResponse;
+  AddToCartEntity? get addToCartResponse => _addToCartResponse;
 
   bool _isLoading = true;
 
@@ -66,7 +66,7 @@ class TableDetailProvider extends ChangeNotifier {
   Future<dynamic> getAddToCart(int productId, int quantity) async {
     _isLoading = true;
     var response = await _addToCartUseCase.callApi(productId, quantity);
-    _addToCartResponse = AddToCartResponse.fromJson(jsonDecode(response));
+    _addToCartResponse = AddToCartEntity.fromJson(jsonDecode(response));
     _isLoading = false;
     return response;
   }

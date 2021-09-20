@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/base/network_model/api_error.dart';
-import 'package:neostore/data/model/request/login_request.dart';
-import 'package:neostore/data/model/response/login_response.dart';
+import 'package:neostore/data/api/request/login_request.dart';
+import 'package:neostore/data/api/response/login_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/register/register_view.dart';
@@ -106,8 +106,11 @@ class _LoginScreenViewState extends BaseClassState
           child: NeoStoreTitle(
             text: ConstantStrings.dontHaveAnAccount,
             style: GoogleFonts.workSans(
-                textStyle: TextStyles.titleHeadline!.copyWith(
-                    color: ColorStyles.white, fontWeight: FontWeight.w400)),
+              textStyle: TextStyles.titleHeadline!.copyWith(
+                color: ColorStyles.white,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
           ),
         ),
       ),
@@ -133,7 +136,8 @@ class _LoginScreenViewState extends BaseClassState
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: NeoStoreTitle(
-                    text: ConstantStrings.new_password_sent_successfully),
+                  text: ConstantStrings.new_password_sent_successfully,
+                ),
               ),
             );
           }
@@ -141,8 +145,11 @@ class _LoginScreenViewState extends BaseClassState
         child: NeoStoreTitle(
           text: ConstantStrings.forgotPassword,
           style: GoogleFonts.workSans(
-              textStyle: TextStyles.titleHeadline!.copyWith(
-                  color: ColorStyles.white, fontWeight: FontWeight.w400)),
+            textStyle: TextStyles.titleHeadline!.copyWith(
+              color: ColorStyles.white,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
         ),
       ),
     );
@@ -156,6 +163,7 @@ class _LoginScreenViewState extends BaseClassState
       child: NeoStoreElevatedButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
+            ///login user method
             loginUser(context);
           }
         },
@@ -177,11 +185,17 @@ class _LoginScreenViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.password,
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -201,11 +215,17 @@ class _LoginScreenViewState extends BaseClassState
       child: NeoStoreTextFormField(
         hintText: ConstantStrings.username,
         hintStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         textStyle: GoogleFonts.workSans(
-            textStyle: TextStyles.titleHeadline!.copyWith(
-                color: ColorStyles.white, fontWeight: FontWeight.w400)),
+          textStyle: TextStyles.titleHeadline!.copyWith(
+            color: ColorStyles.white,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
         errorStyle: TextStyles.titleHeadline!.copyWith(
           color: ColorStyles.white,
         ),
@@ -230,6 +250,7 @@ class _LoginScreenViewState extends BaseClassState
     );
   }
 
+  ///login user method
   void loginUser(BuildContext context) async {
     LoginRequest loginRequest = LoginRequest();
     loginRequest.email = _emailController.text;
