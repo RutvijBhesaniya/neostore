@@ -6,6 +6,7 @@ class AddToCartEntity {
   String? userMsg;
 
   AddToCartEntity(
+
       {this.status, this.data, this.totalCarts, this.message, this.userMsg});
 
   AddToCartEntity.fromJson(dynamic json) {
