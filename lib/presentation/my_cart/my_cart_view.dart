@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/response/delete_cart_response.dart';
-import 'package:neostore/data/api/response/list_cart_response.dart';
+import 'package:neostore/data/api/entity/delete_cart_entity.dart';
+import 'package:neostore/data/api/entity/list_cart_entity.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
@@ -30,8 +30,11 @@ class MyCartViewState extends BaseClassState {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _listCartProvider =
-        CartProvider(Provider.of(context), Provider.of(context));
+    _listCartProvider = CartProvider(
+      Provider.of(context),
+      Provider.of(context),
+      Provider.of(context),
+    );
   }
 
   @override
@@ -49,9 +52,9 @@ class MyCartViewState extends BaseClassState {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : _listCartProvider?.listCartResponse?.data != null
+              : _listCartProvider?.listCartEntity?.dataEntity != null
                   ? _buildListItem(
-                      _listCartProvider?.listCartResponse,
+                      _listCartProvider?.listCartEntity,
                     )
                   : Center(
                       child: NeoStoreTitle(
@@ -64,7 +67,7 @@ class MyCartViewState extends BaseClassState {
   }
 
   Widget _buildListItem(
-    ListCartResponse? listCartResponse,
+    ListCartEntity? listCartResponse,
   ) {
     return SingleChildScrollView(
       child: Container(
@@ -85,14 +88,14 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///list view builder
-  Widget _itemListViewBuilder(ListCartResponse listCartResponse) {
+  Widget _itemListViewBuilder(ListCartEntity listCartResponse) {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       physics: ScrollPhysics(),
-      itemCount: listCartResponse.data!.length,
+      itemCount: listCartResponse.dataEntity!.length,
       itemBuilder: (context, index) {
-        return _buildListItemDetail(listCartResponse.data![index], index);
+        return _buildListItemDetail(listCartResponse.dataEntity![index], index);
       },
     );
   }
@@ -146,7 +149,7 @@ class MyCartViewState extends BaseClassState {
   ///total rupees widget
   Widget _totalRupees() {
     return NeoStoreTitle(
-      text: _listCartProvider?.listCartResponse?.total.toString(),
+      text: _listCartProvider?.listCartEntity?.total.toString(),
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline?.copyWith(
           color: ColorStyles.black,
@@ -180,7 +183,7 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///list view builder detail
-  Widget _buildListItemDetail(Data data, int index) {
+  Widget _buildListItemDetail(DataEntity data, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -203,8 +206,8 @@ class MyCartViewState extends BaseClassState {
                   onTap: () async {
                     var deleteResponse = await _listCartProvider
                         ?.getDeleteCart(data.productId!.toInt());
-                    DeleteCartResponse _deleteCartResponse =
-                        DeleteCartResponse.fromJson(jsonDecode(deleteResponse));
+                    DeleteCartEntity _deleteCartResponse =
+                        DeleteCartEntity.fromJson(jsonDecode(deleteResponse));
                     if (_deleteCartResponse.status == 200) {
                       _listCartProvider?.getListCart();
                       Navigator.push(
@@ -225,7 +228,7 @@ class MyCartViewState extends BaseClassState {
             child: Row(
               children: [
                 ///image widget
-                _image(data.product?.productImages),
+                _image(data.productEntity?.productImages),
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Container(
@@ -235,10 +238,10 @@ class MyCartViewState extends BaseClassState {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ///product name widget
-                        _productName(data.product?.name),
+                        _productName(data.productEntity?.name),
 
                         ///product category widget
-                        _productCategoryType(data.product?.productCategory),
+                        _productCategoryType(data.productEntity?.productCategory),
 
                         ///alert pop boxcart
                         DropdownButton<String>(
@@ -268,7 +271,7 @@ class MyCartViewState extends BaseClassState {
                   child: Icon(Icons.money_off),
                 ),
                 NeoStoreTitle(
-                  text: data.product?.subTotal,
+                  text: data.productEntity?.subTotal,
                   style: GoogleFonts.workSans(
                     textStyle: TextStyles.titleHeadline?.copyWith(
                         color: ColorStyles.liver_grey,
@@ -372,7 +375,6 @@ class MyCartViewState extends BaseClassState {
     super.initState();
     WidgetsBinding.instance!.addPostFrameCallback(
       (_) {
-
         ///fetch cart method
         fetchMyCartData();
       },

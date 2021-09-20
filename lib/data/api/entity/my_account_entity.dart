@@ -1,45 +1,45 @@
-class MyAccountResponse {
+class MyAccountEntity {
   int? status;
-  Data? data;
+  DataEntity? dataEntity;
 
-  MyAccountResponse({
+  MyAccountEntity({
       this.status, 
-      this.data});
+      this.dataEntity});
 
-  MyAccountResponse.fromJson(dynamic json) {
+  MyAccountEntity.fromJson(dynamic json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    dataEntity = json['data'] != null ? DataEntity.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     return map;
   }
 
 }
 
-class Data {
-  UserData? userData;
-  List<ProductCategories>? productCategories;
+class DataEntity {
+  UserDataEntity? userDataEntity;
+  List<ProductCategoriesEntity>? productCategoriesEntity;
   int? totalCarts;
   int? totalOrders;
 
-  Data({
-      this.userData, 
-      this.productCategories, 
+  DataEntity({
+      this.userDataEntity,
+      this.productCategoriesEntity,
       this.totalCarts, 
       this.totalOrders});
 
-  Data.fromJson(dynamic json) {
-    userData = json['user_data'] != null ? UserData.fromJson(json['user_data']) : null;
+  DataEntity.fromJson(dynamic json) {
+    userDataEntity = json['user_data'] != null ? UserDataEntity.fromJson(json['user_data']) : null;
     if (json['product_categories'] != null) {
-      productCategories = [];
+      productCategoriesEntity = [];
       json['product_categories'].forEach((v) {
-        productCategories?.add(ProductCategories.fromJson(v));
+        productCategoriesEntity?.add(ProductCategoriesEntity.fromJson(v));
       });
     }
     totalCarts = json['total_carts'];
@@ -48,11 +48,11 @@ class Data {
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
-    if (userData != null) {
-      map['user_data'] = userData?.toJson();
+    if (userDataEntity != null) {
+      map['user_data'] = userDataEntity?.toJson();
     }
-    if (productCategories != null) {
-      map['product_categories'] = productCategories?.map((v) => v.toJson()).toList();
+    if (productCategoriesEntity != null) {
+      map['product_categories'] = productCategoriesEntity?.map((v) => v.toJson()).toList();
     }
     map['total_carts'] = totalCarts;
     map['total_orders'] = totalOrders;
@@ -61,21 +61,21 @@ class Data {
 
 }
 
-class ProductCategories {
+class ProductCategoriesEntity {
   int? id;
   String? name;
   String? iconImage;
   String? created;
   String? modified;
 
-  ProductCategories({
+  ProductCategoriesEntity({
       this.id, 
       this.name, 
       this.iconImage, 
       this.created, 
       this.modified});
 
-  ProductCategories.fromJson(dynamic json) {
+  ProductCategoriesEntity.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     iconImage = json['icon_image'];
@@ -95,7 +95,7 @@ class ProductCategories {
 
 }
 
-class UserData {
+class UserDataEntity {
   int? id;
   int? roleId;
   String? firstName;
@@ -112,7 +112,7 @@ class UserData {
   String? modified;
   String? accessToken;
 
-  UserData({
+  UserDataEntity({
       this.id, 
       this.roleId, 
       this.firstName, 
@@ -129,7 +129,7 @@ class UserData {
       this.modified, 
       this.accessToken});
 
-  UserData.fromJson(dynamic json) {
+  UserDataEntity.fromJson(dynamic json) {
     id = json['id'];
     roleId = json['role_id'];
     firstName = json['first_name'];

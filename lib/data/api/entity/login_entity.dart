@@ -1,18 +1,18 @@
-class EditProfileResponse {
+class LoginEntity {
   int? status;
-  Data? data;
+  DataEntity? dataEntity;
   String? message;
   String? userMsg;
 
-  EditProfileResponse({
+  LoginEntity({
       this.status, 
-      this.data, 
+      this.dataEntity,
       this.message, 
       this.userMsg});
 
-  EditProfileResponse.fromJson(dynamic json) {
+  LoginEntity.fromJson(dynamic json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    dataEntity = json['data'] != null ? DataEntity.fromJson(json['data']) : null;
     message = json['message'];
     userMsg = json['user_msg'];
   }
@@ -20,8 +20,8 @@ class EditProfileResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     map['message'] = message;
     map['user_msg'] = userMsg;
@@ -30,7 +30,7 @@ class EditProfileResponse {
 
 }
 
-class Data {
+class DataEntity {
   int? id;
   int? roleId;
   String? firstName;
@@ -41,13 +41,13 @@ class Data {
   dynamic countryId;
   String? gender;
   String? phoneNo;
-  String? dob;
+  dynamic dob;
   bool? isActive;
   String? created;
   String? modified;
   String? accessToken;
 
-  Data({
+  DataEntity({
       this.id, 
       this.roleId, 
       this.firstName, 
@@ -64,7 +64,7 @@ class Data {
       this.modified, 
       this.accessToken});
 
-  Data.fromJson(dynamic json) {
+  DataEntity.fromJson(dynamic json) {
     id = json['id'];
     roleId = json['role_id'];
     firstName = json['first_name'];

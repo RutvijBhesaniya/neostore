@@ -1,47 +1,47 @@
-class OrderDetailResponse {
+class OrderDetailEntity {
   int? status;
-  Data? data;
+  DataEntity? dataEntity;
 
-  OrderDetailResponse({
+  OrderDetailEntity({
       this.status, 
-      this.data});
+      this.dataEntity});
 
-  OrderDetailResponse.fromJson(dynamic json) {
+  OrderDetailEntity.fromJson(dynamic json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    dataEntity = json['data'] != null ? DataEntity.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     return map;
   }
 
 }
 
-class Data {
+class DataEntity {
   int? id;
   int? cost;
   String? address;
-  List<OrderDetails>? orderDetails;
+  List<OrderDetailsEntity>? orderDetailsEntity;
 
-  Data({
+  DataEntity({
       this.id, 
       this.cost, 
       this.address, 
-      this.orderDetails});
+      this.orderDetailsEntity});
 
-  Data.fromJson(dynamic json) {
+  DataEntity.fromJson(dynamic json) {
     id = json['id'];
     cost = json['cost'];
     address = json['address'];
     if (json['order_details'] != null) {
-      orderDetails = [];
+      orderDetailsEntity = [];
       json['order_details'].forEach((v) {
-        orderDetails?.add(OrderDetails.fromJson(v));
+        orderDetailsEntity?.add(OrderDetailsEntity.fromJson(v));
       });
     }
   }
@@ -51,15 +51,15 @@ class Data {
     map['id'] = id;
     map['cost'] = cost;
     map['address'] = address;
-    if (orderDetails != null) {
-      map['order_details'] = orderDetails?.map((v) => v.toJson()).toList();
+    if (orderDetailsEntity != null) {
+      map['order_details'] = orderDetailsEntity?.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-class OrderDetails {
+class OrderDetailsEntity {
   int? id;
   int? orderId;
   int? productId;
@@ -69,7 +69,7 @@ class OrderDetails {
   String? prodCatName;
   String? prodImage;
 
-  OrderDetails({
+  OrderDetailsEntity({
       this.id, 
       this.orderId, 
       this.productId, 
@@ -79,7 +79,7 @@ class OrderDetails {
       this.prodCatName, 
       this.prodImage});
 
-  OrderDetails.fromJson(dynamic json) {
+  OrderDetailsEntity.fromJson(dynamic json) {
     id = json['id'];
     orderId = json['order_id'];
     productId = json['product_id'];

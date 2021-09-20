@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/response/add_to_cart_entity.dart';
-import 'package:neostore/data/api/response/rating_response.dart';
-import 'package:neostore/data/api/response/table_detail_response.dart';
+import 'package:neostore/data/api/entity/add_to_cart_entity.dart';
+import 'package:neostore/data/api/entity/rating_entity.dart';
+import 'package:neostore/data/api/entity/table_detail_entity.dart';
 import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/rating_api/rating_api_impl.dart';
 import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
@@ -13,42 +13,36 @@ import 'package:neostore/domain/use_case/table_detail_use_case.dart';
 
 class TableDetailProvider extends ChangeNotifier {
   TableDetailUseCase _tableDetailUseCase;
+  AddToCartUseCase _addToCartUseCase;
 
-  TableDetailProvider(this._tableDetailUseCase);
-
-
+  TableDetailProvider(this._tableDetailUseCase, this._addToCartUseCase);
 
   RatingUseCase _ratingUseCase = RatingUseCase(
     RatingRepositoryImpl(
       RatingApiImpl(),
     ),
   );
-  AddToCartUseCase _addToCartUseCase = AddToCartUseCase(
-    AddToCartRepositoryImpl(
-      AddToCartApiImpl(),
-    ),
-  );
 
-  TableDetailResponse? _tableDetailResponse;
-  RatingResponse? _ratingResponse;
+  TableDetailEntity? _tableDetailEntity;
+  RatingEntity? _ratingEntity;
 
-  AddToCartEntity? _addToCartResponse;
+  AddToCartEntity? _addToCartEntity;
 
-  TableDetailResponse? get tableDetailResponse => _tableDetailResponse;
+  TableDetailEntity? get tableDetailEntity => _tableDetailEntity;
 
-  AddToCartEntity? get addToCartResponse => _addToCartResponse;
+  AddToCartEntity? get addToCartEntity => _addToCartEntity;
 
   bool _isLoading = true;
 
   get isLoading => _isLoading;
 
-  get ratingResponse => _ratingResponse;
+  get ratingResponse => _ratingEntity;
 
   ///get table detail method
   void getTableDetail(int? productId) async {
     _isLoading = true;
     var response = await _tableDetailUseCase.callApi(productId);
-    _tableDetailResponse = TableDetailResponse.fromJson(jsonDecode(response));
+    _tableDetailEntity = TableDetailEntity.fromJson(jsonDecode(response));
     _isLoading = false;
     notifyListeners();
   }
@@ -57,7 +51,7 @@ class TableDetailProvider extends ChangeNotifier {
   void getRating(int productId) async {
     _isLoading = true;
     var response = await _ratingUseCase.callApi(productId);
-    _ratingResponse = RatingResponse.fromJson(jsonDecode(response));
+    _ratingEntity = RatingEntity.fromJson(jsonDecode(response));
     _isLoading = false;
     notifyListeners();
   }
@@ -66,7 +60,7 @@ class TableDetailProvider extends ChangeNotifier {
   Future<dynamic> getAddToCart(int productId, int quantity) async {
     _isLoading = true;
     var response = await _addToCartUseCase.callApi(productId, quantity);
-    _addToCartResponse = AddToCartEntity.fromJson(jsonDecode(response));
+    _addToCartEntity = AddToCartEntity.fromJson(jsonDecode(response));
     _isLoading = false;
     return response;
   }

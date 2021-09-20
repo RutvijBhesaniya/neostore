@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/response/order_address_response.dart';
+import 'package:neostore/data/api/entity/order_address_entity.dart';
 import 'package:neostore/domain/use_case/order_address_use_case.dart';
 
 class OrderAddressListProvider extends ChangeNotifier {
@@ -13,9 +13,9 @@ class OrderAddressListProvider extends ChangeNotifier {
 
   String? get currentAddress => address;
 
-  OrderAddressResponse? _orderAddressResponse;
+  OrderAddressEntity? _orderAddressEntity;
 
-  OrderAddressResponse? get orderAddressResponse => _orderAddressResponse;
+  OrderAddressEntity? get orderAddressEntity => _orderAddressEntity;
 
   bool _isLoading = true;
 

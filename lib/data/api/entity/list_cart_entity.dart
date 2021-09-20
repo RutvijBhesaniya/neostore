@@ -1,21 +1,21 @@
-class ListCartResponse {
+class ListCartEntity {
   int? status;
-  List<Data>? data;
+  List<DataEntity>? dataEntity;
   int? count;
   int? total;
 
-  ListCartResponse({
+  ListCartEntity({
       this.status, 
-      this.data, 
+      this.dataEntity,
       this.count, 
       this.total});
 
-  ListCartResponse.fromJson(dynamic json) {
+  ListCartEntity.fromJson(dynamic json) {
     status = json['status'];
     if (json['data'] != null) {
-      data = [];
+      dataEntity = [];
       json['data'].forEach((v) {
-        data?.add(Data.fromJson(v));
+        dataEntity?.add(DataEntity.fromJson(v));
       });
     }
     count = json['count'];
@@ -25,8 +25,8 @@ class ListCartResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.map((v) => v.toJson()).toList();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.map((v) => v.toJson()).toList();
     }
     map['count'] = count;
     map['total'] = total;
@@ -35,23 +35,23 @@ class ListCartResponse {
 
 }
 
-class Data {
+class DataEntity {
   int? id;
   int? productId;
   int? quantity;
-  Product? product;
+  ProductEntity? productEntity;
 
-  Data({
+  DataEntity({
       this.id, 
       this.productId, 
       this.quantity, 
-      this.product});
+      this.productEntity});
 
-  Data.fromJson(dynamic json) {
+  DataEntity.fromJson(dynamic json) {
     id = json['id'];
     productId = json['product_id'];
     quantity = json['quantity'];
-    product = json['product'] != null ? Product.fromJson(json['product']) : null;
+    productEntity = json['product'] != null ? ProductEntity.fromJson(json['product']) : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -59,15 +59,15 @@ class Data {
     map['id'] = id;
     map['product_id'] = productId;
     map['quantity'] = quantity;
-    if (product != null) {
-      map['product'] = product?.toJson();
+    if (productEntity != null) {
+      map['product'] = productEntity?.toJson();
     }
     return map;
   }
 
 }
 
-class Product {
+class ProductEntity {
   int? id;
   String? name;
   int? cost;
@@ -75,7 +75,7 @@ class Product {
   String? productImages;
   int? subTotal;
 
-  Product({
+  ProductEntity({
       this.id, 
       this.name, 
       this.cost, 
@@ -83,7 +83,7 @@ class Product {
       this.productImages, 
       this.subTotal});
 
-  Product.fromJson(dynamic json) {
+  ProductEntity.fromJson(dynamic json) {
     id = json['id'];
     name = json['name'];
     cost = json['cost'];

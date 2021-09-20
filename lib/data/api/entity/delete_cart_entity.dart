@@ -1,18 +1,18 @@
-class DeleteCartResponse {
+class DeleteCartEntity {
   int? status;
   bool? data;
   int? totalCarts;
   String? message;
   String? userMsg;
 
-  DeleteCartResponse({
+  DeleteCartEntity({
       this.status, 
       this.data, 
       this.totalCarts, 
       this.message, 
       this.userMsg});
 
-  DeleteCartResponse.fromJson(dynamic json) {
+  DeleteCartEntity.fromJson(dynamic json) {
     status = json['status'];
     data = json['data'];
     totalCarts = json['total_carts'];

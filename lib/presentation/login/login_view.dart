@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/base/network_model/api_error.dart';
+import 'package:neostore/data/api/entity/login_entity.dart';
 import 'package:neostore/data/api/request/login_request.dart';
-import 'package:neostore/data/api/response/login_response.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
 import 'package:neostore/presentation/register/register_view.dart';
@@ -265,13 +265,13 @@ class _LoginScreenViewState extends BaseClassState
         ),
       );
     } else {
-      LoginResponse loginResponse = LoginResponse.fromJson(
+      LoginEntity loginResponse = LoginEntity.fromJson(
         json.decode(response),
       );
       if (loginResponse.status == 200) {
         MemoryManagement.setEmail(email: _emailController.text);
         MemoryManagement.setAccessToken(
-            accessToken: loginResponse.data!.accessToken);
+            accessToken: loginResponse.dataEntity!.accessToken);
         MemoryManagement.setIsUserLoggedIn(isuserloggedin: true);
 
         Navigator.of(context).push(

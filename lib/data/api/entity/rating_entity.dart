@@ -1,18 +1,18 @@
-class RatingResponse {
+class RatingEntity {
   int? status;
-  Datas? data;
+  DatasEntity? dataEntity;
   String? message;
   String? userMsg;
 
-  RatingResponse({
+  RatingEntity({
       this.status, 
-      this.data, 
+      this.dataEntity,
       this.message, 
       this.userMsg});
 
-  RatingResponse.fromJson(dynamic json) {
+  RatingEntity.fromJson(dynamic json) {
     status = json['status'];
-    data = json['data'] != null ? Datas.fromJson(json['data']) : null;
+    dataEntity = json['data'] != null ? DatasEntity.fromJson(json['data']) : null;
     message = json['message'];
     userMsg = json['user_msg'];
   }
@@ -20,8 +20,8 @@ class RatingResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     map['message'] = message;
     map['user_msg'] = userMsg;
@@ -30,7 +30,7 @@ class RatingResponse {
 
 }
 
-class Datas {
+class DatasEntity {
   int? id;
   int? productCategoryId;
   String? name;
@@ -42,7 +42,7 @@ class Datas {
   String? created;
   String? modified;
 
-  Datas({
+  DatasEntity({
       this.id, 
       this.productCategoryId, 
       this.name, 
@@ -54,7 +54,7 @@ class Datas {
       this.created, 
       this.modified});
 
-  Datas.fromJson(dynamic json) {
+  DatasEntity.fromJson(dynamic json) {
     id = json['id'];
     productCategoryId = json['product_category_id'];
     name = json['name'];

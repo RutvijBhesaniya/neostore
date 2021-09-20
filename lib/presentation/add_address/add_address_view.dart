@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/add_address_model.dart';
+import 'package:neostore/data/api/entity/add_address_entity.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
@@ -66,29 +66,29 @@ class AddAddressViewState extends BaseClassState {
       child: NeoStoreElevatedButton(
         onPressed: () {
           if (MemoryManagement.getAddress() != null) {
-            AddAddressModel addAddressModel = AddAddressModel.fromJson(
+            AddAddressEntity addAddressModel = AddAddressEntity.fromJson(
               jsonDecode(MemoryManagement.getAddress()!),
             );
 
-            List<AddressList> addAddressList = [];
+            List<AddressListEntity> addAddressList = [];
 
-            addAddressList.addAll(addAddressModel.addressList!);
+            addAddressList.addAll(addAddressModel.addressListEntity!);
 
-            AddressList addressList = AddressList();
+            AddressListEntity addressList = AddressListEntity();
             addressList.address = _addAddressController.text;
             addAddressList.add(addressList);
 
-            AddAddressModel addAddressModels =
-                AddAddressModel(addressList: addAddressList);
+            AddAddressEntity addAddressModels =
+                AddAddressEntity(addressListEntity: addAddressList);
             String addressValue = json.encode(addAddressModels);
             MemoryManagement.setAddress(address: addressValue);
           } else {
-            List<AddressList> addressList = <AddressList>[];
-            AddressList addressModel = AddressList();
+            List<AddressListEntity> addressList = <AddressListEntity>[];
+            AddressListEntity addressModel = AddressListEntity();
             addressModel.address = _addAddressController.text;
             addressList.add(addressModel);
-            AddAddressModel addAddressModel =
-                AddAddressModel(addressList: addressList);
+            AddAddressEntity addAddressModel =
+                AddAddressEntity(addressListEntity: addressList);
             var addressValue = json.encode(addAddressModel);
             MemoryManagement.setAddress(address: addressValue);
           }

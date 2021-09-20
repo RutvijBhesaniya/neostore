@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/response/edit_profile_response.dart';
+import 'package:neostore/data/api/entity/edit_profile_entity.dart';
 import 'package:neostore/domain/use_case/edit_profile_use_case.dart';
 
 class EditProfileProvider extends ChangeNotifier {
@@ -19,9 +19,9 @@ class EditProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  EditProfileResponse? _editProfileResponse;
+  EditProfileEntity? _editProfileEntity;
 
-  EditProfileResponse? get editProfileResponse => _editProfileResponse;
+  EditProfileEntity? get editProfileEntity => _editProfileEntity;
 
   bool _isLoading = true;
 
@@ -34,7 +34,7 @@ class EditProfileProvider extends ChangeNotifier {
     var response = await _editProfileUseCase.callApi(
         email, dob, phoneNo, profilePic, firstName, lastName);
 
-    _editProfileResponse = EditProfileResponse.fromJson(
+    _editProfileEntity = EditProfileEntity.fromJson(
       jsonDecode(response),
     );
 

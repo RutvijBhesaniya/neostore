@@ -1,35 +1,31 @@
-// To parse this JSON data, do
-//
-//     final tableCategory = tableCategoryFromJson(jsonString);
-
 import 'dart:convert';
 
-TableCategoryResponse tableCategoryFromJson(String str) => TableCategoryResponse.fromJson(json.decode(str));
+TableCategoryEntity tableCategoryFromJson(String str) => TableCategoryEntity.fromJson(json.decode(str));
 
-String tableCategoryToJson(TableCategoryResponse data) => json.encode(data.toJson());
+String tableCategoryToJson(TableCategoryEntity data) => json.encode(data.toJson());
 
-class TableCategoryResponse {
-  TableCategoryResponse({
+class TableCategoryEntity {
+  TableCategoryEntity({
     this.status,
-    this.data,
+    this.dataEntity,
   });
 
   int? status;
-  List<Datum>? data;
+  List<DatumEntity>? dataEntity;
 
-  factory TableCategoryResponse.fromJson(Map<String, dynamic> json) => TableCategoryResponse(
+  factory TableCategoryEntity.fromJson(Map<String, dynamic> json) => TableCategoryEntity(
     status: json["status"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    dataEntity: List<DatumEntity>.from(json["data"].map((x) => DatumEntity.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": List<dynamic>.from(dataEntity!.map((x) => x.toJson())),
   };
 }
 
-class Datum {
-  Datum({
+class DatumEntity {
+  DatumEntity({
     this.id,
     this.productCategoryId,
     this.name,
@@ -55,7 +51,7 @@ class Datum {
   String? modified;
   String? productImages;
 
-  factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+  factory DatumEntity.fromJson(Map<String, dynamic> json) => DatumEntity(
     id: json["id"],
     productCategoryId: json["product_category_id"],
     name: json["name"],

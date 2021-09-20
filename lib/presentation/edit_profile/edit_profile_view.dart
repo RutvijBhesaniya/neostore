@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/response/edit_profile_response.dart';
+import 'package:neostore/data/api/entity/edit_profile_entity.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
 import 'package:neostore/presentation/profile_details/profile_details_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -415,21 +415,21 @@ class EditProfileViewState extends BaseClassState
         _firstController.text,
         _lastController.text);
 
-    EditProfileResponse _editProfileResponse = EditProfileResponse.fromJson(
+    EditProfileEntity _editProfileResponse = EditProfileEntity.fromJson(
       json.decode(response),
     );
 
     if (_editProfileResponse.status == 200) {
       MemoryManagement.setFirstName(
-          firstName: _editProfileResponse.data?.firstName);
+          firstName: _editProfileResponse.dataEntity?.firstName);
       MemoryManagement.setLastName(
-          lastName: _editProfileResponse.data?.lastName);
-      MemoryManagement.setEmail(email: _editProfileResponse.data?.email);
+          lastName: _editProfileResponse.dataEntity?.lastName);
+      MemoryManagement.setEmail(email: _editProfileResponse.dataEntity?.email);
       MemoryManagement.setPhoneNumber(
-          phoneNumber: _editProfileResponse.data?.phoneNo);
-      MemoryManagement.setDob(dob: _editProfileResponse.data?.dob);
+          phoneNumber: _editProfileResponse.dataEntity?.phoneNo);
+      MemoryManagement.setDob(dob: _editProfileResponse.dataEntity?.dob);
       MemoryManagement.setProfilePic(
-          profilepic: _editProfileResponse.data?.profilePic);
+          profilepic: _editProfileResponse.dataEntity?.profilePic);
 
       Navigator.of(context).push(
         MaterialPageRoute(

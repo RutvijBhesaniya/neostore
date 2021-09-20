@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/response/order_detail_response.dart';
+import 'package:neostore/data/api/entity/order_detail_entity.dart';
 import 'package:neostore/presentation/order_detail/order_detail_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_title.dart';
@@ -80,7 +80,7 @@ class _OrderDetailViewState extends BaseClassState {
   ///total cost widget
   Widget _totalCost() {
     return NeoStoreTitle(
-      text: _orderDetailProvider?.orderDetailResponse?.data?.cost.toString(),
+      text: _orderDetailProvider?.orderDetailEntity?.dataEntity?.cost.toString(),
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline!.copyWith(
           fontWeight: FontWeight.w400,
@@ -109,17 +109,17 @@ class _OrderDetailViewState extends BaseClassState {
       scrollDirection: Axis.vertical,
       physics: ScrollPhysics(),
       itemCount:
-          _orderDetailProvider?.orderDetailResponse?.data?.orderDetails?.length,
+          _orderDetailProvider?.orderDetailEntity?.dataEntity?.orderDetailsEntity?.length,
       itemBuilder: (context, index) {
         return _buildListItemDetail(
-            _orderDetailProvider?.orderDetailResponse, index);
+            _orderDetailProvider?.orderDetailEntity, index);
       },
     );
   }
 
   //list item detail
   Widget _buildListItemDetail(
-      OrderDetailResponse? orderDetailResponse, int index) {
+      OrderDetailEntity? orderDetailResponse, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -143,7 +143,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///details widget
-  Widget _details(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _details(OrderDetailEntity orderDetailResponse, int index) {
     return Padding(
       padding: const EdgeInsets.only(left: 5),
       child: Container(
@@ -166,7 +166,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///quantity and cost widget
-  Widget _quantityAndCost(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _quantityAndCost(OrderDetailEntity orderDetailResponse, int index) {
     return Flexible(
       child: Align(
         alignment: Alignment.bottomCenter,
@@ -188,9 +188,9 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///cost widget
-  Widget _cost(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _cost(OrderDetailEntity orderDetailResponse, int index) {
     return NeoStoreTitle(
-      text: 'RS ${orderDetailResponse.data!.orderDetails![index].total}',
+      text: 'RS ${orderDetailResponse.dataEntity!.orderDetailsEntity![index].total}',
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline!.copyWith(
           fontWeight: FontWeight.w400,
@@ -201,9 +201,9 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///quantity widget
-  Widget _quantity(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _quantity(OrderDetailEntity orderDetailResponse, int index) {
     return NeoStoreTitle(
-      text: 'OTY : ${orderDetailResponse.data!.orderDetails![index].quantity} ',
+      text: 'OTY : ${orderDetailResponse.dataEntity!.orderDetailsEntity![index].quantity} ',
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline!.copyWith(
           fontWeight: FontWeight.w400,
@@ -215,9 +215,9 @@ class _OrderDetailViewState extends BaseClassState {
 
   ///product category widget
   Widget _productCategoryName(
-      OrderDetailResponse orderDetailResponse, int index) {
+      OrderDetailEntity orderDetailResponse, int index) {
     return NeoStoreTitle(
-        text: orderDetailResponse.data!.orderDetails![index].prodCatName,
+        text: orderDetailResponse.dataEntity!.orderDetailsEntity![index].prodCatName,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!.copyWith(
             fontWeight: FontWeight.w400,
@@ -227,11 +227,11 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///product title widget
-  Widget _title(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _title(OrderDetailEntity orderDetailResponse, int index) {
     return NeoStoreTitle(
         maxLine: 1,
         overflow: TextOverflow.ellipsis,
-        text: orderDetailResponse.data!.orderDetails![index].prodName,
+        text: orderDetailResponse.dataEntity!.orderDetailsEntity![index].prodName,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!.copyWith(
             fontWeight: FontWeight.w400,
@@ -241,7 +241,7 @@ class _OrderDetailViewState extends BaseClassState {
   }
 
   ///image widget
-  Widget _image(OrderDetailResponse orderDetailResponse, int index) {
+  Widget _image(OrderDetailEntity orderDetailResponse, int index) {
     return Container(
       width: MediaQuery.of(context).size.width / 3.5,
       height: MediaQuery.of(context).size.height / 7,
@@ -249,7 +249,7 @@ class _OrderDetailViewState extends BaseClassState {
         image: DecorationImage(
           fit: BoxFit.fill,
           image: NetworkImage(orderDetailResponse
-              .data!.orderDetails![index].prodImage
+              .dataEntity!.orderDetailsEntity![index].prodImage
               .toString()),
         ),
       ),
@@ -277,7 +277,7 @@ class _OrderDetailViewState extends BaseClassState {
         )
       ],
       text:
-          'Order Id: ${_orderDetailProvider?.orderDetailResponse?.data?.id.toString() ?? ' '}',
+          'Order Id: ${_orderDetailProvider?.orderDetailEntity?.dataEntity?.id.toString() ?? ' '}',
       style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.white,

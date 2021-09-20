@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
-import 'package:neostore/data/api/response/my_account.dart';
+import 'package:neostore/data/api/entity/my_account_entity.dart';
 import 'package:neostore/domain/use_case/my_account_use_case.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
@@ -9,9 +9,9 @@ class ProfileDetailsProvider extends ChangeNotifier {
 
   ProfileDetailsProvider(this._myAccountUseCase);
 
-  MyAccountResponse? _myAccountResponse;
+  MyAccountEntity? _myAccountEntity;
 
-  MyAccountResponse? get myAccountResponse => _myAccountResponse;
+  MyAccountEntity? get myAccountEntity => _myAccountEntity;
 
   bool _isLoading = true;
 
@@ -22,14 +22,14 @@ class ProfileDetailsProvider extends ChangeNotifier {
   void getMyAccount() async {
     _isLoading = true;
     var response = await _myAccountUseCase.callApi();
-    _myAccountResponse = MyAccountResponse.fromJson(jsonDecode(response));
+    _myAccountEntity = MyAccountEntity.fromJson(jsonDecode(response));
     MemoryManagement.setFirstName(
-        firstName: _myAccountResponse!.data!.userData!.firstName);
+        firstName: _myAccountEntity!.dataEntity!.userDataEntity!.firstName);
     MemoryManagement.setLastName(
-        lastName: _myAccountResponse!.data!.userData!.lastName);
-    MemoryManagement.setEmail(email: _myAccountResponse!.data!.userData!.email);
+        lastName: _myAccountEntity!.dataEntity!.userDataEntity!.lastName);
+    MemoryManagement.setEmail(email: _myAccountEntity!.dataEntity!.userDataEntity!.email);
     MemoryManagement.setPhoneNumber(
-        phoneNumber: _myAccountResponse!.data!.userData!.phoneNo);
+        phoneNumber: _myAccountEntity!.dataEntity!.userDataEntity!.phoneNo);
 
     _isLoading = false;
     notifyListeners();

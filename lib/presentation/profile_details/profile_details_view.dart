@@ -62,16 +62,16 @@ class ProfileDetailsViewState extends BaseClassState {
                                   bottom: 20,
                                 ),
                                 child: getImage(_profileDetailsProvider
-                                    ?.myAccountResponse
-                                    ?.data
-                                    ?.userData
+                                    ?.myAccountEntity
+                                    ?.dataEntity
+                                    ?.userDataEntity
                                     ?.profilePic),
                               ),
                             ),
 
                             ///widget first name
                             _firstName(
-                                _profileDetailsProvider?.myAccountResponse),
+                                _profileDetailsProvider?.myAccountEntity),
 
                             ///widget last name
                             _lastName(),
@@ -192,7 +192,7 @@ class ProfileDetailsViewState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.phone_android,
         text:
-            _profileDetailsProvider?.myAccountResponse?.data?.userData?.phoneNo,
+            _profileDetailsProvider?.myAccountEntity?.dataEntity?.userDataEntity?.phoneNo,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -209,7 +209,7 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.attach_email,
-        text: _profileDetailsProvider?.myAccountResponse?.data?.userData?.email,
+        text: _profileDetailsProvider?.myAccountEntity?.dataEntity?.userDataEntity?.email,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -227,7 +227,7 @@ class ProfileDetailsViewState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
         text: _profileDetailsProvider
-            ?.myAccountResponse?.data?.userData?.lastName,
+            ?.myAccountEntity?.dataEntity?.userDataEntity?.lastName,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -245,7 +245,7 @@ class ProfileDetailsViewState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
         text: _profileDetailsProvider
-            ?.myAccountResponse?.data?.userData?.firstName,
+            ?.myAccountEntity?.dataEntity?.userDataEntity?.firstName,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,

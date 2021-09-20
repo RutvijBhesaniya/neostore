@@ -1,0 +1,11 @@
+class EditCartItem {
+  int? status;
+  bool? data;
+  int? totalCarts;
+  String? message;
+  String? userMsg;
+
+  EditCartItem(
+      {this.status, this.data, this.totalCarts, this.message, this.userMsg});
+
+}

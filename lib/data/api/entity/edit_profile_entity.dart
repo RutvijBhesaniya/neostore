@@ -1,21 +1,15 @@
-class RegisterResponse {
+class EditProfileEntity {
   int? status;
-  Data? data;
+  DataEntity? dataEntity;
   String? message;
   String? userMsg;
 
-  RegisterResponse({
-      this.status, 
-      this.data, 
-      this.message, 
-      this.userMsg});
+  EditProfileEntity({this.status, this.dataEntity, this.message, this.userMsg});
 
-  RegisterResponse.fromJson(dynamic json) {
-    status = json
-
-
-    ['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  EditProfileEntity.fromJson(dynamic json) {
+    status = json['status'];
+    dataEntity =
+        json['data'] != null ? DataEntity.fromJson(json['data']) : null;
     message = json['message'];
     userMsg = json['user_msg'];
   }
@@ -23,17 +17,16 @@ class RegisterResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     map['message'] = message;
     map['user_msg'] = userMsg;
     return map;
   }
-
 }
 
-class Data {
+class DataEntity {
   int? id;
   int? roleId;
   String? firstName;
@@ -44,30 +37,30 @@ class Data {
   dynamic countryId;
   String? gender;
   String? phoneNo;
-  dynamic dob;
+  String? dob;
   bool? isActive;
   String? created;
   String? modified;
   String? accessToken;
 
-  Data({
-      this.id, 
-      this.roleId, 
-      this.firstName, 
-      this.lastName, 
-      this.email, 
-      this.username, 
-      this.profilePic, 
-      this.countryId, 
-      this.gender, 
-      this.phoneNo, 
-      this.dob, 
-      this.isActive, 
-      this.created, 
-      this.modified, 
+  DataEntity(
+      {this.id,
+      this.roleId,
+      this.firstName,
+      this.lastName,
+      this.email,
+      this.username,
+      this.profilePic,
+      this.countryId,
+      this.gender,
+      this.phoneNo,
+      this.dob,
+      this.isActive,
+      this.created,
+      this.modified,
       this.accessToken});
 
-  Data.fromJson(dynamic json) {
+  DataEntity.fromJson(dynamic json) {
     id = json['id'];
     roleId = json['role_id'];
     firstName = json['first_name'];
@@ -104,5 +97,4 @@ class Data {
     map['access_token'] = accessToken;
     return map;
   }
-
 }

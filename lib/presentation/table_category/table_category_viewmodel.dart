@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/response/table_category_response.dart';
+import 'package:neostore/data/api/entity/table_category_entity.dart';
 import 'package:neostore/domain/use_case/table_category_use_case.dart';
 
 class TableCategoryProvider extends ChangeNotifier {
@@ -8,9 +8,9 @@ class TableCategoryProvider extends ChangeNotifier {
 
   TableCategoryProvider(this._tableCategoryUseCase);
 
-  late TableCategoryResponse _tableCategoryResponse;
+  late TableCategoryEntity _tableCategoryEntity;
 
-  get tableCategoryResponse => _tableCategoryResponse;
+  get tableCategoryEntity => _tableCategoryEntity;
 
   bool _isLoading = true;
 
@@ -19,8 +19,8 @@ class TableCategoryProvider extends ChangeNotifier {
   void getTableCategory(int productCategoryId) async {
     _isLoading = true;
     var response = await _tableCategoryUseCase.callApi(productCategoryId);
-    _tableCategoryResponse =
-        TableCategoryResponse.fromJson(jsonDecode(response));
+    _tableCategoryEntity =
+        TableCategoryEntity.fromJson(jsonDecode(response));
     _isLoading = false;
     notifyListeners();
   }

@@ -144,10 +144,10 @@ class APIHandler {
 
       print("url: $url");
       print("api handler requestbody: $requestBody");
-      print("api handler responsebody: ${json.encode(response.data)}");
+      print("api handler responsebody: ${json.encode(response.dataEntity)}");
       print("api handler response code: ${response?.statusCode}");
 
-      completer.complete(response.data);
+      completer.complete(response.dataEntity);
     } on DioError catch (e) {
       print("dio cath ${e.message}");
       print("error ${e.response?.statusCode}");

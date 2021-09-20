@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:neostore/data/api/response/reset_password_response.dart';
+import 'package:neostore/data/api/entity/reset_password_entity.dart';
 import 'package:neostore/domain/use_case/reset_password_use_case.dart';
 
 class ResetPasswordProvider extends ChangeNotifier {
@@ -7,9 +7,9 @@ class ResetPasswordProvider extends ChangeNotifier {
 
   ResetPasswordProvider(this._resetPasswordUseCase);
 
-  ResetPasswordResponse? _resetPasswordResponse;
+  ResetPasswordEntity? _resetPasswordEntity;
 
-  ResetPasswordResponse? get resetPasswordResponse => _resetPasswordResponse;
+  ResetPasswordEntity? get resetPasswordEntity => _resetPasswordEntity;
 
 
 

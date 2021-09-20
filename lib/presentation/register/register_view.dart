@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/base/network_model/api_error.dart';
+import 'package:neostore/data/api/entity/register_entity.dart';
 import 'package:neostore/data/api/request/register_request.dart';
-import 'package:neostore/data/api/response/register_response.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -532,8 +532,8 @@ class _RegisterViewState extends BaseClassState
         ),
       );
     } else {
-      RegisterResponse registerResponse =
-          RegisterResponse.fromJson(json.decode(response));
+      RegisterEntity registerResponse =
+          RegisterEntity.fromJson(json.decode(response));
 
       if (registerResponse.status == 200) {
         Navigator.push(

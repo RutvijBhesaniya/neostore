@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:neostore/data/api/entity/register_entity.dart';
 import 'package:neostore/data/api/request/register_request.dart';
-import 'package:neostore/data/api/response/register_response.dart';
 import 'package:neostore/domain/use_case/register_use_case.dart';
 
 class RegisterProvider extends ChangeNotifier {
@@ -8,9 +8,9 @@ class RegisterProvider extends ChangeNotifier {
 
   RegisterProvider(this._registerUseCase);
 
-  late RegisterResponse _registerResponse;
+  late RegisterEntity _registerEntity;
 
-  get registerResponse => _registerResponse;
+  get registerEntity => _registerEntity;
 
   bool _isLoading = true;
 

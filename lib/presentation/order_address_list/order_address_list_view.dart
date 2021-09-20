@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/add_address_model.dart';
-import 'package:neostore/data/api/response/order_address_response.dart';
+import 'package:neostore/data/api/entity/add_address_entity.dart';
+import 'package:neostore/data/api/entity/order_address_entity.dart';
 import 'package:neostore/presentation/add_address/add_address_view.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_viewmodel.dart';
@@ -23,7 +23,7 @@ class OrderAddressListView extends BaseClass {
 }
 
 class OrderAddressListViewState extends BaseClassState {
-  List<AddressList> addAddressList = [];
+  List<AddressListEntity> addAddressList = [];
   OrderAddressListProvider? _orderAddressListProvider;
 
   @override
@@ -81,8 +81,8 @@ class OrderAddressListViewState extends BaseClassState {
                               var response = await _orderAddressListProvider
                                   ?.getOrderAddress(_orderAddressListProvider!
                                       .currentAddress!);
-                              OrderAddressResponse _orderAddressResponse =
-                                  OrderAddressResponse.fromJson(
+                              OrderAddressEntity _orderAddressResponse =
+                                  OrderAddressEntity.fromJson(
                                       jsonDecode(response));
                               if (_orderAddressResponse.status == 200) {
                                 Navigator.push(
@@ -168,7 +168,7 @@ class OrderAddressListViewState extends BaseClassState {
   }
 
   ///radio button widget
-  Widget _radioButton(AddressList addressList, int index) {
+  Widget _radioButton(AddressListEntity addressList, int index) {
     return RadioListTile<int>(
       activeColor: ColorStyles.dark_grey,
       value: index,
@@ -196,9 +196,9 @@ class OrderAddressListViewState extends BaseClassState {
                 child: GestureDetector(
                   onTap: () async {
                     String? response = MemoryManagement.getAddress();
-                    AddAddressModel result =
-                        AddAddressModel.fromJson(json.decode(response!));
-                    result.addressList!.removeAt(index);
+                    AddAddressEntity result =
+                        AddAddressEntity.fromJson(json.decode(response!));
+                    result.addressListEntity!.removeAt(index);
                     String address = json.encode(result);
                     MemoryManagement.setAddress(address: address);
                     Navigator.push(
@@ -265,11 +265,11 @@ class OrderAddressListViewState extends BaseClassState {
   ///get add address method
   void getAddAddress() {
     if (MemoryManagement.getAddress() != null) {
-      AddAddressModel addAddressModel = AddAddressModel.fromJson(
+      AddAddressEntity addAddressModel = AddAddressEntity.fromJson(
         jsonDecode(MemoryManagement.getAddress()!),
       );
 
-      addAddressList.addAll(addAddressModel.addressList!);
+      addAddressList.addAll(addAddressModel.addressListEntity!);
     }
   }
 }

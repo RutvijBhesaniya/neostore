@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/response/reset_password_response.dart';
+import 'package:neostore/data/api/entity/reset_password_entity.dart';
 import 'package:neostore/presentation/login/login_view.dart';
 import 'package:neostore/presentation/reset_password/reset_password_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -149,8 +149,8 @@ class _ResetPasswordViewState extends BaseClassState
         _newPasswordController.text,
         _confirmPasswordController.text);
 
-    ResetPasswordResponse _resetPasswordResponse =
-        ResetPasswordResponse.fromJson(jsonDecode(response));
+    ResetPasswordEntity _resetPasswordResponse =
+        ResetPasswordEntity.fromJson(jsonDecode(response));
 
     if (_resetPasswordResponse.status == 200) {
       Navigator.push(

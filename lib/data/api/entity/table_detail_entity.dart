@@ -1,28 +1,28 @@
-class TableDetailResponse {
+class TableDetailEntity {
   int? status;
-  Data? data;
+  DataEntity? dataEntity;
 
-  TableDetailResponse({
+  TableDetailEntity({
       this.status, 
-      this.data});
+      this.dataEntity});
 
-  TableDetailResponse.fromJson(dynamic json) {
+  TableDetailEntity.fromJson(dynamic json) {
     status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+    dataEntity = json['data'] != null ? DataEntity.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     return map;
   }
 
 }
 
-class Data {
+class DataEntity {
   int? id;
   int? productCategoryId;
   String? name;
@@ -33,9 +33,9 @@ class Data {
   int? viewCount;
   String? created;
   String? modified;
-  List<ProductImages>? productImages;
+  List<ProductImagesEntity>? productImagesEntity;
 
-  Data({
+  DataEntity({
       this.id, 
       this.productCategoryId, 
       this.name, 
@@ -46,9 +46,9 @@ class Data {
       this.viewCount, 
       this.created, 
       this.modified, 
-      this.productImages});
+      this.productImagesEntity});
 
-  Data.fromJson(dynamic json) {
+  DataEntity.fromJson(dynamic json) {
     id = json['id'];
     productCategoryId = json['product_category_id'];
     name = json['name'];
@@ -60,9 +60,9 @@ class Data {
     created = json['created'];
     modified = json['modified'];
     if (json['product_images'] != null) {
-      productImages = [];
+      productImagesEntity = [];
       json['product_images'].forEach((v) {
-        productImages?.add(ProductImages.fromJson(v));
+        productImagesEntity?.add(ProductImagesEntity.fromJson(v));
       });
     }
   }
@@ -79,29 +79,29 @@ class Data {
     map['view_count'] = viewCount;
     map['created'] = created;
     map['modified'] = modified;
-    if (productImages != null) {
-      map['product_images'] = productImages?.map((v) => v.toJson()).toList();
+    if (productImagesEntity != null) {
+      map['product_images'] = productImagesEntity?.map((v) => v.toJson()).toList();
     }
     return map;
   }
 
 }
 
-class ProductImages {
+class ProductImagesEntity {
   int? id;
   int? productId;
   String? image;
   String? created;
   String? modified;
 
-  ProductImages({
+  ProductImagesEntity({
       this.id, 
       this.productId, 
       this.image, 
       this.created, 
       this.modified});
 
-  ProductImages.fromJson(dynamic json) {
+  ProductImagesEntity.fromJson(dynamic json) {
     id = json['id'];
     productId = json['product_id'];
     image = json['image'];

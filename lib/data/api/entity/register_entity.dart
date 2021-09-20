@@ -1,18 +1,21 @@
-class LoginResponse {
+class RegisterEntity {
   int? status;
-  Data? data;
+  DataEntity? dataEntity;
   String? message;
   String? userMsg;
 
-  LoginResponse({
+  RegisterEntity({
       this.status, 
-      this.data, 
+      this.dataEntity,
       this.message, 
       this.userMsg});
 
-  LoginResponse.fromJson(dynamic json) {
-    status = json['status'];
-    data = json['data'] != null ? Data.fromJson(json['data']) : null;
+  RegisterEntity.fromJson(dynamic json) {
+    status = json
+
+
+    ['status'];
+    dataEntity = json['data'] != null ? DataEntity.fromJson(json['data']) : null;
     message = json['message'];
     userMsg = json['user_msg'];
   }
@@ -20,8 +23,8 @@ class LoginResponse {
   Map<String, dynamic> toJson() {
     var map = <String, dynamic>{};
     map['status'] = status;
-    if (data != null) {
-      map['data'] = data?.toJson();
+    if (dataEntity != null) {
+      map['data'] = dataEntity?.toJson();
     }
     map['message'] = message;
     map['user_msg'] = userMsg;
@@ -30,7 +33,7 @@ class LoginResponse {
 
 }
 
-class Data {
+class DataEntity {
   int? id;
   int? roleId;
   String? firstName;
@@ -47,7 +50,7 @@ class Data {
   String? modified;
   String? accessToken;
 
-  Data({
+  DataEntity({
       this.id, 
       this.roleId, 
       this.firstName, 
@@ -64,7 +67,7 @@ class Data {
       this.modified, 
       this.accessToken});
 
-  Data.fromJson(dynamic json) {
+  DataEntity.fromJson(dynamic json) {
     id = json['id'];
     roleId = json['role_id'];
     firstName = json['first_name'];

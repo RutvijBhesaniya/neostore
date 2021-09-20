@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/response/list_cart_response.dart';
+import 'package:neostore/data/api/entity/list_cart_entity.dart';
 import 'package:neostore/presentation/chair_category/chair_category_view.dart';
 import 'package:neostore/presentation/cupboard_category/cupboard_category_view.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
@@ -60,7 +60,7 @@ class _HomeScreen extends BaseClassState {
                   child: Stack(
                     children: [
                       ///drawer screen
-                      menu(context, _homeProvider?.listCartResponse),
+                      menu(context, _homeProvider?.listCartEntity),
 
                       ///dashboard screen
                       dashboard(context),
@@ -73,7 +73,7 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///drawer screen
-  Widget menu(context, ListCartResponse? listCartResponse) {
+  Widget menu(context, ListCartEntity? listCartResponse) {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: SafeArea(
@@ -362,7 +362,7 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///my cart widget
-  Widget _myCart(ListCartResponse? listCartResponse) {
+  Widget _myCart(ListCartEntity? listCartResponse) {
     return Row(
       children: [
         GestureDetector(
@@ -397,7 +397,7 @@ class _HomeScreen extends BaseClassState {
               // borderRadius: BorderRadius.all(Radius.circular(50)),
               color: ColorStyles.light_red),
           child: NeoStoreTitle(
-            text: listCartResponse?.data != null
+            text: listCartResponse?.dataEntity != null
                 ? listCartResponse?.count.toString()
                 : '0',
             style: TextStyles.titleHeadline?.copyWith(color: ColorStyles.white),
@@ -410,7 +410,7 @@ class _HomeScreen extends BaseClassState {
   ///email
   Widget _email() {
     return NeoStoreTitle(
-      text: _homeProvider?.myAccountResponse?.data?.userData?.email,
+      text: _homeProvider?.myAccountEntity?.dataEntity?.userDataEntity?.email,
       // _homeProvider.myAccountResponse?.data?.userData?.email,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.labelName
@@ -422,7 +422,7 @@ class _HomeScreen extends BaseClassState {
   ///full name
   Widget _fullName() {
     return NeoStoreTitle(
-      text: _homeProvider?.myAccountResponse?.data?.userData?.firstName!,
+      text: _homeProvider?.myAccountEntity?.dataEntity?.userDataEntity?.firstName!,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline
             ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -436,7 +436,7 @@ class _HomeScreen extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: getImage(
-        _homeProvider?.myAccountResponse?.data?.userData?.profilePic,
+        _homeProvider?.myAccountEntity?.dataEntity?.userDataEntity?.profilePic,
       ),
     );
   }

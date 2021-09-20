@@ -1,3 +1,4 @@
+import 'package:neostore/data/request/add_to_cart_api_request.dart';
 import 'package:neostore/data/request/cart_api_request.dart';
 import 'package:neostore/data/request/edit_profile_api_request.dart';
 import 'package:neostore/data/request/login_api_request.dart';
@@ -9,6 +10,8 @@ import 'package:neostore/data/request/register_api_request.dart';
 import 'package:neostore/data/request/reset_password_api_request.dart';
 import 'package:neostore/data/request/table_category_api_request.dart';
 import 'package:neostore/data/request/table_detail_api_request.dart';
+import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api.dart';
+import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/cart_api/cart_api.dart';
 import 'package:neostore/data/web_service/api_impl/cart_api/cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api.dart';
@@ -31,6 +34,8 @@ import 'package:neostore/data/web_service/api_impl/table_category_api/table_cate
 import 'package:neostore/data/web_service/api_impl/table_category_api/table_category_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/table_detail_api/table_detail_api.dart';
 import 'package:neostore/data/web_service/api_impl/table_detail_api/table_detail_api_impl.dart';
+import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_repository.dart';
+import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
 import 'package:neostore/domain/repository/cart_repository/cart_repository.dart';
 import 'package:neostore/domain/repository/cart_repository/cart_repository_impl.dart';
 import 'package:neostore/domain/repository/edit_profile_repository/edit_profile_repository.dart';
@@ -53,6 +58,7 @@ import 'package:neostore/domain/repository/table_category_repository/table_categ
 import 'package:neostore/domain/repository/table_category_repository/table_category_repository_impl.dart';
 import 'package:neostore/domain/repository/table_detail_repository/table_detail_repository.dart';
 import 'package:neostore/domain/repository/table_detail_repository/table_detail_repository_impl.dart';
+import 'package:neostore/domain/use_case/add_to_cart_use_case.dart';
 import 'package:neostore/domain/use_case/cart_use_case.dart';
 import 'package:neostore/domain/use_case/edit_profile_use_case.dart';
 import 'package:neostore/domain/use_case/login_use_case.dart';
@@ -92,6 +98,7 @@ List<SingleChildWidget> independentServices = [
   Provider(create: (context) => MyOrderListApiRequest()),
   Provider(create: (context) => OrderDetailApiRequest()),
   Provider(create: (context) => OrderAddressListApiRequest()),
+  Provider(create: (context) => AddToCartApiRequest()),
 ];
 
 List<SingleChildWidget> dependentServices = [
@@ -193,6 +200,8 @@ List<SingleChildWidget> dependentServices = [
   ProxyProvider<OrderDetailRepository, OrderDetailUseCase>(
       update: (context, orderDetailRepository, orderDetailUseCase) =>
           OrderDetailUseCase(orderDetailRepository)),
+
+  ///
   ProxyProvider<OrderAddressListApiRequest, OrderAddressApi>(
     update: (context, orderAddressListApiRequest, orderAddressApi) =>
         OrderAddressApiImpl(orderAddressListApiRequest),
@@ -203,4 +212,19 @@ List<SingleChildWidget> dependentServices = [
   ProxyProvider<OrderAddressRepository, OrderAddressUseCase>(
       update: (context, orderAddressRepository, orderAddressUseCase) =>
           OrderAddressUseCase(orderAddressRepository)),
+  ///
+  ProxyProvider<AddToCartApiRequest, AddToCartApi>(
+    update: (context, addToCartApiRequest, addToCartApi) =>
+        AddToCartApiImpl(addToCartApiRequest),
+  ),
+  ProxyProvider<AddToCartApi, AddToCartRepository>(
+      update: (context, addToCartApi, addToCartRepository) =>
+          AddToCartRepositoryImpl(addToCartApi)),
+  ProxyProvider<AddToCartRepository, AddToCartUseCase>(
+      update: (context, addToCartRepository, addToCartUseCase) =>
+          AddToCartUseCase(addToCartRepository)),
+
+
+
+
 ];

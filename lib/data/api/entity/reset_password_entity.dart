@@ -1,14 +1,14 @@
-class OrderAddressResponse {
+class ResetPasswordEntity {
   int? status;
   String? message;
   String? userMsg;
 
-  OrderAddressResponse({
+  ResetPasswordEntity({
       this.status, 
       this.message, 
       this.userMsg});
 
-  OrderAddressResponse.fromJson(dynamic json) {
+  ResetPasswordEntity.fromJson(dynamic json) {
     status = json['status'];
     message = json['message'];
     userMsg = json['user_msg'];

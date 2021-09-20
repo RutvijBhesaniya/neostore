@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/response/order_list_response.dart';
+import 'package:neostore/data/api/entity/order_list_entity.dart';
 import 'package:neostore/domain/use_case/order_list_use_case.dart';
 
 class MyOrderProvider extends ChangeNotifier {
@@ -8,9 +8,9 @@ class MyOrderProvider extends ChangeNotifier {
 
   MyOrderProvider(this._myOrderListUseCase);
 
-  OrderListResponse? _orderListResponse;
+  OrderListEntity? _orderListEntity;
 
-  OrderListResponse? get orderListResponse => _orderListResponse;
+  OrderListEntity? get orderListEntity => _orderListEntity;
 
   bool _isLoading = true;
 
@@ -23,7 +23,7 @@ class MyOrderProvider extends ChangeNotifier {
 
     var response = await _myOrderListUseCase.callApi();
 
-    _orderListResponse = OrderListResponse.fromJson(
+    _orderListEntity = OrderListEntity.fromJson(
       jsonDecode(response),
     );
 

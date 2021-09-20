@@ -1,14 +1,14 @@
-class EditCartResponse {
+class EditCartEntity {
   int? status;
   bool? data;
   int? totalCarts;
   String? message;
   String? userMsg;
 
-  EditCartResponse(
+  EditCartEntity(
       {this.status, this.data, this.totalCarts, this.message, this.userMsg});
 
-  EditCartResponse.fromJson(dynamic json) {
+  EditCartEntity.fromJson(dynamic json) {
     status = json['status'];
     data = json['data'];
     totalCarts = json['total_carts'];

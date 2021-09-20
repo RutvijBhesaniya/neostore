@@ -10,8 +10,6 @@ class AddToCartUseCase extends BaseUseCase<dynamic> {
 
   @override
   Future callApi([productId, quantity]) {
-    print("got product category id: " + productId.toString());
-
     return _addToCartRepository.getAddToCartRepository(productId, quantity);
   }
 }
