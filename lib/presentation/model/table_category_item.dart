@@ -1,3 +1,5 @@
+import 'package:neostore/domain/model/table_category.dart';
+
 class TableCategoryItem {
   TableCategoryItem({
     this.status,
@@ -34,4 +36,36 @@ class DatumItem {
   String? created;
   String? modified;
   String? productImages;
+}
+
+extension TableCategoryExt on TableCategory {
+  TableCategoryItem mapToPresentation() => TableCategoryItem(
+      status: this.status,
+      dataItem: this.data != null ? this.data?.mapToPresentation() : []);
+}
+
+extension TableCategoryExtList on List<TableCategory> {
+  List<TableCategoryItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
+}
+
+extension DatumExt on Datum {
+  DatumItem mapToPresentation() => DatumItem(
+        id: this.id,
+        productCategoryId: this.productCategoryId,
+        name: this.name,
+        producer: this.producer,
+        description: this.description,
+        cost: this.cost,
+        rating: this.rating,
+        viewCount: this.viewCount,
+        created: this.created,
+        modified: this.modified,
+        productImages: this.productImages,
+      );
+}
+
+extension DatumExtList on List<Datum> {
+  List<DatumItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
 }

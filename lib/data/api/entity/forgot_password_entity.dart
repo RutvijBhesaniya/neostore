@@ -1,14 +1,11 @@
-class ForgotPasswordResponse {
+class ForgotPasswordEntity {
   int? status;
   String? message;
   String? userMsg;
 
-  ForgotPasswordResponse({
-      this.status, 
-      this.message, 
-      this.userMsg});
+  ForgotPasswordEntity({this.status, this.message, this.userMsg});
 
-  ForgotPasswordResponse.fromJson(dynamic json) {
+  ForgotPasswordEntity.fromJson(dynamic json) {
     status = json['status'];
     message = json['message'];
     userMsg = json['user_msg'];
@@ -21,5 +18,4 @@ class ForgotPasswordResponse {
     map['user_msg'] = userMsg;
     return map;
   }
-
 }

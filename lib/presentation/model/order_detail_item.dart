@@ -1,17 +1,19 @@
+import 'package:neostore/domain/model/order_detail.dart';
+
 class OrderDetailItem {
   int? status;
-  Data? data;
+  DataItem? dataItem;
 
-  OrderDetailItem({this.status, this.data});
+  OrderDetailItem({this.status, this.dataItem});
 }
 
-class Data {
+class DataItem {
   int? id;
   int? cost;
   String? address;
   List<OrderDetailsItem>? orderDetailsItem;
 
-  Data({this.id, this.cost, this.address, this.orderDetailsItem});
+  DataItem({this.id, this.cost, this.address, this.orderDetailsItem});
 }
 
 class OrderDetailsItem {
@@ -33,4 +35,48 @@ class OrderDetailsItem {
       this.prodName,
       this.prodCatName,
       this.prodImage});
+}
+
+extension OrderDetailExt on OrderDetail {
+  OrderDetailItem mapToPresentation() => OrderDetailItem(
+      status: this.status,
+      dataItem: this.data != null ? this.data?.mapToPresentation() : null);
+}
+
+extension OrderDetailExtList on List<OrderDetail> {
+  List<OrderDetailItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
+}
+
+extension DataExt on Data {
+  DataItem mapToPresentation() => DataItem(
+        id: this.id,
+        cost: this.cost,
+        address: this.address,
+        orderDetailsItem: this.orderDetails != null
+            ? this.orderDetails?.mapToPresentation()
+            : [],
+      );
+}
+
+extension DataExtList on List<Data> {
+  List<DataItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
+}
+
+extension OrderDetailsExt on OrderDetails {
+  OrderDetailsItem mapToPresentation() => OrderDetailsItem(
+      id: this.id,
+      orderId: this.orderId,
+      productId: this.productId,
+      quantity: this.quantity,
+      total: this.total,
+      prodName: this.prodName,
+      prodCatName: this.prodCatName,
+      prodImage: this.prodImage);
+}
+
+extension OrderDetailsExtList on List<OrderDetails> {
+  List<OrderDetailsItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
 }

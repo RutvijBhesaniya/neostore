@@ -1,3 +1,5 @@
+import 'package:neostore/domain/model/list_cart.dart';
+
 class ListCartItem {
   int? status;
   List<DataItem>? dataItem;
@@ -31,4 +33,46 @@ class ProductItem {
       this.productCategory,
       this.productImages,
       this.subTotal});
+}
+
+extension ListCartExt on ListCart {
+  ListCartItem mapToPresentation() => ListCartItem(
+      status: this.status,
+      dataItem: this.data != null ? this.data?.mapToPresentation() : [],
+      total: this.total,
+      count: this.count);
+}
+
+extension ListCartExtList on List<ListCart> {
+  List<ListCartItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
+}
+
+extension DataExt on Data {
+  DataItem mapToPresentation() => DataItem(
+      id: this.id,
+      productId: this.productId,
+      quantity: this.quantity,
+      productItem:
+          this.product != null ? this.product?.mapToPresentation() : null);
+}
+
+extension DataExtList on List<Data> {
+  List<DataItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
+}
+
+extension ProductExt on Product {
+  ProductItem mapToPresentation() => ProductItem(
+      id: this.id,
+      name: this.name,
+      cost: this.cost,
+      productCategory: this.productCategory,
+      productImages: this.productImages,
+      subTotal: this.subTotal);
+}
+
+extension ProductExtList on List<Product> {
+  List<ProductItem> mapToPresentation() =>
+      this.map((element) => element.mapToPresentation()).toList();
 }
