@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/api/entity/order_list_entity.dart';
 import 'package:neostore/presentation/home/home_view.dart';
+import 'package:neostore/presentation/model/order_list_item.dart';
 import 'package:neostore/presentation/my_order/my_order_viewmodel.dart';
 import 'package:neostore/presentation/order_detail/order_detail_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -57,10 +58,10 @@ class MyOrderViewState extends BaseClassState {
                     scrollDirection: Axis.vertical,
                     physics: ScrollPhysics(),
                     itemCount:
-                        _myOrderProvider?.orderListEntity?.dataEntity?.length,
+                        _myOrderProvider?.orderListItem?.dataItems?.length,
                     itemBuilder: (context, index) {
                       return _buildListItem(
-                          _myOrderProvider?.orderListEntity, index);
+                          _myOrderProvider?.orderListItem, index);
                     },
                   ),
           );
@@ -69,7 +70,7 @@ class MyOrderViewState extends BaseClassState {
     );
   }
 
-  Widget _buildListItem(OrderListEntity? orderListResponse, int index) {
+  Widget _buildListItem(OrderListItem? orderListItem,int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
@@ -78,7 +79,7 @@ class MyOrderViewState extends BaseClassState {
             context,
             MaterialPageRoute(
               builder: (context) => OrderDetailView(
-                  id: _myOrderProvider?.orderListEntity?.dataEntity?[index].id),
+                  dataItems: _myOrderProvider?.orderListItem?.dataItems?[index]),
             ),
           );
         },
@@ -87,7 +88,7 @@ class MyOrderViewState extends BaseClassState {
           children: [
             NeoStoreTitle(
                 text:
-                    ('Order ID: ${orderListResponse?.dataEntity?[index].id.toString()}'),
+                    ('Order ID: ${orderListItem?.dataItems?[index].id.toString()}'),
                 style: GoogleFonts.workSans(
                   textStyle: TextStyles.titleHeadline?.copyWith(
                     fontWeight: FontWeight.w400,
@@ -101,7 +102,7 @@ class MyOrderViewState extends BaseClassState {
                 Container(
                   width: MediaQuery.of(context).size.width / 4,
                   child: NeoStoreTitle(
-                      text: 'Rs ${orderListResponse?.dataEntity?[index].cost}',
+                      text: 'Rs ${orderListItem?.dataItems?[index].cost}',
                       style: GoogleFonts.workSans(
                         textStyle: TextStyles.titleHeadline?.copyWith(
                           fontWeight: FontWeight.w400,
@@ -113,7 +114,7 @@ class MyOrderViewState extends BaseClassState {
             ),
             NeoStoreTitle(
                 text:
-                    'Ordered Date:  ${orderListResponse?.dataEntity?[index].created}',
+                    'Ordered Date:  ${orderListItem?.dataItems?[index].created}',
                 style: GoogleFonts.workSans(
                   textStyle: TextStyles.titleHeadline?.copyWith(
                     fontWeight: FontWeight.w400,

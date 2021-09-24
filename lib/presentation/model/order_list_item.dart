@@ -2,25 +2,25 @@ import 'package:neostore/domain/model/order_list.dart';
 
 class OrderListItem {
   int? status;
-  List<DataItem>? dataItem;
+  List<DataItems>? dataItems;
   String? message;
   String? userMsg;
 
-  OrderListItem({this.status, this.dataItem, this.message, this.userMsg});
+  OrderListItem({this.status, this.dataItems, this.message, this.userMsg});
 }
 
-class DataItem {
+class DataItems {
   int? id;
   int? cost;
   String? created;
 
-  DataItem({this.id, this.cost, this.created});
+  DataItems({this.id, this.cost, this.created});
 }
 
 extension OrderListExt on OrderList {
   OrderListItem mapToPresentation() => OrderListItem(
         status: this.status,
-        dataItem: this.data != null ? this.data?.mapToPresentation() : [],
+        dataItems: this.data != null ? this.data?.mapToPresentation() : [],
         message: this.message,
         userMsg: this.userMsg,
       );
@@ -32,7 +32,7 @@ extension OrderListExtList on List<OrderList> {
 }
 
 extension DataExt on Data {
-  DataItem mapToPresentation() => DataItem(
+  DataItems mapToPresentation() => DataItems(
         id: this.id,
         cost: this.cost,
         created: this.created,
@@ -40,6 +40,6 @@ extension DataExt on Data {
 }
 
 extension DataExtList on List<Data> {
-  List<DataItem> mapToPresentation() =>
+  List<DataItems> mapToPresentation() =>
       this.map((element) => element.mapToPresentation()).toList();
 }

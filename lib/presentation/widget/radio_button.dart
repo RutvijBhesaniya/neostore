@@ -7,15 +7,3 @@ class RadioListValue {
 
   RadioListValue(this.key, this.label);
 }
-
-class ChangeGender with ChangeNotifier {
-  GenderTypes? _value;
-
-  GenderTypes? get currentValue => _value;
-
-  void changeModel(GenderTypes genderTypes) {
-    _value = genderTypes;
-    notifyListeners();
-  }
-}
-

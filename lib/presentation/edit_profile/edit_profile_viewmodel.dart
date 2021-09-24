@@ -1,9 +1,10 @@
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/entity/edit_profile_entity.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/domain/use_case/edit_profile_use_case.dart';
+import 'package:neostore/presentation/model/edit_profile_item.dart';
 
 class EditProfileProvider extends ChangeNotifier {
   File? _imageFile;
@@ -19,26 +20,29 @@ class EditProfileProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  EditProfileEntity? _editProfileEntity;
-
-  EditProfileEntity? get editProfileEntity => _editProfileEntity;
-
   bool _isLoading = true;
 
   get isLoading => _isLoading;
 
   ///get edit profile method
-  Future<dynamic> getEditProfile(String email, String dob, String phoneNo,
-      Uint8List profilePic, String firstName, String lastName) async {
+  Future<Either<EditProfileItem, ApiError>> getEditProfile(
+      String email,
+      String dob,
+      String phoneNo,
+      Uint8List profilePic,
+      String firstName,
+      String lastName) async {
     _isLoading = true;
     var response = await _editProfileUseCase.callApi(
         email, dob, phoneNo, profilePic, firstName, lastName);
 
-    _editProfileEntity = EditProfileEntity.fromJson(
-      jsonDecode(response),
-    );
-
-    _isLoading = false;
-    return response;
+    if (response.isLeft) {
+      EditProfileItem _editProfileItem = response.left;
+      _isLoading = false;
+      return Left(_editProfileItem);
+    } else {
+      _isLoading = false;
+      return Right(response.right);
+    }
   }
 }

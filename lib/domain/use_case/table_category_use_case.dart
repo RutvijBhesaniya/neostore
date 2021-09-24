@@ -1,5 +1,9 @@
+import 'package:either_dart/either.dart';
 import 'package:neostore/base/base_use_case.dart';
+import 'package:neostore/base/network_model/api_error.dart';
+import 'package:neostore/domain/model/table_category.dart';
 import 'package:neostore/domain/repository/table_category_repository/table_category_repository.dart';
+import 'package:neostore/presentation/model/table_category_item.dart';
 
 class TableCategoryUseCase extends BaseUseCase<dynamic> {
   late TableCategoryRepository _tableCategoryRepository;
@@ -9,8 +13,16 @@ class TableCategoryUseCase extends BaseUseCase<dynamic> {
   }
 
   @override
-  Future callApi([productCategoryId]) {
+  Future<Either<TableCategoryItem, ApiError>> callApi([productCategoryId]) {
     print("got product category id: " + productCategoryId.toString());
-    return _tableCategoryRepository.getTableCategoryRepository(productCategoryId);
+    return _tableCategoryRepository
+        .getTableCategoryRepository(productCategoryId)
+        .then((value) {
+      if (value.isLeft) {
+        return Left(value.left.mapToPresentation());
+      } else {
+        return Right(value.right);
+      }
+    });
   }
 }

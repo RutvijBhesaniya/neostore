@@ -1,12 +1,16 @@
 import 'dart:convert';
+import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/api/entity/delete_cart_entity.dart';
 import 'package:neostore/data/api/entity/list_cart_entity.dart';
 import 'package:neostore/presentation/home/home_view.dart';
+import 'package:neostore/presentation/model/delete_cart_item.dart';
+import 'package:neostore/presentation/model/list_cart_item.dart';
 import 'package:neostore/presentation/my_cart/my_cart_viewmodel.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -34,6 +38,8 @@ class MyCartViewState extends BaseClassState {
       Provider.of(context),
       Provider.of(context),
       Provider.of(context),
+      Provider.of(context),
+      Provider.of(context),
     );
   }
 
@@ -52,9 +58,9 @@ class MyCartViewState extends BaseClassState {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : _listCartProvider?.listCartEntity?.dataEntity != null
+              : _listCartProvider!.listCartItem!.dataItem!.isNotEmpty
                   ? _buildListItem(
-                      _listCartProvider?.listCartEntity,
+                      _listCartProvider?.listCartItem,
                     )
                   : Center(
                       child: NeoStoreTitle(
@@ -66,15 +72,13 @@ class MyCartViewState extends BaseClassState {
     );
   }
 
-  Widget _buildListItem(
-    ListCartEntity? listCartResponse,
-  ) {
+  Widget _buildListItem(listCartItem) {
     return SingleChildScrollView(
       child: Container(
         child: Column(
           children: [
             ///list view builder
-            _itemListViewBuilder(listCartResponse!),
+            _itemListViewBuilder(listCartItem!),
 
             ///total price widget
             _totalPrice(),
@@ -88,14 +92,14 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///list view builder
-  Widget _itemListViewBuilder(ListCartEntity listCartResponse) {
+  Widget _itemListViewBuilder(ListCartItem listCartItem) {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       physics: ScrollPhysics(),
-      itemCount: listCartResponse.dataEntity!.length,
+      itemCount: listCartItem.dataItem!.length,
       itemBuilder: (context, index) {
-        return _buildListItemDetail(listCartResponse.dataEntity![index], index);
+        return _buildListItemDetail(listCartItem.dataItem![index], index);
       },
     );
   }
@@ -149,7 +153,7 @@ class MyCartViewState extends BaseClassState {
   ///total rupees widget
   Widget _totalRupees() {
     return NeoStoreTitle(
-      text: _listCartProvider?.listCartEntity?.total.toString(),
+      text: _listCartProvider?.listCartItem?.total.toString(),
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline?.copyWith(
           color: ColorStyles.black,
@@ -183,7 +187,7 @@ class MyCartViewState extends BaseClassState {
   }
 
   ///list view builder detail
-  Widget _buildListItemDetail(DataEntity data, int index) {
+  Widget _buildListItemDetail(DataItem dataItem, int index) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Column(
@@ -204,18 +208,30 @@ class MyCartViewState extends BaseClassState {
                 ),
                 child: GestureDetector(
                   onTap: () async {
-                    var deleteResponse = await _listCartProvider
-                        ?.getDeleteCart(data.productId!.toInt());
-                    DeleteCartEntity _deleteCartResponse =
-                        DeleteCartEntity.fromJson(jsonDecode(deleteResponse));
-                    if (_deleteCartResponse.status == 200) {
-                      _listCartProvider?.getListCart();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MyCartView(),
+                    Either<DeleteCartItem, ApiError>? response =
+                        await _listCartProvider
+                            ?.getDeleteCart(dataItem.productId!.toInt());
+
+                    if (response!.isRight) {
+                      ///extra
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: NeoStoreTitle(
+                            text: ConstantStrings.email_id_already_exist,
+                          ),
                         ),
                       );
+                    } else {
+                      DeleteCartItem deleteCartItem = response.left;
+                      if (deleteCartItem.status == 200) {
+                        _listCartProvider?.getListCart();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => MyCartView(),
+                          ),
+                        );
+                      }
                     }
                   },
                   child: Icon(
@@ -228,7 +244,7 @@ class MyCartViewState extends BaseClassState {
             child: Row(
               children: [
                 ///image widget
-                _image(data.productEntity?.productImages),
+                _image(dataItem.productItem?.productImages),
                 Padding(
                   padding: const EdgeInsets.only(left: 5),
                   child: Container(
@@ -238,16 +254,16 @@ class MyCartViewState extends BaseClassState {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         ///product name widget
-                        _productName(data.productEntity?.name),
+                        _productName(dataItem.productItem?.name),
 
                         ///product category widget
-                        _productCategoryType(data.productEntity?.productCategory),
+                        _productCategoryType(
+                            dataItem.productItem?.productCategory),
 
-                        ///alert pop boxcart
+                        ///alert pop box cart
                         DropdownButton<String>(
                           isExpanded: false,
-                          hint: Text("Quantity"),
-                          value: data.quantity.toString(),
+                          value: dataItem.quantity.toString(),
                           items: _listCartProvider?.items.map((String value) {
                             return DropdownMenuItem<String>(
                               child: Text(value),
@@ -256,7 +272,7 @@ class MyCartViewState extends BaseClassState {
                           }).toList(),
                           onChanged: (value) {
                             _listCartProvider?.getEditCart(
-                                data.productId!, value.toString());
+                                dataItem.productId!, value.toString());
                             _listCartProvider?.selected(
                                 index, value.toString());
                           },
@@ -266,12 +282,15 @@ class MyCartViewState extends BaseClassState {
                   ),
                 ),
 
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(Icons.money_off),
+                Flexible(
+                  flex: 1,
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: Icon(Icons.money_off),
+                  ),
                 ),
                 NeoStoreTitle(
-                  text: data.productEntity?.subTotal,
+                  text: dataItem.productItem?.subTotal,
                   style: GoogleFonts.workSans(
                     textStyle: TextStyles.titleHeadline?.copyWith(
                         color: ColorStyles.liver_grey,

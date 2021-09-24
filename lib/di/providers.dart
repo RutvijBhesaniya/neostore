@@ -1,11 +1,15 @@
 import 'package:neostore/data/request/add_to_cart_api_request.dart';
 import 'package:neostore/data/request/cart_api_request.dart';
+import 'package:neostore/data/request/delete_cart_api_request.dart';
+import 'package:neostore/data/request/edit_cart_api_request.dart';
 import 'package:neostore/data/request/edit_profile_api_request.dart';
+import 'package:neostore/data/request/forgot_password_api_request.dart';
 import 'package:neostore/data/request/login_api_request.dart';
 import 'package:neostore/data/request/my_account_api_request.dart';
 import 'package:neostore/data/request/my_order_list_api_request.dart';
 import 'package:neostore/data/request/order_address_list_api_request.dart';
 import 'package:neostore/data/request/order_detail_api_request.dart';
+import 'package:neostore/data/request/rating_api_request.dart';
 import 'package:neostore/data/request/register_api_request.dart';
 import 'package:neostore/data/request/reset_password_api_request.dart';
 import 'package:neostore/data/request/table_category_api_request.dart';
@@ -14,8 +18,14 @@ import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_a
 import 'package:neostore/data/web_service/api_impl/add_to_cart_api/add_to_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/cart_api/cart_api.dart';
 import 'package:neostore/data/web_service/api_impl/cart_api/cart_api_impl.dart';
+import 'package:neostore/data/web_service/api_impl/delete_cart_api/delete_cart_api.dart';
+import 'package:neostore/data/web_service/api_impl/delete_cart_api/delete_cart_api_impl.dart';
+import 'package:neostore/data/web_service/api_impl/edit_cart_api/edit_cart_api.dart';
+import 'package:neostore/data/web_service/api_impl/edit_cart_api/edit_cart_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api.dart';
 import 'package:neostore/data/web_service/api_impl/edit_profile_api/edit_profile_api_impl.dart';
+import 'package:neostore/data/web_service/api_impl/forgot_password_api/forgot_password_api.dart';
+import 'package:neostore/data/web_service/api_impl/forgot_password_api/forgot_password_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/login_api/login_api.dart';
 import 'package:neostore/data/web_service/api_impl/login_api/login_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/my_account_api/my_account_api.dart';
@@ -26,8 +36,10 @@ import 'package:neostore/data/web_service/api_impl/order_address_api/order_addre
 import 'package:neostore/data/web_service/api_impl/order_address_api/order_address_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/order_detail_api/order_detail_api.dart';
 import 'package:neostore/data/web_service/api_impl/order_detail_api/order_detail_api_impl.dart';
+import 'package:neostore/data/web_service/api_impl/rating_api/rating_api.dart';
+import 'package:neostore/data/web_service/api_impl/rating_api/rating_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/register_api/register_api_impl.dart';
-import 'package:neostore/data/web_service/api_impl/register_api/registerApi.dart';
+import 'package:neostore/data/web_service/api_impl/register_api/register_api.dart';
 import 'package:neostore/data/web_service/api_impl/reset_password_api/reset_password_api.dart';
 import 'package:neostore/data/web_service/api_impl/reset_password_api/reset_password_api_impl.dart';
 import 'package:neostore/data/web_service/api_impl/table_category_api/table_category_api.dart';
@@ -38,8 +50,14 @@ import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_re
 import 'package:neostore/domain/repository/add_to_cart_repository/add_to_cart_repository_impl.dart';
 import 'package:neostore/domain/repository/cart_repository/cart_repository.dart';
 import 'package:neostore/domain/repository/cart_repository/cart_repository_impl.dart';
+import 'package:neostore/domain/repository/delete_cart_repository/delete_cart_repository.dart';
+import 'package:neostore/domain/repository/delete_cart_repository/delete_cart_repository_impl.dart';
+import 'package:neostore/domain/repository/edit_cart_repository/edit_cart_repository.dart';
+import 'package:neostore/domain/repository/edit_cart_repository/edit_cart_repository_impl.dart';
 import 'package:neostore/domain/repository/edit_profile_repository/edit_profile_repository.dart';
 import 'package:neostore/domain/repository/edit_profile_repository/edit_profile_repository_impl.dart';
+import 'package:neostore/domain/repository/forgot_repository/forgot_repository.dart';
+import 'package:neostore/domain/repository/forgot_repository/forgot_repository_impl.dart';
 import 'package:neostore/domain/repository/login_repository/login_repository.dart';
 import 'package:neostore/domain/repository/login_repository/login_repository_impl.dart';
 import 'package:neostore/domain/repository/my_account_repository/my_account_repository.dart';
@@ -50,6 +68,8 @@ import 'package:neostore/domain/repository/order_address_repository/order_addres
 import 'package:neostore/domain/repository/order_address_repository/order_address_repository_impl.dart';
 import 'package:neostore/domain/repository/order_detail_repository/order_detail_repository.dart';
 import 'package:neostore/domain/repository/order_detail_repository/order_detail_repository_impl.dart';
+import 'package:neostore/domain/repository/rating_repository/rating_repository.dart';
+import 'package:neostore/domain/repository/rating_repository/rating_repository_impl.dart';
 import 'package:neostore/domain/repository/register_repository/register_repository.dart';
 import 'package:neostore/domain/repository/register_repository/register_repository_impl.dart';
 import 'package:neostore/domain/repository/reset_password_repository/reset_password_api_impl.dart';
@@ -60,12 +80,16 @@ import 'package:neostore/domain/repository/table_detail_repository/table_detail_
 import 'package:neostore/domain/repository/table_detail_repository/table_detail_repository_impl.dart';
 import 'package:neostore/domain/use_case/add_to_cart_use_case.dart';
 import 'package:neostore/domain/use_case/cart_use_case.dart';
+import 'package:neostore/domain/use_case/delete_cart_use_case.dart';
+import 'package:neostore/domain/use_case/edit_cart_use_case.dart';
 import 'package:neostore/domain/use_case/edit_profile_use_case.dart';
+import 'package:neostore/domain/use_case/forgot_use_case.dart';
 import 'package:neostore/domain/use_case/login_use_case.dart';
 import 'package:neostore/domain/use_case/my_account_use_case.dart';
 import 'package:neostore/domain/use_case/order_address_use_case.dart';
 import 'package:neostore/domain/use_case/order_detail_use_case.dart';
 import 'package:neostore/domain/use_case/order_list_use_case.dart';
+import 'package:neostore/domain/use_case/rating_use_case.dart';
 import 'package:neostore/domain/use_case/register_use_case.dart';
 import 'package:neostore/domain/use_case/reset_password_use_case.dart';
 import 'package:neostore/domain/use_case/table_category_use_case.dart';
@@ -81,9 +105,9 @@ List<SingleChildWidget> providersList = [
 ];
 
 List<SingleChildWidget> independentServices = [
-  ChangeNotifierProvider<ChangeGender>(
-    create: (context) => ChangeGender(),
-  ),
+  // ChangeNotifierProvider<ChangeGender>(
+  //   create: (context) => ChangeGender(),
+  // ),
   ChangeNotifierProvider<CarouselSliderProvider>(
     create: (context) => CarouselSliderProvider(),
   ),
@@ -99,6 +123,10 @@ List<SingleChildWidget> independentServices = [
   Provider(create: (context) => OrderDetailApiRequest()),
   Provider(create: (context) => OrderAddressListApiRequest()),
   Provider(create: (context) => AddToCartApiRequest()),
+  Provider(create: (context) => ForgotPasswordApiRequest()),
+  Provider(create: (context) => RatingApiRequest()),
+  Provider(create: (context) => DeleteCartApiRequest()),
+  Provider(create: (context) => EditCartApiRequest()),
 ];
 
 List<SingleChildWidget> dependentServices = [
@@ -212,6 +240,7 @@ List<SingleChildWidget> dependentServices = [
   ProxyProvider<OrderAddressRepository, OrderAddressUseCase>(
       update: (context, orderAddressRepository, orderAddressUseCase) =>
           OrderAddressUseCase(orderAddressRepository)),
+
   ///
   ProxyProvider<AddToCartApiRequest, AddToCartApi>(
     update: (context, addToCartApiRequest, addToCartApi) =>
@@ -224,7 +253,49 @@ List<SingleChildWidget> dependentServices = [
       update: (context, addToCartRepository, addToCartUseCase) =>
           AddToCartUseCase(addToCartRepository)),
 
+  ///
+  ProxyProvider<ForgotPasswordApiRequest, ForgotPasswordApi>(
+      update: (context, forgotPasswordApiRequest, forgotPasswordApi) =>
+          ForgotPasswordApiImpl(forgotPasswordApiRequest)),
+  ProxyProvider<ForgotPasswordApi, ForgotPasswordRepository>(
+      update: (context, forgotPasswordApi, forgotPasswordRepository) =>
+          ForgotPasswordRepositoryImpl(forgotPasswordApi)),
+  ProxyProvider<ForgotPasswordRepository, ForgotUseCase>(
+      update: (context, forgotPasswordRepository, forgotUseCase) =>
+          ForgotUseCase(forgotPasswordRepository)),
+
+  ///
+  ProxyProvider<RatingApiRequest, RatingApi>(
+      update: (context, ratingApiRequest, ratingApi) =>
+          RatingApiImpl(ratingApiRequest)),
+  ProxyProvider<RatingApi, RatingRepository>(
+      update: (context, ratingApi, ratingRepository) =>
+          RatingRepositoryImpl(ratingApi)),
+  ProxyProvider<RatingRepository, RatingUseCase>(
+      update: (context, ratingRepository, ratingUseCase) =>
+          RatingUseCase(ratingRepository)),
 
 
+  ///
+  ProxyProvider<DeleteCartApiRequest, DeleteCartApi>(
+      update: (context, deleteCartApiRequest, deleteCartApi) =>
+          DeleteCartApiImpl(deleteCartApiRequest)),
+  ProxyProvider<DeleteCartApi, DeleteCartRepository>(
+      update: (context, deleteCartApi, deleteCartRepository) =>
+          DeleteCartRepositoryImpl(deleteCartApi)),
+  ProxyProvider<DeleteCartRepository, DeleteCartUseCase>(
+      update: (context, deleteCartRepository, deleteCartUseCase) =>
+          DeleteCartUseCase(deleteCartRepository)),
+
+  ///
+  ProxyProvider<EditCartApiRequest, EditCartApi>(
+      update: (context, editCartApiRequest, editCartApi) =>
+          EditCartApiImpl(editCartApiRequest)),
+  ProxyProvider<EditCartApi, EditCartRepository>(
+      update: (context, editCartApi, editCartRepository) =>
+          EditCartRepositoryImpl(editCartApi)),
+  ProxyProvider<EditCartRepository, EditCartUseCase>(
+      update: (context, editCartRepository, editCartUseCase) =>
+          EditCartUseCase(editCartRepository)),
 
 ];

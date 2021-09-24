@@ -62,16 +62,15 @@ class ProfileDetailsViewState extends BaseClassState {
                                   bottom: 20,
                                 ),
                                 child: getImage(_profileDetailsProvider
-                                    ?.myAccountEntity
-                                    ?.dataEntity
-                                    ?.userDataEntity
+                                    ?.myAccountItem
+                                    ?.dataItem
+                                    ?.userDataItem
                                     ?.profilePic),
                               ),
                             ),
 
                             ///widget first name
-                            _firstName(
-                                _profileDetailsProvider?.myAccountEntity),
+                            _firstName(_profileDetailsProvider?.myAccountItem),
 
                             ///widget last name
                             _lastName(),
@@ -138,6 +137,15 @@ class ProfileDetailsViewState extends BaseClassState {
       style: TextStyles.titleHeadline?.copyWith(
         color: ColorStyles.white,
       ),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: Icon(
+            Icons.search,
+            color: ColorStyles.transparent,
+          ),
+        )
+      ],
     );
   }
 
@@ -191,8 +199,8 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.phone_android,
-        text:
-            _profileDetailsProvider?.myAccountEntity?.dataEntity?.userDataEntity?.phoneNo,
+        text: _profileDetailsProvider
+            ?.myAccountItem?.dataItem?.userDataItem?.phoneNo,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -209,7 +217,8 @@ class ProfileDetailsViewState extends BaseClassState {
       padding: const EdgeInsets.only(top: 20),
       child: NeoStoreTitleBorderWithIcons(
         icon: Icons.attach_email,
-        text: _profileDetailsProvider?.myAccountEntity?.dataEntity?.userDataEntity?.email,
+        text: _profileDetailsProvider
+            ?.myAccountItem?.dataItem?.userDataItem?.email,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -227,7 +236,7 @@ class ProfileDetailsViewState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
         text: _profileDetailsProvider
-            ?.myAccountEntity?.dataEntity?.userDataEntity?.lastName,
+            ?.myAccountItem?.dataItem?.userDataItem?.lastName,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -245,7 +254,7 @@ class ProfileDetailsViewState extends BaseClassState {
       child: NeoStoreTitleBorderWithIcons(
         image: 'assets/images/username_icon.png',
         text: _profileDetailsProvider
-            ?.myAccountEntity?.dataEntity?.userDataEntity?.firstName,
+            ?.myAccountItem?.dataItem?.userDataItem?.firstName,
         style: GoogleFonts.workSans(
           textStyle: TextStyles.titleHeadline?.copyWith(
             color: ColorStyles.white,
@@ -273,7 +282,7 @@ class ProfileDetailsViewState extends BaseClassState {
 
   ///get image widget
   Widget getImage(profilePic) {
-    if (profilePic.toString().isEmpty) {
+    if (profilePic != null && profilePic.toString().isNotEmpty) {
       return CircleAvatar(
         child: Image.network(profilePic),
         radius: 70,

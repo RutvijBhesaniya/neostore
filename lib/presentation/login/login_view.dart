@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
@@ -7,6 +7,8 @@ import 'package:neostore/data/api/entity/login_entity.dart';
 import 'package:neostore/data/api/request/login_request.dart';
 import 'package:neostore/presentation/home/home_view.dart';
 import 'package:neostore/presentation/login/login_viewmodel.dart';
+import 'package:neostore/presentation/model/forgot_password_item.dart';
+import 'package:neostore/presentation/model/login_item.dart';
 import 'package:neostore/presentation/register/register_view.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
 import 'package:neostore/presentation/widget/neostore_textformfield.dart';
@@ -38,7 +40,10 @@ class _LoginScreenViewState extends BaseClassState
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    _loginScreenProvider = LoginScreenProvider(Provider.of(context));
+    _loginScreenProvider = LoginScreenProvider(
+      Provider.of(context),
+      Provider.of(context),
+    );
   }
 
   @override
@@ -122,7 +127,7 @@ class _LoginScreenViewState extends BaseClassState
     return Padding(
       padding: const EdgeInsets.only(top: 5),
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (_emailController.text.isEmpty) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -132,14 +137,30 @@ class _LoginScreenViewState extends BaseClassState
               ),
             );
           } else {
-            _loginScreenProvider?.getForgotPassword(_emailController.text);
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: NeoStoreTitle(
-                  text: ConstantStrings.new_password_sent_successfully,
+            Either<ForgotPasswordItem, ApiError>? response =
+                await _loginScreenProvider
+                    ?.getForgotPassword(_emailController.text);
+
+            if (response!.isRight) {
+              ApiError apiError = response.right;
+
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: NeoStoreTitle(
+                    text: apiError.message,
+                  ),
                 ),
-              ),
-            );
+              );
+            } else {
+              ForgotPasswordItem forgotPasswordItem = response.left;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: NeoStoreTitle(
+                    text: forgotPasswordItem.message,
+                  ),
+                ),
+              );
+            }
           }
         },
         child: NeoStoreTitle(
@@ -255,9 +276,10 @@ class _LoginScreenViewState extends BaseClassState
     LoginRequest loginRequest = LoginRequest();
     loginRequest.email = _emailController.text;
     loginRequest.password = _passwordController.text;
-    var response = await _loginScreenProvider?.getLogin(loginRequest, context);
+    Either<LoginItem, ApiError>? response =
+        await _loginScreenProvider?.getLogin(loginRequest, context);
 
-    if (response is ApiError) {
+    if (response!.isRight) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: NeoStoreTitle(
@@ -265,13 +287,11 @@ class _LoginScreenViewState extends BaseClassState
         ),
       );
     } else {
-      LoginEntity loginResponse = LoginEntity.fromJson(
-        json.decode(response),
-      );
-      if (loginResponse.status == 200) {
+      LoginItem? loginItem = response.left;
+      if (loginItem.status == 200) {
         MemoryManagement.setEmail(email: _emailController.text);
         MemoryManagement.setAccessToken(
-            accessToken: loginResponse.dataEntity!.accessToken);
+            accessToken: loginItem.data?.accessToken);
         MemoryManagement.setIsUserLoggedIn(isuserloggedin: true);
 
         Navigator.of(context).push(

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
 import 'package:neostore/data/api/entity/table_category_entity.dart';
 import 'package:neostore/presentation/home/home_view.dart';
+import 'package:neostore/presentation/model/table_category_item.dart';
 import 'package:neostore/presentation/table_category/table_category_viewmodel.dart';
 import 'package:neostore/presentation/table_detailed/table_detail_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -44,7 +45,7 @@ class _TableCategoryView extends BaseClassState {
               ? Center(
                   child: CircularProgressIndicator(),
                 )
-              : _buildListItem(_tableCategoryProvider?.tableCategoryEntity);
+              : _buildListItem(_tableCategoryProvider?.tableCategoryItem);
         },
       ),
     );
@@ -83,27 +84,27 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///list view method
-  Widget _buildListItem(TableCategoryEntity? tableCategoryResponse) {
+  Widget _buildListItem(tableCategoryItem) {
     return ListView.builder(
       shrinkWrap: true,
       scrollDirection: Axis.vertical,
       physics: ScrollPhysics(),
-      itemCount: tableCategoryResponse!.dataEntity!.length,
+      itemCount: tableCategoryItem.dataItem?.length,
       itemBuilder: (context, index) {
-        return listItemDetail(tableCategoryResponse, index);
+        return listItemDetail(tableCategoryItem, index);
       },
     );
   }
 
   ///list item
-  Widget listItemDetail(TableCategoryEntity? tableCategoryResponse, index) {
+  Widget listItemDetail(TableCategoryItem tableCategoryItem,int index) {
     return GestureDetector(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => TableDetailView(
-                tableProductDetailed: tableCategoryResponse?.dataEntity?[index].id),
+                datumItem: tableCategoryItem.dataItem?[index]),
           ),
         );
       },
@@ -118,20 +119,20 @@ class _TableCategoryView extends BaseClassState {
               child: Row(
                 children: [
                   ///image
-                  _image(tableCategoryResponse!, index),
+                  _image(tableCategoryItem, index),
                   Padding(
                     padding: const EdgeInsets.only(top: 6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// title name
-                        _titleName(tableCategoryResponse, index),
+                        _titleName(tableCategoryItem, index),
 
                         /// producer name
-                        _titleProducer(tableCategoryResponse, index),
+                        _titleProducer(tableCategoryItem, index),
 
                         ///cost and rating
-                        _costAndRating(tableCategoryResponse, index),
+                        _costAndRating(tableCategoryItem, index),
                       ],
                     ),
                   ),
@@ -147,8 +148,9 @@ class _TableCategoryView extends BaseClassState {
     );
   }
 
+
   ///cost and rating bar widget
-  Widget _costAndRating(TableCategoryEntity tableCategoryResponse, index) {
+  Widget _costAndRating(TableCategoryItem tableCategoryItem, index) {
     return Flexible(
       child: Align(
         alignment: Alignment.bottomRight,
@@ -160,10 +162,10 @@ class _TableCategoryView extends BaseClassState {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 ///cost
-                _cost(tableCategoryResponse, index),
+                _cost(tableCategoryItem, index),
 
                 ///rating bar
-                _ratingBar(tableCategoryResponse, index),
+                _ratingBar(tableCategoryItem, index),
               ],
             ),
           ),
@@ -173,9 +175,9 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///rating bar widget
-  Widget _ratingBar(TableCategoryEntity tableCategoryResponse, index) {
+  Widget _ratingBar(TableCategoryItem tableCategoryItem, index) {
     return RatingBarIndicator(
-      rating: tableCategoryResponse.dataEntity![index].rating!.toDouble(),
+      rating: tableCategoryItem.dataItem![index].rating!.toDouble(),
       itemBuilder: (context, index) {
         return Icon(
           Icons.star,
@@ -189,9 +191,9 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///cost widget
-  Widget _cost(TableCategoryEntity tableCategoryResponse, index) {
+  Widget _cost(TableCategoryItem tableCategoryItem, index) {
     return NeoStoreTitle(
-      text: 'Rs. ${tableCategoryResponse.dataEntity![index].cost}',
+      text: 'Rs. ${tableCategoryItem.dataItem![index].cost}',
       style: TextStyles.titleHeadline!.copyWith(
         color: ColorStyles.light_red,
       ),
@@ -199,9 +201,9 @@ class _TableCategoryView extends BaseClassState {
   }
 
   /// producer name widget
-  Widget _titleProducer(TableCategoryEntity tableCategoryResponse, index) {
+  Widget _titleProducer(TableCategoryItem tableCategoryItem, index) {
     return NeoStoreTitle(
-      text: tableCategoryResponse.dataEntity![index].producer,
+      text: tableCategoryItem.dataItem![index].producer,
       style: TextStyles.subtitle!.copyWith(
         color: ColorStyles.liver_grey,
       ),
@@ -209,9 +211,9 @@ class _TableCategoryView extends BaseClassState {
   }
 
   /// title name widget
-  Widget _titleName(TableCategoryEntity tableCategoryResponse, index) {
+  Widget _titleName(TableCategoryItem tableCategoryItem, index) {
     return NeoStoreTitle(
-      text: tableCategoryResponse.dataEntity![index].name,
+      text: tableCategoryItem.dataItem![index].name,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.labelName!.copyWith(
           color: ColorStyles.liver_grey,
@@ -221,7 +223,7 @@ class _TableCategoryView extends BaseClassState {
   }
 
   ///image widget
-  Widget _image(TableCategoryEntity tableCategoryResponse, index) {
+  Widget _image(TableCategoryItem tableCategoryItem, index) {
     return Padding(
       padding: const EdgeInsets.only(left: 10, right: 10),
       child: Container(
@@ -231,7 +233,7 @@ class _TableCategoryView extends BaseClassState {
           image: DecorationImage(
             fit: BoxFit.fill,
             image: NetworkImage(
-              tableCategoryResponse.dataEntity![index].productImages.toString(),
+              tableCategoryItem.dataItem![index].productImages.toString(),
             ),
           ),
         ),

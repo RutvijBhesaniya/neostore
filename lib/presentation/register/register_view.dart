@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,6 +8,7 @@ import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/api/entity/register_entity.dart';
 import 'package:neostore/data/api/request/register_request.dart';
 import 'package:neostore/presentation/login/login_view.dart';
+import 'package:neostore/presentation/model/register_item.dart';
 import 'package:neostore/presentation/register/register_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
@@ -32,7 +34,6 @@ enum GenderTypes { Male, Female }
 class _RegisterViewState extends BaseClassState
     with NeoStoreConstantValidation {
   late RegisterProvider _registerScreenProvider;
-  late ChangeGender _changeColorModel;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -96,7 +97,6 @@ class _RegisterViewState extends BaseClassState
 
   @override
   Widget getBody() {
-    _changeColorModel = Provider.of<ChangeGender>(context);
     return ChangeNotifierProvider<RegisterProvider>(
       create: (context) => _registerScreenProvider,
       child: Consumer<RegisterProvider>(
@@ -209,9 +209,11 @@ class _RegisterViewState extends BaseClassState
           ),
           maxLines: 1,
         ),
-        groupValue: _changeColorModel.currentValue,
+        groupValue: _registerScreenProvider.currentValue,
         onChanged: (value) {
-          _changeColorModel.changeModel(value!);
+          print("femalevalue=>{$value}");
+
+          _registerScreenProvider.changeGender(value!);
         },
       ),
     );
@@ -235,9 +237,10 @@ class _RegisterViewState extends BaseClassState
             ),
           ),
         ),
-        groupValue: _changeColorModel.currentValue,
+        groupValue: _registerScreenProvider.currentValue,
         onChanged: (value) {
-          _changeColorModel.changeModel(value!);
+          print("malevalue=>{$value}");
+          _registerScreenProvider.changeGender(value!);
         },
       ),
     );
@@ -251,10 +254,13 @@ class _RegisterViewState extends BaseClassState
         Container(
           width: 10,
           height: 10,
+
           child: Checkbox(
             activeColor: ColorStyles.white,
             value: _registerScreenProvider.checkValue,
             onChanged: (val) {
+              print("avavavava=>{$val}");
+
               _registerScreenProvider.changeCheckValue(val!);
             },
           ),
@@ -518,12 +524,14 @@ class _RegisterViewState extends BaseClassState
     registerRequest.phone = _phoneController.text;
     registerRequest.email = _emailController.text;
     registerRequest.gender =
-        _changeColorModel.currentValue == GenderTypes.Male ? 'Male' : 'Female';
+        _registerScreenProvider.currentValue == GenderTypes.Male
+            ? 'Male'
+            : 'Female';
 
-    var response =
+    Either<RegisterItem, ApiError>? response =
         await _registerScreenProvider.getRegisterUser(registerRequest, context);
 
-    if (response is ApiError) {
+    if (response.isRight) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: NeoStoreTitle(
@@ -532,10 +540,9 @@ class _RegisterViewState extends BaseClassState
         ),
       );
     } else {
-      RegisterEntity registerResponse =
-          RegisterEntity.fromJson(json.decode(response));
+      RegisterItem registerItem = response.left;
 
-      if (registerResponse.status == 200) {
+      if (registerItem.status == 200) {
         Navigator.push(
           context,
           MaterialPageRoute(

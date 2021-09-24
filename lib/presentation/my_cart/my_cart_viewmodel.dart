@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:either_dart/either.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/api/entity/add_to_cart_entity.dart';
 import 'package:neostore/data/api/entity/delete_cart_entity.dart';
 import 'package:neostore/data/api/entity/edit_cart_entity.dart';
@@ -16,6 +18,11 @@ import 'package:neostore/domain/use_case/delete_cart_use_case.dart';
 import 'package:neostore/domain/use_case/edit_cart_use_case.dart';
 import 'package:neostore/domain/use_case/cart_use_case.dart';
 import 'package:neostore/domain/use_case/table_detail_use_case.dart';
+import 'package:neostore/presentation/model/add_to_cart_item.dart';
+import 'package:neostore/presentation/model/delete_cart_item.dart';
+import 'package:neostore/presentation/model/edit_cart_item.dart';
+import 'package:neostore/presentation/model/list_cart_item.dart';
+import 'package:neostore/presentation/model/table_detail_item.dart';
 
 class CartProvider extends ChangeNotifier {
   List<String> _items = ['1', '2', '3', '4', '5', '6', '7', '8'];
@@ -23,41 +30,45 @@ class CartProvider extends ChangeNotifier {
   CartUseCase _listCartUseCase;
   TableDetailUseCase _tableDetailUseCase;
   AddToCartUseCase _addToCartUseCase;
+  DeleteCartUseCase _deleteCartUseCase;
+  EditCartUseCase _editCartUseCase;
 
   CartProvider(
-      this._listCartUseCase, this._tableDetailUseCase, this._addToCartUseCase);
-
-  DeleteCartUseCase _deleteCartUseCase = DeleteCartUseCase(
-    DeleteCartRepositoryImpl(
-      DeleteCartApiImpl(),
-    ),
+    this._listCartUseCase,
+    this._tableDetailUseCase,
+    this._addToCartUseCase,
+    this._deleteCartUseCase,
+    this._editCartUseCase,
   );
 
-  EditCartUseCase _editCartUseCase = EditCartUseCase(
-    EditCartRepositoryImpl(
-      EditCartApiImpl(),
-    ),
-  );
 
-  ListCartEntity? _listCartEntity;
+  ListCartItem? _listCartItem;
 
-  ListCartEntity? get listCartEntity => _listCartEntity;
+  ListCartItem? get listCartItem => _listCartItem;
 
-  DeleteCartEntity? _deleteCartEntity;
+  TableDetailItem? _tableDetailItem;
 
-  DeleteCartEntity? get deleteCartEntity => _deleteCartEntity;
+  TableDetailItem? get tableDetailItem => _tableDetailItem;
 
-  TableDetailEntity? _tableDetailEntity;
+  EditCartItem? _editCartItem;
 
-  TableDetailEntity? get tableDetailEntity => _tableDetailEntity;
+  EditCartItem? get editCartItem => _editCartItem;
 
-  AddToCartEntity? _addToCartEntity;
+  ApiError? _getListCartError;
 
-  AddToCartEntity? get addToCartEntity => _addToCartEntity;
+  ApiError? get getListCartError => _getListCartError;
 
-  EditCartEntity? _editCartEntity;
+  // EditCartEntity? _editCartEntity;
+  //
+  // EditCartEntity? get editCartEntity => _editCartEntity;
 
-  EditCartEntity? get editCartEntity => _editCartEntity;
+  ApiError? _getTableDetailError;
+
+  ApiError? get getTableDetailError => _getTableDetailError;
+
+  ApiError? _getEditCartError;
+
+  ApiError? get getEditCartError => _getEditCartError;
 
   bool _isLoading = true;
 
@@ -66,57 +77,81 @@ class CartProvider extends ChangeNotifier {
   List<String> get items => _items;
 
   void selected(int index, String quantity) {
-    listCartEntity?.dataEntity?[index].quantity = int.parse(quantity);
+    listCartItem?.dataItem?[index].quantity = int.parse(quantity);
     notifyListeners();
   }
 
   ///list cart method
-  void getListCart() async {
+  Future<void> getListCart() async {
     _isLoading = true;
     var response = await _listCartUseCase.callApi();
-    _listCartEntity = ListCartEntity.fromJson(jsonDecode(response));
 
-    _isLoading = false;
+    if (response.isLeft) {
+      _listCartItem = response.left;
+      _isLoading = false;
+    } else {
+      _isLoading = false;
+      _getListCartError = response.right;
+    }
     notifyListeners();
   }
 
   ///delete cart method
-  Future<dynamic> getDeleteCart(int productId) async {
+  Future<Either<DeleteCartItem, ApiError>> getDeleteCart(int productId) async {
     _isLoading = true;
     var deleteResponse = await _deleteCartUseCase.callApi(productId);
-    _deleteCartEntity = DeleteCartEntity.fromJson(jsonDecode(deleteResponse));
-    _isLoading = false;
-    return deleteResponse;
+    if (deleteResponse.isLeft) {
+      DeleteCartItem _deleteCartItem = deleteResponse.left;
+      _isLoading = false;
+      return Left(_deleteCartItem);
+    } else {
+      _isLoading = false;
+      return Right(deleteResponse.right);
+    }
   }
 
   ///edit cart method
-  void getEditCart(int productId, String quantity) async {
+  Future<void> getEditCart(int productId, String quantity) async {
     _isLoading = true;
     var editCartResponse =
         await _editCartUseCase.callApi(productId, int.parse(quantity));
-    _editCartEntity = EditCartEntity.fromJson(jsonDecode(editCartResponse));
+    if (editCartResponse.isLeft) {
+      getListCart();
 
-    getListCart();
-    _isLoading = false;
+      _editCartItem = editCartResponse.left;
+    } else {
+      _isLoading = false;
+      _getEditCartError = editCartResponse.right;
+    }
+
     notifyListeners();
-    // return editCartResponse;
   }
 
   ///table detail method
-  void getTableDetail(int productId) async {
+  Future<void> getTableDetail(int? productId) async {
     _isLoading = true;
     var response = await _tableDetailUseCase.callApi(productId);
-    _tableDetailEntity = TableDetailEntity.fromJson(jsonDecode(response));
-    _isLoading = false;
-    return response;
+    if (response.isLeft) {
+      _tableDetailItem = response.left;
+    } else {
+      _isLoading = false;
+      _getTableDetailError = response.right;
+    }
+    notifyListeners();
   }
 
   ///add to cart method
-  Future<dynamic> getAddToCart(int productId, int quantity) async {
+  Future<Either<AddToCartItem, ApiError>> getAddToCart(
+      int productId, int quantity) async {
     _isLoading = true;
     var response = await _addToCartUseCase.callApi(productId, quantity);
-    _addToCartEntity = AddToCartEntity.fromJson(jsonDecode(response));
-    _isLoading = false;
-    return response;
+    if (response.isLeft) {
+      AddToCartItem _addToCartItem = response.left;
+      _isLoading = false;
+      return Left(_addToCartItem);
+    } else {
+      _isLoading = false;
+      return Right(response.right);
+    }
   }
 }

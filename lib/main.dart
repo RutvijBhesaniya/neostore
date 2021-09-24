@@ -29,7 +29,7 @@ class _NeoStoreState extends State<NeoStore> {
         debugShowCheckedModeBanner: false,
         title: ConstantStrings.neoStore,
         theme: ThemeData(
-          unselectedWidgetColor: ColorStyles.black,
+          // unselectedWidgetColor: ColorStyles.black,
           accentColor: Color(0xFFBB0100),
         ),
         home: SplashScreen(),

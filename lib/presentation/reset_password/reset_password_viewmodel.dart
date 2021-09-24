@@ -11,8 +11,6 @@ class ResetPasswordProvider extends ChangeNotifier {
 
   ResetPasswordEntity? get resetPasswordEntity => _resetPasswordEntity;
 
-
-
   bool _isLoading = true;
 
   get isLoading => _isLoading;

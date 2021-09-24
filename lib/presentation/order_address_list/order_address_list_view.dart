@@ -1,10 +1,14 @@
 import 'dart:convert';
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/api/entity/add_address_entity.dart';
 import 'package:neostore/data/api/entity/order_address_entity.dart';
 import 'package:neostore/presentation/add_address/add_address_view.dart';
+import 'package:neostore/presentation/model/order_address_item.dart';
+import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
 import 'package:neostore/presentation/order_address_list/order_address_list_viewmodel.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
@@ -54,56 +58,65 @@ class OrderAddressListViewState extends BaseClassState {
           return addAddressList.length > 0
               ? Padding(
                   padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ///shipping address title widget
-                      _shippingAddressTitle(),
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ///shipping address title widget
+                        _shippingAddressTitle(),
 
-                      ///radio button list tile
-                      _addressRadioButton(),
+                        ///radio button list tile
+                        _addressRadioButton(),
 
-                      ///place order button widget
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        child: NeoStoreElevatedButton(
-                          onPressed: () async {
-                            if (_orderAddressListProvider?.currentValue ==
-                                null) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: NeoStoreTitle(
-                                    text: ConstantStrings.please_select_address,
-                                  ),
-                                ),
-                              );
-                            } else {
-                              var response = await _orderAddressListProvider
-                                  ?.getOrderAddress(_orderAddressListProvider!
-                                      .currentAddress!);
-                              OrderAddressEntity _orderAddressResponse =
-                                  OrderAddressEntity.fromJson(
-                                      jsonDecode(response));
-                              if (_orderAddressResponse.status == 200) {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => MyOrderView(),
+                        ///place order button widget
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          child: NeoStoreElevatedButton(
+                            onPressed: () async {
+                              if (_orderAddressListProvider?.currentValue ==
+                                  null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: NeoStoreTitle(
+                                      text: ConstantStrings.please_select_address,
+                                    ),
                                   ),
                                 );
+                              } else {
+                                Either<OrderAddressItem, ApiError>? response =
+                                    await _orderAddressListProvider
+                                        ?.getOrderAddress(
+                                            _orderAddressListProvider!
+                                                .currentAddress!);
+                                // OrderAddressEntity _orderAddressResponse =
+                                //     OrderAddressEntity.fromJson(
+                                //         jsonDecode(response));
+                                if (response!.isRight) {
+                                } else {
+                                  OrderAddressItem orderAddressItem =
+                                      response.left;
+                                  if (orderAddressItem.status == 200) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MyOrderView(),
+                                      ),
+                                    );
+                                  }
+                                }
                               }
-                            }
-                          },
-                          text: ConstantStrings.placeOrder,
-                          buttonStyle: TextButton.styleFrom(
-                              backgroundColor: ColorStyles.red),
-                          textStyle: GoogleFonts.workSans(
-                              textStyle: TextStyles.titlelabel?.copyWith(
-                                  color: ColorStyles.white,
-                                  fontWeight: FontWeight.w600)),
-                        ),
-                      )
-                    ],
+                            },
+                            text: ConstantStrings.placeOrder,
+                            buttonStyle: TextButton.styleFrom(
+                                backgroundColor: ColorStyles.red),
+                            textStyle: GoogleFonts.workSans(
+                                textStyle: TextStyles.titlelabel?.copyWith(
+                                    color: ColorStyles.white,
+                                    fontWeight: FontWeight.w600)),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 )
               : Center(
@@ -223,6 +236,7 @@ class OrderAddressListViewState extends BaseClassState {
       ),
       groupValue: _orderAddressListProvider?.currentValue,
       onChanged: (value) {
+        print("orderaddress=>{$value}");
         _orderAddressListProvider?.changeModel(value!, addressList.address!);
       },
     );
@@ -234,7 +248,14 @@ class OrderAddressListViewState extends BaseClassState {
       backgroundColour: ColorStyles.red,
       leading: InkWell(
         onTap: () {
-          Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyCartView(),
+            ),
+          );
+
+          // Navigator.pop(context);
         },
         child: Icon(
           Icons.arrow_back_ios,

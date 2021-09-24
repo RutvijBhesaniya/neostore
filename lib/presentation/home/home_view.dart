@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:neostore/base/base_class.dart';
-import 'package:neostore/data/api/entity/list_cart_entity.dart';
 import 'package:neostore/presentation/chair_category/chair_category_view.dart';
 import 'package:neostore/presentation/cupboard_category/cupboard_category_view.dart';
 import 'package:neostore/presentation/home/home_viewmodel.dart';
 import 'package:neostore/presentation/login/login_view.dart';
+import 'package:neostore/presentation/model/list_cart_item.dart';
 import 'package:neostore/presentation/my_cart/my_cart_view.dart';
 import 'package:neostore/presentation/my_order/my_order_view.dart';
 import 'package:neostore/presentation/profile_details/profile_details_view.dart';
@@ -60,7 +60,7 @@ class _HomeScreen extends BaseClassState {
                   child: Stack(
                     children: [
                       ///drawer screen
-                      menu(context, _homeProvider?.listCartEntity),
+                      menu(context, _homeProvider?.listCartItem),
 
                       ///dashboard screen
                       dashboard(context),
@@ -73,7 +73,10 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///drawer screen
-  Widget menu(context, ListCartEntity? listCartResponse) {
+  Widget menu(
+    context,
+    listCartItem,
+  ) {
     return Padding(
       padding: const EdgeInsets.only(left: 16),
       child: SafeArea(
@@ -108,7 +111,7 @@ class _HomeScreen extends BaseClassState {
                     ),
 
                     ///my cart widget
-                    _myCart(listCartResponse),
+                    _myCart(listCartItem),
                     Padding(
                         padding: const EdgeInsets.only(top: 5, bottom: 5),
                         child: NeoStoreDivider(
@@ -362,7 +365,7 @@ class _HomeScreen extends BaseClassState {
   }
 
   ///my cart widget
-  Widget _myCart(ListCartEntity? listCartResponse) {
+  Widget _myCart(ListCartItem? listCartItem) {
     return Row(
       children: [
         GestureDetector(
@@ -394,13 +397,14 @@ class _HomeScreen extends BaseClassState {
           decoration: BoxDecoration(
               border: Border.all(color: ColorStyles.light_red, width: 8),
               shape: BoxShape.circle,
-              // borderRadius: BorderRadius.all(Radius.circular(50)),
               color: ColorStyles.light_red),
           child: NeoStoreTitle(
-            text: listCartResponse?.dataEntity != null
-                ? listCartResponse?.count.toString()
+            text: listCartItem!.dataItem!.isEmpty
+                ? listCartItem.count.toString()
                 : '0',
-            style: TextStyles.titleHeadline?.copyWith(color: ColorStyles.white),
+            style: TextStyles.titleHeadline?.copyWith(
+              color: ColorStyles.white,
+            ),
           ),
         )
       ],
@@ -410,7 +414,7 @@ class _HomeScreen extends BaseClassState {
   ///email
   Widget _email() {
     return NeoStoreTitle(
-      text: _homeProvider?.myAccountEntity?.dataEntity?.userDataEntity?.email,
+      text: _homeProvider?.myAccountItem?.dataItem?.userDataItem?.email,
       // _homeProvider.myAccountResponse?.data?.userData?.email,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.labelName
@@ -422,7 +426,7 @@ class _HomeScreen extends BaseClassState {
   ///full name
   Widget _fullName() {
     return NeoStoreTitle(
-      text: _homeProvider?.myAccountEntity?.dataEntity?.userDataEntity?.firstName!,
+      text: _homeProvider?.myAccountItem?.dataItem?.userDataItem?.firstName!,
       style: GoogleFonts.workSans(
         textStyle: TextStyles.titleHeadline
             ?.copyWith(color: ColorStyles.white, fontWeight: FontWeight.w400),
@@ -436,13 +440,12 @@ class _HomeScreen extends BaseClassState {
     return Padding(
       padding: const EdgeInsets.only(top: 20),
       child: getImage(
-        _homeProvider?.myAccountEntity?.dataEntity?.userDataEntity?.profilePic,
-      ),
+          _homeProvider?.myAccountItem?.dataItem?.userDataItem?.profilePic),
     );
   }
 
   Widget getImage(profilePic) {
-    if (profilePic.toString().isEmpty) {
+    if (profilePic != null && profilePic.toString().isNotEmpty) {
       return CircleAvatar(child: Image.network(profilePic), radius: 70);
     } else {
       return CircleAvatar(

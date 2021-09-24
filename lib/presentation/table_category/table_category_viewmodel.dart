@@ -1,27 +1,35 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:neostore/data/api/entity/table_category_entity.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/domain/use_case/table_category_use_case.dart';
+import 'package:neostore/presentation/model/table_category_item.dart';
 
 class TableCategoryProvider extends ChangeNotifier {
   TableCategoryUseCase _tableCategoryUseCase;
 
   TableCategoryProvider(this._tableCategoryUseCase);
 
-  late TableCategoryEntity _tableCategoryEntity;
+  late TableCategoryItem _tableCategoryItem;
 
-  get tableCategoryEntity => _tableCategoryEntity;
+  TableCategoryItem get tableCategoryItem => _tableCategoryItem;
+
+  ApiError? _getTableCategoryError;
+
+  ApiError? get getTableCategoryError => _getTableCategoryError;
 
   bool _isLoading = true;
 
   get isLoading => _isLoading;
 
-  void getTableCategory(int productCategoryId) async {
+  Future<void> getTableCategory(int productCategoryId) async {
     _isLoading = true;
     var response = await _tableCategoryUseCase.callApi(productCategoryId);
-    _tableCategoryEntity =
-        TableCategoryEntity.fromJson(jsonDecode(response));
-    _isLoading = false;
+    if (response.isLeft) {
+      _tableCategoryItem = response.left;
+      _isLoading = false;
+    } else {
+      _isLoading = false;
+      _getTableCategoryError = response.right;
+    }
     notifyListeners();
   }
 }

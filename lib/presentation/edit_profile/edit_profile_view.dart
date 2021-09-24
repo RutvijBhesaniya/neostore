@@ -1,12 +1,16 @@
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:neostore/base/base_class.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/api/entity/edit_profile_entity.dart';
 import 'package:neostore/presentation/edit_profile/edit_profile_viewmodel.dart';
+import 'package:neostore/presentation/model/edit_cart_item.dart';
+import 'package:neostore/presentation/model/edit_profile_item.dart';
 import 'package:neostore/presentation/profile_details/profile_details_view.dart';
 import 'package:neostore/presentation/widget/neostore_appbar.dart';
 import 'package:neostore/presentation/widget/neostore_elevated_button.dart';
@@ -407,35 +411,47 @@ class EditProfileViewState extends BaseClassState
     File file = File(_editProfileProvider.imageFile!.path);
     Uint8List bytes = file.readAsBytesSync();
 
-    var response = await _editProfileProvider.getEditProfile(
-        _emailController.text,
-        _dobController.text,
-        _phoneNumberController.text,
-        bytes,
-        _firstController.text,
-        _lastController.text);
+    Either<EditProfileItem, ApiError>? response =
+        await _editProfileProvider.getEditProfile(
+            _emailController.text,
+            _dobController.text,
+            _phoneNumberController.text,
+            bytes,
+            _firstController.text,
+            _lastController.text);
 
-    EditProfileEntity _editProfileResponse = EditProfileEntity.fromJson(
-      json.decode(response),
-    );
 
-    if (_editProfileResponse.status == 200) {
-      MemoryManagement.setFirstName(
-          firstName: _editProfileResponse.dataEntity?.firstName);
-      MemoryManagement.setLastName(
-          lastName: _editProfileResponse.dataEntity?.lastName);
-      MemoryManagement.setEmail(email: _editProfileResponse.dataEntity?.email);
-      MemoryManagement.setPhoneNumber(
-          phoneNumber: _editProfileResponse.dataEntity?.phoneNo);
-      MemoryManagement.setDob(dob: _editProfileResponse.dataEntity?.dob);
-      MemoryManagement.setProfilePic(
-          profilepic: _editProfileResponse.dataEntity?.profilePic);
 
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => ProfileDetailsView(),
+    if (response.isRight) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: NeoStoreTitle(
+            text: ConstantStrings.email_id_already_exist,
+          ),
         ),
       );
+
+    }else{
+      EditProfileItem editProfileItem =response.left;
+      if(editProfileItem.status == 200){
+        MemoryManagement.setFirstName(
+            firstName: editProfileItem.data?.firstName);
+        MemoryManagement.setLastName(
+            lastName: editProfileItem.data?.lastName);
+        MemoryManagement.setEmail(email: editProfileItem.data?.email);
+        MemoryManagement.setPhoneNumber(
+            phoneNumber: editProfileItem.data?.phoneNo);
+        MemoryManagement.setDob(dob: editProfileItem.data?.dob);
+        MemoryManagement.setProfilePic(
+            profilepic: editProfileItem.data?.profilePic);
+
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => ProfileDetailsView(),
+          ),
+        );
+      }
     }
+
   }
 }

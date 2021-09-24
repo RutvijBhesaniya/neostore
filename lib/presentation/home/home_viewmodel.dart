@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:either_dart/either.dart';
 import 'package:flutter/material.dart';
+import 'package:neostore/base/network_model/api_error.dart';
 import 'package:neostore/data/api/entity/list_cart_entity.dart';
 import 'package:neostore/data/api/entity/my_account_entity.dart';
 import 'package:neostore/domain/use_case/cart_use_case.dart';
 import 'package:neostore/domain/use_case/my_account_use_case.dart';
+import 'package:neostore/presentation/model/list_cart_item.dart';
+import 'package:neostore/presentation/model/my_account_item.dart';
 import 'package:neostore/utils/shared_preferences/memory_management.dart';
 
 class HomeProvider extends ChangeNotifier {
@@ -13,13 +17,13 @@ class HomeProvider extends ChangeNotifier {
 
   HomeProvider(this._myAccountUseCase, this._listCartUseCase);
 
-  ListCartEntity? _listCartEntity;
+  ListCartItem? _listCartItem;
 
-  ListCartEntity? get listCartEntity => _listCartEntity;
+  ListCartItem? get listCartItem => _listCartItem;
 
-  MyAccountEntity? _myAccountEntity;
+  MyAccountItem? _myAccountItem;
 
-  MyAccountEntity? get myAccountEntity => _myAccountEntity;
+  MyAccountItem? get myAccountItem => _myAccountItem;
 
   bool _isLoading = true;
 
@@ -27,41 +31,58 @@ class HomeProvider extends ChangeNotifier {
 
   bool collapsed = false;
 
+  ApiError? _getListCountCartError;
+
+  ApiError? get getListCountCartError => _getListCountCartError;
+
   bool get getCurrentDrawer => collapsed;
+
+  ApiError? _getMyAccountError;
+
+  ApiError? get getMyAccountError => _getMyAccountError;
 
   void setCurrentDrawer(bool drawer) {
     collapsed = drawer;
     notifyListeners();
   }
 
-
   ///list count method
-  void getListCountCart() async {
+  Future<void> getListCountCart() async {
     _isLoading = true;
     var response = await _listCartUseCase.callApi();
-    _listCartEntity = ListCartEntity.fromJson(jsonDecode(response));
+    if (response.isLeft) {
+      _listCartItem = response.left;
+      _isLoading = false;
+    } else {
+      _isLoading = false;
+      _getListCountCartError = response.right;
+    }
 
-    _isLoading = false;
     notifyListeners();
   }
 
-
   ///get account details method
-  void getMyAccount() async {
+  Future<void> getMyAccount() async {
     _isLoading = true;
     var response = await _myAccountUseCase.callApi();
-    _myAccountEntity = MyAccountEntity.fromJson(jsonDecode(response));
-    MemoryManagement.setFirstName(
-        firstName: _myAccountEntity!.dataEntity!.userDataEntity!.firstName);
-    MemoryManagement.setLastName(
-        lastName: _myAccountEntity!.dataEntity!.userDataEntity!.lastName);
-    MemoryManagement.setEmail(email: _myAccountEntity!.dataEntity!.userDataEntity!.email);
-    MemoryManagement.setPhoneNumber(
-        phoneNumber: _myAccountEntity!.dataEntity!.userDataEntity!.phoneNo);
+    if (response.isLeft) {
+      _myAccountItem = response.left;
 
-    _isLoading = false;
+      MemoryManagement.setFirstName(
+          firstName: _myAccountItem?.dataItem?.userDataItem?.firstName);
+      MemoryManagement.setLastName(
+          lastName: _myAccountItem?.dataItem?.userDataItem?.lastName);
+      MemoryManagement.setEmail(
+          email: _myAccountItem?.dataItem?.userDataItem?.email);
+      MemoryManagement.setPhoneNumber(
+          phoneNumber: _myAccountItem?.dataItem?.userDataItem?.phoneNo);
 
-    // return response;
+      _isLoading = false;
+    } else {
+      _isLoading = false;
+      _getMyAccountError = response.right;
+    }
+
     notifyListeners();
   }
 }
